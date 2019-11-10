@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:00:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/10 18:00:14 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/10 18:17:57 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/10 18:17:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char *ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void    ft_putchar_fd(char c, int fd)
 {
-    int i;
-    char *new_s;
-
-    i = 0;
-    new_s = (char*)malloc(sizeof(char) * (strlen(s) + 1));
-    while (s[i])
-    {
-        new_s[i] = f(i, s[i++]);
-    }
-    new_s[i] = '\0';
-    return (new_s);
+    write(fd, &c, 1);
 }

@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:00:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/10 18:00:14 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/10 18:22:44 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/10 18:22:44 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char *ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void    ft_putendl_fd(char *s, int fd)
 {
-    int i;
-    char *new_s;
+    char nl;
 
-    i = 0;
-    new_s = (char*)malloc(sizeof(char) * (strlen(s) + 1));
-    while (s[i])
-    {
-        new_s[i] = f(i, s[i++]);
-    }
-    new_s[i] = '\0';
-    return (new_s);
+    nl = '\n';
+    write(fd, s, strlen(s));
+    write(fd, &nl, 1);
 }
