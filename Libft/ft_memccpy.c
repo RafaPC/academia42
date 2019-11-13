@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:21:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/13 17:57:27 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/13 09:13:05 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/13 12:29:04 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_putstr_fd(char *s, int fd)
+void	*ft_memccpy(void *dst, const *src, int c, unsigned int n)
 {
-	write(fd, s, strlen(s));
+	unsigned char	*dest;
+	unsigned char	*source;
+	int				i;
+
+	i = 0;
+	source = (unsigned char *)src;
+	dest = (unsigned char *)dst;
+	while (i < n && (unsigned char)c != source[i - 1])
+	{
+		dest[i] = source[i];
+		i++;
+	}
+	if(i < n)
+		return (&dst[i]);
+	else
+		return (dst);
 }

@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isdigit.c                                          :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 16:38:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/04 16:41:04 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/12 11:38:13 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/13 17:42:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isdifit(int c)
+void	ft_bzero(void *s, unsigned int n)
 {
-	return (c >= '0' && c <= '9') ? 1 : 0;
+	unsigned char *pointer;
+
+	pointer = (unsigned char)s;
+	while (n-- > 0)
+		*(pointer++) = '\0';
+
 }

@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isalnum.c                                          :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 16:41:12 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/04 16:42:26 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/05 13:38:41 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/12 12:14:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isalnum(int c)
+int		ft_strncmp(const char *s1, const char *s2, unsigned int n)
 {
-	return (ft_isalpha(c) || ft_isdigit(c)) ? 1 : 0;
+	int i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
 }

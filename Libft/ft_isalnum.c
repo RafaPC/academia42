@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strlen.c                                           :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 16:32:20 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/04 16:33:20 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/04 16:41:12 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/12 12:12:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	ft_strlen(const char *s)
+int		ft_isalnum(int c)
 {
-	int len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	return (ft_isalpha(c) || ft_isdigit(c)) ? 1 : 0;
 }

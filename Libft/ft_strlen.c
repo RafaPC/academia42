@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isascii.c                                          :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:26:38 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/05 10:50:21 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/04 16:32:20 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/12 12:14:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isascii(int c)
+unsigned int	ft_strlen(const char *s)
 {
-	return (c >= 0 && c <= 127) ? 1 : 0;
+	int len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }

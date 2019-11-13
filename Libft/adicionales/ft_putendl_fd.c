@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 18:22:44 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/10 18:22:44 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:57:10 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void    ft_putendl_fd(char *s, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
-    char nl;
+	char	nl;
 
-    nl = '\n';
-    write(fd, s, strlen(s));
-    write(fd, &nl, 1);
+	nl = '\n';
+	write(fd, s, strlen(s));
+	write(fd, &nl, 1);
 }

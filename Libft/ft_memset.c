@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isprint.c                                          :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/05 10:50:36 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/12 11:18:10 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/13 09:10:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isprint(int c)
+void	*ft_memset(void *b, int c, unsigned int len)
 {
-	return (c >= 32 && c <= 126) ? 1 : 0;
+	unsigned char *pointer;
+
+	pointer = (unsigned char)b;
+	while (len-- > 0)
+		*(pointer++) = (unsigned char)c;
+	return (b);
 }
