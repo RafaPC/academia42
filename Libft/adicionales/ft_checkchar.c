@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.c                                            :+:      :+:    :+:   */
+/*   ft_checkchar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 12:42:43 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/04 16:16:30 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/18 11:54:24 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/18 16:27:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
-void	*ft_memset(void *b, int c, unsigned int len)
+int		ft_checkchar(char c, char *set)
 {
-	int	i;
+	int i;
+
 	i = 0;
-
-	while(i < len)
-		((char*)b)[i++] = c;
-	return (b);
-}
-
-int		main(void)
-{
-	char test[] = "prueba";
-	int c = 36;
-	ft_memset(test, c, 3);
-	printf("%s", test);
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i++;
+	}
 	return (0);
 }
