@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:50:11 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 15:50:53 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/20 18:32:24 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/21 16:40:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_toupper(int c)
+#include "libft.h"
+
+void	ft_lstadd_front(t_list **alst, t_list *new)
 {
-	return (c >= 'a' && c <= 'z') ? (c - 32) : (c);
+	new->next = alst[0];
+	alst[0] = new;
 }

@@ -6,9 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 12:03:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/13 12:31:14 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:21:29 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 void	*ft_memchr(const void *s, int c, unsigned int n)
 {

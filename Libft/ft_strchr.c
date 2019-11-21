@@ -6,30 +6,33 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:28:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/18 11:17:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:58:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdio.h>
 
 char	*ft_strchr(const char *s, int c)
 {
-	int i;
+	int		i;
+	char	*string;
 
 	i = 0;
-	while (s[i])
+	string = (char*)s;
+	while (string[i])
 	{
-		if (s[i] == c)
-			return (&s[i]);
+		if (string[i] == c)
+			return (&string[i]);
 		i++;
 	}
-	return (c == '\0') ? (&s[i]) : (0);
+	return (c == '\0') ? (&string[i]) : NULL;
 }
 
 int		main(void)
 {
-	char test[] = "holaaeaea";
-	char *puntero = strchr(test, 'r');
+	char test[] = "holaaeaear";
+	char *puntero = ft_strchr(test, 'e');
 	printf("%s", puntero);
 	return (1);
 }

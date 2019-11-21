@@ -6,11 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:38:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/12 12:13:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:36:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_isdifit(int c)
+#include "libft.h"
+
+int		ft_isdigit(int c)
 {
-	return (c >= '0' && c <= '9') ? 1 : 0;
+	return (c >= '0' && c <= '9') ? TRUE : FALSE;
 }

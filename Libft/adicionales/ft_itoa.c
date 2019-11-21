@@ -6,18 +6,18 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 12:24:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/20 18:12:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:07:31 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 
-void	labuena(char *string, unsigned int index, int number)
+static void		fill_nbr(char *string, unsigned int index, int number)
 {
 	if (number > 9)
 	{
-		labuena(string, index - 1, number / 10);
+		fill_nbr(string, index - 1, number / 10);
 		string[index] = (number % 10) + 48;
 	}
 	else
@@ -45,12 +45,7 @@ char			*ft_itoa(int n)
 	unsigned int	index;
 
 	if (n == 0)
-	{
-		string = (char*)malloc(2);
-		string[0] = '0';
-		string[1] = '\0';
-		return (string);
-	}
+		return (ft_trdup("0"));
 	digits = get_digits(n);
 	n_copy = n;
 	index = digits - 1;
@@ -60,7 +55,7 @@ char			*ft_itoa(int n)
 		string[0] = '-';
 		n = -n;
 	}
-	labuena(string, index, n);
+	fill_nbr(string, index, n);
 	string[digits] = '\0';
 	return (string);
 }

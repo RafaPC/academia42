@@ -6,11 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 12:31:26 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/13 17:53:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 16:17:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_memcmp(const void *s1, const void *s2, unsigned int n)
+#include "libft.h"
+
+int		ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	unsigned char	*string1;
 	unsigned char	*string2;
@@ -23,6 +25,7 @@ int		ft_memcmp(const void *s1, const void *s2, unsigned int n)
 	{
 		if (string1[i] != string2[i])
 			return (string1[i] - string2[i]);
+		i++;
 	}
-	return (0);
+	return (NULL);
 }

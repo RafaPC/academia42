@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/20 18:32:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/20 18:42:31 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/21 11:54:00 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/21 17:41:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "struct.h"
+#include "libft.h"
 
-void	ft_lstadd_front(t_list **alst, t_list *new)
+t_list	*ft_lstlast(t_list *lst)
 {
-	new->next = new;
-	alst[0]->next = new;
+	int		size;
+	t_list	*lst_elem;
+	t_list	*last_elem;
+
+	lst_elem = lst->next;
+	last_elem = lst;
+	while (lst_elem)
+	{
+		last_elem = lst_elem;
+		lst_elem = lst_elem->next;
+	}
+	return (last_elem);
 }

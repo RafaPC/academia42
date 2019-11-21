@@ -6,11 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:41:12 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/12 12:12:38 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:45:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 int		ft_isalnum(int c)
 {
-	return (ft_isalpha(c) || ft_isdigit(c)) ? 1 : 0;
+	return (ft_isalpha(c) || ft_isdigit(c)) ? TRUE : FALSE;
 }

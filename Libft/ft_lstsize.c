@@ -1,16 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:50:11 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 15:50:53 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/21 11:46:41 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/21 16:41:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_toupper(int c)
+#include "libft.h"
+
+int		ft_lstsize(t_list *lst)
 {
-	return (c >= 'a' && c <= 'z') ? (c - 32) : (c);
+	int		size;
+	t_list	*lst_elem;
+
+	size = 0;
+	lst_elem = lst->next;
+	while (lst_elem)
+	{
+		lst_elem = lst_elem->next;
+		size++;
+	}
+	return (size);
 }

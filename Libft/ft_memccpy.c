@@ -6,9 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 09:13:05 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/15 12:39:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:20:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {

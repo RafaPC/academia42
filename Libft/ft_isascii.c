@@ -6,11 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:26:38 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/18 11:16:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 15:36:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 int		ft_isascii(int c)
 {
-	return (c >= 0 && c <= 127) ? 1 : 0;
+	return (c >= 0 && c <= 127) ? TRUE : FALSE;
 }

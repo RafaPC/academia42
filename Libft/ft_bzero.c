@@ -6,16 +6,17 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 11:38:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/13 17:42:46 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/21 18:20:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_bzero(void *s, unsigned int n)
+#include "libft.h"
+
+void	ft_bzero(void *s, size_t n)
 {
 	unsigned char *pointer;
 
-	pointer = (unsigned char)s;
+	pointer = (unsigned char*)s;
 	while (n-- > 0)
 		*(pointer++) = '\0';
-
 }

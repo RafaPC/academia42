@@ -1,17 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:40:26 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/10 18:40:26 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/21 16:55:50 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/21 17:40:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-typedef struct      s_list
+#include "libft.h"
+
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-    void            *content;
-    struct s_list   *next;
-}                   t_list;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
+}
