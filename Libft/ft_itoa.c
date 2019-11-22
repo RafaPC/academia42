@@ -6,12 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 12:24:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 15:07:31 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:03:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "libft.h"
 
 static void		fill_nbr(char *string, unsigned int index, int number)
 {
@@ -45,7 +44,7 @@ char			*ft_itoa(int n)
 	unsigned int	index;
 
 	if (n == 0)
-		return (ft_trdup("0"));
+		return (ft_strdup("0"));
 	digits = get_digits(n);
 	n_copy = n;
 	index = digits - 1;
@@ -58,10 +57,4 @@ char			*ft_itoa(int n)
 	fill_nbr(string, index, n);
 	string[digits] = '\0';
 	return (string);
-}
-
-int	main(int argc, char const *argv[])
-{
-	printf("%s", ft_itoa(-28947));
-	return 0;
 }

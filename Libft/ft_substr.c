@@ -6,13 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:19:06 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/20 16:35:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/22 13:25:15 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, unsigned int len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -23,7 +23,7 @@ char	*ft_substr(char const *s, unsigned int start, unsigned int len)
 	j = 0;
 	real_len = ft_strlen(&s[start]);
 	real_len = (real_len < len) ? real_len : len;
-	if (start >= ft_strlen(s) || len == 0)
+	if (start >= (unsigned int)ft_strlen(s) || len == 0)
 		return (ft_strdup(""));
 	if (!(string = (char*)malloc((real_len + 1) * sizeof(char))))
 		return (0);

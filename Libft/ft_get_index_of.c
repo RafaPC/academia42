@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_get_index_of.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:00:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/13 17:59:06 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/22 19:24:45 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/22 19:27:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+int		get_index_of(char *string, char c)
 {
-	int		i;
-	char	*new_s;
+	int index;
 
-	i = 0;
-	new_s = (char*)malloc(sizeof(char) * (strlen(s) + 1));
-	while (s[i])
+	index = 0;
+	while (string[index])
 	{
-		new_s[i] = f(i, s[i]);
-		i++;
+		if (string[index] == c)
+			return (index);
+		index++;
 	}
-	new_s[i] = '\0';
-	return (new_s);
+	return (-1);
 }

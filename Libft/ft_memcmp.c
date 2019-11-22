@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 12:31:26 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 16:17:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/22 12:49:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n)
 			return (string1[i] - string2[i]);
 		i++;
 	}
-	return (NULL);
+	return (0);
 }

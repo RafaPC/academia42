@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkchar.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/18 11:54:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/18 16:27:51 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/05 16:55:10 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/22 16:43:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_checkchar(char c, char *set)
-{
-	int i;
+#include "libft.h"
 
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*joined_str;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(joined_str = (char*)malloc((ft_strlen(s1) + ft_strlen(s2) - 1)
+	* sizeof(char))))
+		return (NULL);
 	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	j = 0;
+	while (s1[i])
+		joined_str[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		joined_str[j++] = s2[i++];
+	joined_str[j] = '\0';
+	return (joined_str);
 }

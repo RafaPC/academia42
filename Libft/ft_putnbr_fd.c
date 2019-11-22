@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 16:55:10 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/19 15:44:34 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/10 18:24:48 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/22 16:02:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*joined_str;
-	int		i;
-	int		j;
+#include "libft.h"
 
-	if (!s1 || !s2)
-		return (NULL);
-	joined_str = (char*)malloc((ft_strlen(s1) + ft_strlen(s2) - 1)
-	* sizeof(char));
-	i = 0;
-	j = 0;
-	while (s1[i])
-		joined_str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		joined_str[j++] = s2[i++];
-	joined_str[j] = '\0';
-	return (joined_str);
+void	ft_putnbr_fd(int n, int fd)
+{
+	long int	n_copy;
+
+	n_copy = n;
+	if (n_copy < 0)
+	{
+		n_copy = -n_copy;
+		ft_putchar_fd('-', fd);
+	}
+	if (n_copy > 9)
+	{
+		ft_putnbr_fd(n_copy / 10, fd);
+		ft_putchar_fd(n_copy % 10 + 48, fd);
+	}
+	else
+		ft_putchar_fd(n_copy + 48, fd);
 }
