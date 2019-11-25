@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:19:06 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/22 13:25:15 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/25 17:57:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (start >= (unsigned int)ft_strlen(s) || len == 0)
 		return (ft_strdup(""));
 	if (!(string = (char*)malloc((real_len + 1) * sizeof(char))))
-		return (0);
+		return (NULL);
 	while (j < real_len)
 		string[j++] = s[i++];
 	string[j] = '\0';

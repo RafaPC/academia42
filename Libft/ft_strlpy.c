@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strlpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 13:36:50 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:56:19 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/25 17:21:58 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/25 18:22:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(char *str)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	int			i;
-	int			sign;
-	long int	number;
+	char			*source;
+	unsigned int	i;
 
 	i = 0;
-	sign = 1;
-	number = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	while (str[i] == '+' || str[i] == '-')
+	source = (char*)src;
+	if (dstsize == 0)
+		return (ft_strlen(source));
+	if (!dst || !src)
+		return (0);
+	while (i < dstsize - 1 && source[i])
 	{
-		sign *= (str[i] == '-') ? -1 : 1;
+		dst[i] = source[i];
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		if (number == 0)
-			number = str[i] - 48;
-		else
-			number = number * 10 + str[i] - 48;
-		i++;
-	}
-	return (number * sign);
+	dst[i] = '\0';
+	return (ft_strlen(source));
 }

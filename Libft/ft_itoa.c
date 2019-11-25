@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 12:24:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/22 13:03:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/25 15:38:41 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char			*ft_itoa(int n)
 	digits = get_digits(n);
 	n_copy = n;
 	index = digits - 1;
-	string = (char*)malloc((digits + 1) * sizeof(char));
+	if (!(string = (char*)malloc((digits + 1) * sizeof(char))))
+		return (NULL);
 	if (n < 0)
 	{
 		string[0] = '-';

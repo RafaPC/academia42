@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 09:13:05 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/22 17:14:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/25 16:07:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,5 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 		dest[i] = source[i];
 		return (&dst[i + 1]);
 	}
-	dest[i] = '\0';
 	return (NULL);
 }

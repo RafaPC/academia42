@@ -9,33 +9,34 @@
 /*   Updated: 2019/11/05 16:53:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-char	*ft_strnstr(const char *haystack, const char *needle)
+
+#include "libft.h"
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	//TODO: en realidad es el strstr, así que habría que añadirle
 	//la variable de longitud pero ya tiene 25 líneass :D
-	int i;
-	int j;
-	int k;
+	unsigned int	i;
+	int				j;
+	int				k;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	if (!needle[i])
 		return ((char*)haystack);
-	while (haystack[i])
+	while (haystack[i] && i< len)
 	{
-		if (haystack[i] == needle[0])
+		while(haystack[i + j] == needle[k] && ((i +j) < len))
 		{
-			j = i + 1;
-			k = 1;
-			while (haystack[j] == needle[k])
-			{
-				j++;
-				k++;
-				if (!needle[k])
-					return ((char*)&haystack[i]);
-			}
+			j++;
+			k++;
+			if(!needle[k])
+				return ((char*)&haystack[i]);
 		}
+		k = 0;
+		j = 0;
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
