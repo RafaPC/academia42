@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static void		fill_nbr(char *string, unsigned int index, int number)
+static void		fill_nbr(char *string, unsigned int index, long int number)
 {
 	if (number > 9)
 	{
@@ -53,9 +53,9 @@ char			*ft_itoa(int n)
 	if (n < 0)
 	{
 		string[0] = '-';
-		n = -n;
+		n_copy = -n;
 	}
-	fill_nbr(string, index, n);
+	fill_nbr(string, index, n_copy);
 	string[digits] = '\0';
 	return (string);
 }

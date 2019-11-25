@@ -14,15 +14,14 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	t_list	*lst_elem;
 	t_list	*last_elem;
 
-	lst_elem = lst->next;
 	last_elem = lst;
-	while (lst_elem)
+	lst = lst->next;
+	while (lst)
 	{
-		last_elem = lst_elem;
-		lst_elem = lst_elem->next;
+		last_elem = lst;
+		lst = lst->next;
 	}
 	return (last_elem);
 }

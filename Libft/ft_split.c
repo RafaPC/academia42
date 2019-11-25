@@ -79,13 +79,13 @@ char			**ft_split(char const *s, char c)
 	return (phrase);
 }
 
-int				main(int argc, char const *argv[])
-{	
-	argc = 0;
-	char **frase = ft_split(argv[1], argv[2][0]);
-	for(int i = 0; frase[i]; i++)
-	{
-		printf("%s\n", frase[i]);
-	}
-	return (0);
-}
+// int				main(int argc, char const *argv[])
+// {	
+// 	argc = 0;
+// 	char **frase = ft_split(argv[1], argv[2][0]);
+// 	for(int i = 0; frase[i]; i++)
+// 	{
+// 		printf("%s\n", frase[i]);
+// 	}
+// 	return (0);
+// }
