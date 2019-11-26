@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:15:03 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:41:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/26 17:55:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ unsigned int	get_word_count(char *string, char delimiter)
 
 	i = 0;
 	word_count = 0;
+	if (i == 0 && string[0] != delimiter)
+		word_count++;
 	while (string[i])
 	{
-		if (string[i] != delimiter)
+		if (string[i] == delimiter)
 		{
-			if (string[i + 1] == delimiter || !string[i + 1])
+			if (string[i + 1] != delimiter && string[i + 1])
 				word_count++;
 		}
 		i++;
@@ -70,9 +72,9 @@ char			**ft_split(char const *s, char c)
 	{
 		go_next_word((char*)s, &index, c);
 		word_size = word_length((char*)s, index, c);
-		//word = (char*)malloc((word_size + 1) * sizeof(char));
 		if (!(word = ft_substr(s, index, word_size)))
 			return (NULL);
+		index += word_size;
 		phrase[word_index++] = word;
 	}
 	phrase[word_index] = NULL;

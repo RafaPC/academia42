@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:58:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:34:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/26 11:26:41 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	new_string[i] = '\0';
 	return (new_string);
 }
-
-// int		main(int argc, char const *argv[])
-// {
-// 	printf("%d\n", get_limit(argv[1], argv[2], 1));
-// 	printf("%s", ft_strtrim(argv[1], argv[2]));
-// 	return (0);
-// }

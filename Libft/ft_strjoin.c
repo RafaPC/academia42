@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 16:55:10 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/22 16:43:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/26 18:04:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		j;
 
 	if (!s1 || !s2)
-		return (NULL);
-	if (!(joined_str = (char*)malloc((ft_strlen(s1) + ft_strlen(s2) - 1)
+		return (!s1) ? (char*)s2 : (char*)s1;
+	if (!(joined_str = (char*)malloc((ft_strlen(s1) + ft_strlen(s2) + 1)
 	* sizeof(char))))
 		return (NULL);
 	i = 0;
