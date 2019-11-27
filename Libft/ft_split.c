@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:15:03 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/27 19:10:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/27 22:44:06 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ unsigned int	get_word_count(char *string, char delimiter)
 
 	i = 0;
 	word_count = 0;
+	if(ft_strlen(string) == 0)
+		return (0);
 	if (i == 0 && string[0] != delimiter)
 		word_count++;
 	while (string[i])
@@ -67,18 +69,10 @@ char			**ft_split(char const *s, char c)
 	//checkear que el get_word_counts() me dice que hay 1 palabra aunque el string esté vacío
 	index = 0;
 	word_index = 0;
-	if (ft_strlen((char*)s) == 0)
-	{
-		if (!(phrase = (char**)malloc(sizeof(char*) * 2)))
-			return (NULL);
-		phrase[0] = NULL;
-		phrase[1] = NULL;
-		return (phrase);
-	}
 	if (!s)
 		return (NULL);
 	if (!(phrase = (char**)malloc((get_word_count((char*)s, c) + 1)
-		* sizeof(char**))))
+		* sizeof(char*))))
 		return (NULL);
 	while (word_index < get_word_count((char*)s, c))
 	{
