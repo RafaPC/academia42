@@ -6,9 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 11:54:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/22 17:08:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/27 15:56:10 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int		ft_checkchar(char c, char *set)
 {
@@ -18,8 +20,8 @@ int		ft_checkchar(char c, char *set)
 	while (set[i])
 	{
 		if (set[i] == c)
-			return (1);
+			return (TRUE);
 		i++;
 	}
-	return (0);
+	return (FALSE);
 }

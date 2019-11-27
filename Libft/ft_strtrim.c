@@ -6,14 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:58:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 11:26:41 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/27 17:39:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "libft.h"
 
-int		get_limit(char const *string, char const *set, int flag)
+static int		get_limit(char const *string, char const *set, int flag)
 {
 	int	position;
 	int	sum;
@@ -34,15 +33,19 @@ int		get_limit(char const *string, char const *set, int flag)
 	return (position);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char			*ft_strtrim(char const *s1, char const *set)
 {
 	unsigned int	start;
 	unsigned int	end;
 	unsigned int	i;
 	char			*new_string;
 
+	if (!s1 || !set)
+		return (NULL);
 	start = get_limit(s1, set, 1);
 	end = get_limit(s1, set, -1) + 1;
+	if (end == 0)
+		return (ft_strdup(""));
 	if (!(new_string = (char*)malloc(((end - start) + 1) * sizeof(char))))
 		return (NULL);
 	i = 0;

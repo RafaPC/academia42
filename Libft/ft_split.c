@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:15:03 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 17:55:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/27 19:10:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,20 @@ char			**ft_split(char const *s, char c)
 	unsigned int	word_size;
 	unsigned int	word_index;
 
+	//TODO: si s está vacío tengo que devolver un array con dos NULLS
+	//checkear que el get_word_counts() me dice que hay 1 palabra aunque el string esté vacío
 	index = 0;
 	word_index = 0;
+	if (ft_strlen((char*)s) == 0)
+	{
+		if (!(phrase = (char**)malloc(sizeof(char*) * 2)))
+			return (NULL);
+		phrase[0] = NULL;
+		phrase[1] = NULL;
+		return (phrase);
+	}
+	if (!s)
+		return (NULL);
 	if (!(phrase = (char**)malloc((get_word_count((char*)s, c) + 1)
 		* sizeof(char**))))
 		return (NULL);
@@ -74,20 +86,10 @@ char			**ft_split(char const *s, char c)
 		word_size = word_length((char*)s, index, c);
 		if (!(word = ft_substr(s, index, word_size)))
 			return (NULL);
+		word = ft_substr(s, index, word_size);
 		index += word_size;
 		phrase[word_index++] = word;
 	}
 	phrase[word_index] = NULL;
 	return (phrase);
 }
-
-// int				main(int argc, char const *argv[])
-// {	
-// 	argc = 0;
-// 	char **frase = ft_split(argv[1], argv[2][0]);
-// 	for(int i = 0; frase[i]; i++)
-// 	{
-// 		printf("%s\n", frase[i]);
-// 	}
-// 	return (0);
-// }
