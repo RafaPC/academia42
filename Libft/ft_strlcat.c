@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:22:44 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/28 13:06:19 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/28 11:27:23 by rprieto-          #+#    #+#             */
+/*   Updated: 2019/11/28 17:03:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putendl_fd(char *s, int fd)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	if (s)
+	size_t			i;
+	size_t			len;
+
+	i = 0;
+	len = ft_strlen(src);
+	if (!dstsize)
+		return (len);
+	while (*dst && dstsize)
 	{
-		write(fd, s, ft_strlen(s));
-		ft_putchar_fd('\n', fd);
+		dst++;
+		i++;
+		dstsize--;
 	}
+	while (*src && dstsize > 1)
+	{
+		*dst++ = *src++;
+		dstsize--;
+	}
+	if (dstsize != 0)
+		*dst = '\0';
+	return (len + i);
 }

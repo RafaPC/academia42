@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 12:24:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 11:21:28 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/28 11:55:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void		fill_nbr(char *string, unsigned int index, long int number)
 {
-	if (number > 9)
+	if (number >= 10)
 	{
 		fill_nbr(string, index - 1, number / 10);
 		string[index] = (number % 10) + 48;
@@ -27,7 +27,7 @@ unsigned int	get_digits(int n)
 {
 	unsigned int	digits;
 
-	digits = (n <= 0) ? 1 : 0;
+	digits = (n < 0) ? 1 : 0;
 	while (n != 0)
 	{
 		n /= 10;

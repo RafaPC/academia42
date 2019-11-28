@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:42:43 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 12:28:57 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/28 17:11:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ int					ft_tolower(int c);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char				*ft_strnstr(const char *haystack, const char *needle, size_t len);
+size_t				ft_strlcpy(char *dst, char const *src, size_t dstsize);
+size_t				ft_strlcat(char *dst, char const *src, size_t dstsize);
+char				*ft_strnstr(char const *haystack, const char *needle,
+size_t len);
 int					ft_atoi(char *str);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
@@ -56,7 +58,10 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
-void				fd_putnbr_fd(int n, int fd);
+void				ft_putnbr_fd(int n, int fd);
+/*
+** List management functions
+*/
 t_list				*ft_lstnew(void const *content);
 void				ft_lstadd_front(t_list **alst, t_list *new);
 int					ft_lstsize(t_list *lst);

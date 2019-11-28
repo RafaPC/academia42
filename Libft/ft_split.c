@@ -6,12 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:15:03 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/27 22:44:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/11/28 11:08:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 unsigned int	get_word_count(char *string, char delimiter)
 {
@@ -20,7 +19,7 @@ unsigned int	get_word_count(char *string, char delimiter)
 
 	i = 0;
 	word_count = 0;
-	if(ft_strlen(string) == 0)
+	if (ft_strlen(string) == 0)
 		return (0);
 	if (i == 0 && string[0] != delimiter)
 		word_count++;
@@ -65,8 +64,6 @@ char			**ft_split(char const *s, char c)
 	unsigned int	word_size;
 	unsigned int	word_index;
 
-	//TODO: si s está vacío tengo que devolver un array con dos NULLS
-	//checkear que el get_word_counts() me dice que hay 1 palabra aunque el string esté vacío
 	index = 0;
 	word_index = 0;
 	if (!s)
