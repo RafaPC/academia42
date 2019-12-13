@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 11:45:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/12/12 17:48:22 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/12/13 16:29:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ void	static cosa(int fd, char *buffer[BUFFER_SIZE], char **line)
 	if((index = ft_index_of(buffer[fd], '\n')) != -1)
 	{
 		free(*line);
-		*line = (char*)malloc((index + 1) * sizeof(char));
+		*line = (char*)malloc((index + 2) * sizeof(char));
 		ft_memcpy(*line, buffer[fd], index + 1);
+		(*line)[index + 1] = '\0';
 		aux = buffer[fd];
 		len = ft_strlen(aux) - index;
 		buffer[fd] = (char*)malloc(len * sizeof(char));
 		ft_memcpy(buffer[fd], &aux[index + 1], len);
 		free(aux);
 	}
+	else
+		buffer[fd] = NULL;
 }
 
 int		ft_get_next_line(int fd, char **line)
@@ -48,6 +51,8 @@ int		ft_get_next_line(int fd, char **line)
 		pointer = malloc(BUFFER_SIZE);
 		if ((bytes_readed = read(fd, pointer, BUFFER_SIZE)) == -1)
 			return (-1);
+		if (bytes_readed == 0)
+			return (0);
 		if ((index = ft_index_of(pointer, '\n')) != -1)
 		{
 			*line = (char*)malloc((index + 1) * sizeof(char));
@@ -63,11 +68,14 @@ int		ft_get_next_line(int fd, char **line)
 int		main(void)
 {
 	char	**line;
-
+	int i = 1;
 	int fd = open("/Users/rprieto-/Documents/academia42/get_next_line/test.txt", O_RDONLY);
 	while (ft_get_next_line(fd, line) == 1)
-		printf("%s", *line);
-	printf("%s", *line);
+	{
+		printf("%d-%s", i, *line);
+		i++;
+	}
+	//printf("%s", *line);
 	close(fd);
 	return (0);
 }
