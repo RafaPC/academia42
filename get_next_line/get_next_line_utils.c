@@ -5,82 +5,41 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/11 15:45:48 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/12/18 12:16:57 by rprieto-         ###   ########.fr       */
+/*   Created: 2020/01/29 15:16:07 by rprieto-          #+#    #+#             */
+/*   Updated: 2020/01/29 15:16:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
-{
-	int		i;
-	char	*string;
-
-	i = 0;
-	string = (char*)s;
-	while (string[i])
-	{
-		if (string[i] == c)
-			return (&string[i]);
-		i++;
-	}
-	return (c == '\0') ? (&string[i]) : NULL;
-}
-
 char	*ft_strdup(const char *s1)
 {
-	char *string;
-	char *new_string;
-
-	string = (char*)s1;
-	if (!(new_string = (char*)malloc((ft_strlen(string) + 1) * sizeof(char))))
-		return (NULL);
-	else
-		return (ft_memcpy(new_string, string, ft_strlen(string) + 1));
-}
-
-int		ft_index_of(char *string, char c)
-{
-	int index;
-
-	index = 0;
-	while (string[index])
-	{
-		if (string[index] == c)
-			return (index);
-		index++;
-	}
-	return (-1);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	unsigned char	*dest;
-	unsigned char	*source;
-	unsigned int	i;
+	char		*dst;
+	size_t		i;
 
 	i = 0;
-	source = (unsigned char *)src;
-	dest = (unsigned char *)dst;
-	if (dst == NULL && src == NULL)
+	dst = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
+	if (dst == NULL)
 		return (NULL);
-	while (i < n)
+	while (s1[i] != '\0')
 	{
-		dest[i] = source[i];
+		dst[i] = s1[i];
 		i++;
 	}
+	dst[i] = '\0';
 	return (dst);
 }
 
-unsigned int	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	unsigned int	len;
+	int i;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	i = 0;
+	while (s[i] != 0)
+	{
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -103,4 +62,62 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		joined_str[j++] = s2[i++];
 	joined_str[j] = '\0';
 	return (joined_str);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	char	*pointer;
+	int		s_len;
+
+	s_len = ft_strlen(s);
+	pointer = (char *)s + s_len - 1;
+	if (c == '\0')
+	{
+		pointer++;
+		return (pointer);
+	}
+	while (s_len != 0)
+	{
+		if (*pointer == c)
+		{
+			return (pointer);
+		}
+		s_len--;
+		pointer--;
+	}
+	return (0);
+}
+
+int     ft_get_index_of(char *string, char c)
+{
+    int index;
+    index = 0;
+    while (string[index])
+    {
+        if (string[index] == c)
+            return (index);
+        index++;
+    }
+    return (-1);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char			*dest;
+	size_t			i;
+
+	if (!(dest = (char *)malloc(((sizeof(char)) * (len + 1)))))
+		return (NULL);
+	if (!s)
+		return (NULL);
+	if ((start >= (ft_strlen(s))))
+		return (ft_strdup(""));
+	i = 0;
+	while (i < len)
+	{
+		dest[i] = s[start + i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
