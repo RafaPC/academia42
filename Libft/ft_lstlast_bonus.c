@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 11:54:00 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 15:10:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2019/12/03 19:01:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	if (!lst)
+	if (lst == 0)
 		return (lst);
-	while (lst->next)
-		lst = lst->next;
+	else
+		while (lst->next != 0)
+			lst = lst->next;
 	return (lst);
 }
