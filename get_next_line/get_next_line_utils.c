@@ -6,13 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:07 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/01/29 15:16:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/06 11:55:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(char *s1)
 {
 	char		*dst;
 	size_t		i;
@@ -30,7 +30,7 @@ char	*ft_strdup(const char *s1)
 	return (dst);
 }
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(char *s)
 {
 	int i;
 
@@ -42,7 +42,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*joined_str;
 	int		i;
@@ -64,7 +64,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (joined_str);
 }
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(char *s, int c)
 {
 	char	*pointer;
 	int		s_len;
@@ -101,7 +101,7 @@ int     ft_get_index_of(char *string, char c)
     return (-1);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char			*dest;
 	size_t			i;
