@@ -28,6 +28,42 @@
             "options": {
                 "cwd": "/usr/bin"
             }
+		},
+		{
+            "type": "shell",
+            "label": "compile test 42tester",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+				//"${file}",
+				"${fileDirname}/42TESTERS-GNL/srcs/gnl_tester.c",
+				"${fileDirname}/get_next_line.c",
+				"${fileDirname}/get_next_line_utils.c",
+				"-I ../",
+                "-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
+		},
+		{
+            "type": "shell",
+            "label": "compile test 42tester_bonus",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+				//"${file}",
+				"${fileDirname}/42TESTERS-GNL/srcs/gnl_tester_bonus.c",
+				"${fileDirname}/get_next_line.c",
+				"${fileDirname}/get_next_line_utils.c",
+				"-I ../",
+                "-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
         }
     ],
     "version": "2.0.0"
