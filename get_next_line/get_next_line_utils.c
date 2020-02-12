@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:07 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/06 11:55:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/11 14:52:26 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,30 +62,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		joined_str[j++] = s2[i++];
 	joined_str[j] = '\0';
 	return (joined_str);
-}
-
-char	*ft_strrchr(char *s, int c)
-{
-	char	*pointer;
-	int		s_len;
-
-	s_len = ft_strlen(s);
-	pointer = (char *)s + s_len - 1;
-	if (c == '\0')
-	{
-		pointer++;
-		return (pointer);
-	}
-	while (s_len != 0)
-	{
-		if (*pointer == c)
-		{
-			return (pointer);
-		}
-		s_len--;
-		pointer--;
-	}
-	return (0);
 }
 
 int     ft_get_index_of(char *string, char c)
