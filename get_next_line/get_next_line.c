@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:26:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/12 12:32:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:41:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,61 @@ int		another_function(t_file *file_buffer, int *bytes_read, char *buffer)
 	{
 		*bytes_read = read(file_buffer->fd, buffer, BUFFER_SIZE);
 		if (*bytes_read == -1)
+		{
+			free(buffer);
 			return (-1);
+		}
 		else if (*bytes_read)
 		{
 			buffer[*bytes_read] = '\0';
 			aux = file_buffer->buffer;
-			file_buffer->buffer = ft_strjoin(file_buffer->buffer, buffer);
-			free(aux);
+			if (!(file_buffer->buffer = ft_strjoin(file_buffer->buffer, buffer)))
+			{
+				free(aux);
+				return (-1);
+			}
 		}
 	}
+	// free(buffer);
 	return (1);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	char			*buffer;
+	char			*bufferTest;
 	static t_file	*files[1];
 	int				bytes_read;
 	char			*aux;
 	t_file			*file_buffer;
 
 	if (fd == -1 || line == NULL || BUFFER_SIZE <= 0 ||
-	!(buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+	!(bufferTest = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
-	file_buffer = get_file_buffer(fd, files);
+	if (!(file_buffer = get_file_buffer(fd, files)))
+		return (-1);
 	bytes_read = 1;
-	if (another_function(file_buffer, &bytes_read, buffer) == -1)
+	if (another_function(file_buffer, &bytes_read, bufferTest) == -1)
 		return (-1);
+	
+	//Esto no tiene sentido
+	//Cuando me da el error de que hay memoria sin liberar
+	//si pongo un segundo free(bufferTest) deja de tener leaks
+	//Pero al poner el segundo free, en los casos donde antes no daba fuga
+	//ahora da error por liberar memoria no reservada
+	free(bufferTest);
+	
+	//Según valgrind, se pierde memoria reservada en ft_substr
 	if (bytes_read == 0)
+	{
 		return (get_next_line_utils(file_buffer, line, files));
+	}
 	bytes_read = ft_get_index_of(file_buffer->buffer, '\n');
 	*line = ft_substr(file_buffer->buffer, 0, bytes_read);
 	aux = file_buffer->buffer;
-	file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1,
-	ft_strlen(file_buffer->buffer) - bytes_read);
+	file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1, ft_strlen(file_buffer->buffer) - bytes_read);
+
+	free(bufferTest);
 	free(aux);
-	free(buffer);
 	return (1);
 }
 
@@ -63,12 +82,14 @@ int		get_next_line_utils(t_file *file_buffer, char **line, t_file *files[1])
 {
 	if (ft_strlen(file_buffer->buffer))
 	{
-		*line = ft_substr(file_buffer->buffer, 0,
-		ft_strlen(file_buffer->buffer));
+		*line = ft_substr(file_buffer->buffer, 0, ft_strlen(file_buffer->buffer));
 		delete_file_struct(file_buffer->fd, files);
 	}
 	else
+	{
 		*line = ft_strdup("");
+		delete_file_struct(file_buffer->fd, files);
+	}
 	return (0);
 }
 
@@ -78,10 +99,12 @@ t_file	*get_file_buffer(int fd, t_file **files)
 
 	if (*files == NULL)
 	{
-		*files = (t_file *)malloc(sizeof(t_file));
+		if (!(*files = (t_file *)malloc(sizeof(t_file))))
+			return (NULL);
 		(*files)->next = NULL;
 		(*files)->fd = fd;
-		(*files)->buffer = ft_strdup("");
+		if(!((*files)->buffer = ft_strdup("")))
+			return (NULL);
 		return (*files);
 	}
 	aux = files[0];
@@ -91,12 +114,14 @@ t_file	*get_file_buffer(int fd, t_file **files)
 		return (aux);
 	else
 	{
-		aux->next = malloc(sizeof(t_file));
+		if (!(aux->next = (t_file *)malloc(sizeof(t_file))))
+			return (NULL);
 		aux->next->fd = fd;
 		aux->next->next = NULL;
-		aux->next->buffer = ft_strdup("");
+		if (!(aux->next->buffer = ft_strdup("")))
+			return (NULL);
 	}
-	return (aux);
+	return (aux->next);
 }
 
 void	delete_file_struct(int fd, t_file *files[1])
@@ -114,29 +139,29 @@ void	delete_file_struct(int fd, t_file *files[1])
 	}
 	iter = files[0];
 	while (iter->next->fd != fd)
-	{
 		iter = iter->next;
-	}
 	aux = iter->next;
 	free(iter->next->buffer);
 	iter->next = aux->next;
 	free(aux);
 }
 
-// int main(void)
-// {
-// 	char *line;
-// 	line = 0;
-// 	int fd;
+int main(void)
+{
+	char *line;
+	line = 0;
+	int fd;
 
-// 	fd = open("/Users/rprieto-/Documents/academia42/get_next_line/texto.txt", O_RDONLY);
-// 	while(get_next_line(fd, &line))
-// 	{
-// 		printf("%s\n", line);
-// 		free(line);
-// 	}
-// 	printf("%s\n", line);
-// 	close(fd);
-// 	// int x = getchar();
-// 	return 0;
-// }
+	fd = open("/Users/rprieto-/Documents/academia42/get_next_line/texto2.txt", O_RDONLY);
+	while(get_next_line(fd, &line))
+	{
+		printf("%s\n", line);
+		free(line);
+	}
+	printf("%s\n", line);
+	free(line);
+	close(fd);
+	// int x = getchar();
+	// int y = sizeof(t_file);
+	return 0;
+}
