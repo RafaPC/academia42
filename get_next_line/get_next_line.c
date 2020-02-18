@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:26:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/18 13:05:30 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:20:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ int		get_next_line(int fd, char **line)
 	if (!(file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1, ft_strlen(file_buffer->buffer) - bytes_read)))
 	{
 		free(aux);
+		aux = NULL;
 		return (-1);
 	}
-
 	// free(bufferTest);
 	free(aux);
+	aux = NULL;
 	return (1);
 }
 
@@ -152,22 +153,22 @@ void	delete_file_struct(int fd, t_file *files[1])
 	free(aux);
 }
 
-int main(void)
-{
-	char *line;
-	line = 0;
-	int fd;
+// int main(void)
+// {
+// 	char *line;
+// 	line = 0;
+// 	int fd;
 
-	fd = open("/Users/rprieto-/Documents/academia42/get_next_line/texto2.txt", O_RDONLY);
-	while(get_next_line(fd, &line))
-	{
-		printf("%s\n", line);
-		free(line);
-	}
-	printf("%s\n", line);
-	free(line);
-	close(fd);
-	// int x = getchar();
-	// int y = sizeof(t_file);
-	return 0;
-}
+// 	fd = open("/Users/rprieto-/Documents/academia42/get_next_line/texto2.txt", O_RDONLY);
+// 	while(get_next_line(fd, &line))
+// 	{
+// 		printf("%s\n", line);
+// 		free(line);
+// 	}
+// 	printf("%s\n", line);
+// 	free(line);
+// 	close(fd);
+// 	// int x = getchar();
+// 	// int y = sizeof(t_file);
+// 	return 0;
+// }

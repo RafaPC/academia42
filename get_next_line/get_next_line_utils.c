@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:07 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/11 14:52:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:06:24 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if ((start >= (ft_strlen(s))))
+	{
+		free (dest);
 		return (ft_strdup(""));
+	}
 	i = 0;
 	while (i < len)
 	{
