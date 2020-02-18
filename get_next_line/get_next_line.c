@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 15:26:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/14 17:41:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/18 13:05:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int		another_function(t_file *file_buffer, int *bytes_read, char *buffer)
 				free(aux);
 				return (-1);
 			}
+			free(aux);
 		}
 	}
 	// free(buffer);
@@ -71,9 +72,14 @@ int		get_next_line(int fd, char **line)
 	bytes_read = ft_get_index_of(file_buffer->buffer, '\n');
 	*line = ft_substr(file_buffer->buffer, 0, bytes_read);
 	aux = file_buffer->buffer;
-	file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1, ft_strlen(file_buffer->buffer) - bytes_read);
+	
+	if (!(file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1, ft_strlen(file_buffer->buffer) - bytes_read)))
+	{
+		free(aux);
+		return (-1);
+	}
 
-	free(bufferTest);
+	// free(bufferTest);
 	free(aux);
 	return (1);
 }
