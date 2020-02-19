@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:07 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/18 16:06:24 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:23:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ char	*ft_strdup(char *s1)
 	size_t		i;
 
 	i = 0;
-	dst = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (dst == NULL)
+	if (!(dst = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char))))
 		return (NULL);
 	while (s1[i] != '\0')
 	{
@@ -36,9 +35,7 @@ size_t	ft_strlen(char *s)
 
 	i = 0;
 	while (s[i] != 0)
-	{
 		i++;
-	}
 	return (i);
 }
 
@@ -64,33 +61,31 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (joined_str);
 }
 
-int     ft_get_index_of(char *string, char c)
+int		ft_get_index_of(char *string, char c)
 {
-    int index;
-    index = 0;
-    while (string[index])
-    {
-        if (string[index] == c)
-            return (index);
-        index++;
-    }
-    return (-1);
+	int index;
+
+	index = 0;
+	while (string[index])
+	{
+		if (string[index] == c)
+			return (index);
+		index++;
+	}
+	return (-1);
 }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
-	char			*dest;
-	size_t			i;
+	char	*dest;
+	size_t	i;
 
+	if ((start >= (ft_strlen(s))))
+		return (ft_strdup(""));
 	if (!(dest = (char *)malloc(((sizeof(char)) * (len + 1)))))
 		return (NULL);
 	if (!s)
 		return (NULL);
-	if ((start >= (ft_strlen(s))))
-	{
-		free (dest);
-		return (ft_strdup(""));
-	}
 	i = 0;
 	while (i < len)
 	{
