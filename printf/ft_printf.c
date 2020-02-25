@@ -35,12 +35,26 @@ int     ft_printf(const char *formatString, ...)
 
 void	format(char *formatString, va_list args, int *characterSum)
 {
+	t_modifiers modifiers;
+
     // Si entra aquí se ha encontrado un porcentaje
     while(!isSpecifier(*formatString))
     {
    		// Así que ahora habría que ir recorriendo para adelante guardándose
 		// en un struct los flags que se encuentra
-        formatString++;
+
+        if (*formatString == '-')
+			modifiers.left_justified = TRUE;
+		else if (*formatString == '0')
+			modifiers.zero_padded = TRUE;
+		else if (*formatString == '*')
+			modifiers.width = va_arg(args, int);
+		else if (*(formatString++) == '.')
+		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
+		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
+			modifiers.precision = (*formatString == '*')
+			? va_arg(args, int) : ft_atoi(formatString);
+		formatString++;
     }
     if (*formatString == 'c')
     	// Aquí le pasaría el struct como primer argumento
@@ -58,12 +72,18 @@ void	format(char *formatString, va_list args, int *characterSum)
 	else if (*formatString == 'X')
 	{
 		write(1, "0x", 2);
-		(*characterSum) += 2;
+		(*characterSum) += (modifiers.sign == 1) ? 2 : 0; 
 		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
 	}
 	else if (*formatString == 'f')
-	{}
+	{
 		// printFloat();
+	}
+	else if (*formatString == 'p')
+	{
+		(*characterSum) += (modifiers.sign == 1) ? 2 : 0;
+		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
+	}
 }
 
 void    printChar(char c, int *characterSum)

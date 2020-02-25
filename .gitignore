@@ -1,4 +1,5 @@
 *.dSYM
 a.out
 *.o
-a.exe
+*.exe
+main.c

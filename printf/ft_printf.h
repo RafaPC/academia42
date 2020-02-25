@@ -19,6 +19,15 @@
 #define FALSE 0
 #define UPPER_CASE 1
 #define LOWER_CASE 2
+
+typedef	struct	s_modifiers
+{
+	char			left_justified;
+	char			zero_padded;
+	short int		width;
+	short int		precision;
+}				t_modifiers;
+
 int     ft_printf(const char *formatString, ...);
 void	format(char *formatString, va_list args, int *characterSum);
 void    printChar(char c, int *characterSum);
