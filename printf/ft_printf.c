@@ -50,6 +50,12 @@ void	format(char *formatString, va_list args, int *characterSum)
 		else if (*formatString == '*')
 			modifiers.width = va_arg(args, int);
 		else if (*(formatString++) == '.')
+		{
+			if (*formatString == '*')
+				modifiers.precision = va_arg(args, int);
+			else
+				modifiers.precision = (ft_atoi(formatString) < 0) ? 0 : ft_atoi(formatString);
+		}
 		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
 		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
 			modifiers.precision = (*formatString == '*')
