@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/20 13:27:08 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/20 13:27:08 by rprieto-         ###   ########.fr       */
+/*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
+/*   Updated: 2020/02/26 16:03:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int isSpecifier(char c)
+int	is_specifier(char c)
 {
-    return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
-    c == 'u' || c == 'x' || c == 'X' || c == '%') ? TRUE : FALSE;
+	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
+	c == 'u' || c == 'x' || c == 'X' || c == '%') ? TRUE : FALSE;
 }
