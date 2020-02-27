@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_h
+#ifndef FT_PRINTF_H
 #define FT_PRINTF_H
 #include <stdarg.h>
 #include <unistd.h>
@@ -34,5 +34,7 @@ void    printChar(char c, int *characterSum);
 void	printString(char *string, int *characterSum);
 void	printNumber(int n, int *characterSum);
 void	printHex(long int n, int *characterSum, int letterType);
-int		isSpecifier(char c);
+int		is_specifier(char c);
+int		ft_atoi(const char *str);
+int		ft_isspace(int c);
 #endif

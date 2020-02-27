@@ -37,29 +37,30 @@ void	format(char *formatString, va_list args, int *characterSum)
 {
 	t_modifiers modifiers;
 
-    // Si entra aquí se ha encontrado un porcentaje
-    while(!isSpecifier(*formatString))
+    // Si entra aquí se ha encontrado '%'
+    while(!is_specifier(*formatString))
     {
-   		// Así que ahora habría que ir recorriendo para adelante guardándose
-		// en un struct los flags que se encuentra
-
         if (*formatString == '-')
 			modifiers.left_justified = TRUE;
 		else if (*formatString == '0')
 			modifiers.zero_padded = TRUE;
-		else if (*formatString == '*')
-			modifiers.width = va_arg(args, int);
+		else if(ft_atoi(formatString) != 0)
+		{
+			modifiers.width = ft_atoi(formatString);
+			while (!is_specifier(*(formatString + 1)))
+				formatString++;
+		}
+		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
+		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
 		else if (*(formatString++) == '.')
 		{
 			if (*formatString == '*')
 				modifiers.precision = va_arg(args, int);
 			else
 				modifiers.precision = (ft_atoi(formatString) < 0) ? 0 : ft_atoi(formatString);
+			while (!is_specifier(*(formatString + 1)))
+				formatString++;
 		}
-		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
-		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
-			modifiers.precision = (*formatString == '*')
-			? va_arg(args, int) : ft_atoi(formatString);
 		formatString++;
     }
     if (*formatString == 'c')
@@ -78,7 +79,7 @@ void	format(char *formatString, va_list args, int *characterSum)
 	else if (*formatString == 'X')
 	{
 		write(1, "0x", 2);
-		(*characterSum) += (modifiers.sign == 1) ? 2 : 0; 
+		// (*characterSum) += (modifiers.sign == 1) ? 2 : 0; 
 		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
 	}
 	else if (*formatString == 'f')
@@ -87,7 +88,7 @@ void	format(char *formatString, va_list args, int *characterSum)
 	}
 	else if (*formatString == 'p')
 	{
-		(*characterSum) += (modifiers.sign == 1) ? 2 : 0;
+		// (*characterSum) += (modifiers.sign == 1) ? 2 : 0;
 		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
 	}
 }
@@ -156,6 +157,6 @@ void	printHex(long int n, int *characterSum, int letterType)
 int main(void)
 {
 	int number = 23;
-    printf("\nNº de carácteres: %d\n", ft_printf("%d %s\n%d %s\nDirección hexadecimal: %x", number,"cosas", 8, "buenas", &number));
+    printf("\nNº de carácteres: %d\n", ft_printf("%-0d %s\n%d %s\nDirección hexadecimal: %x", number,"cosas", 8, "buenas", &number));
     return (0);
 }
