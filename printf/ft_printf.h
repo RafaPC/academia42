@@ -20,6 +20,7 @@
 #define UPPER_CASE 1
 #define LOWER_CASE 2
 
+
 typedef	struct	s_modifiers
 {
 	char			left_justified;
@@ -28,13 +29,18 @@ typedef	struct	s_modifiers
 	short int		precision;
 }				t_modifiers;
 
-int     ft_printf(const char *formatString, ...);
-void	format(char *formatString, va_list args, int *characterSum);
-void    printChar(char c, int *characterSum);
-void	printString(char *string, int *characterSum);
-void	printNumber(int n, int *characterSum);
-void	printHex(long int n, int *characterSum, int letterType);
-int		is_specifier(char c);
-int		ft_atoi(const char *str);
-int		ft_isspace(int c);
+int    		ft_printf(const char *formatString, ...);
+char		*format(char *formatString, va_list args, int *characterSum);
+void		printChar(char c, int *characterSum);
+void		printString(char *string, int *characterSum);
+void		handleNumber(int n, t_modifiers modifiers, int *characterSum);
+void		printNumber(int n, int *characterSum);
+void		printHex(long int n, int *characterSum, int letterType);
+int			is_specifier(char c);
+int			ft_atoi(const char *str);
+int			ft_isspace(int c);
+void		print_justification(char c, int times);
+unsigned int	get_digits(int n);
+
+t_modifiers ft_initialize_struct(void);
 #endif

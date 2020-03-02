@@ -22,7 +22,7 @@ int     ft_printf(const char *formatString, ...)
     while(*formatString)
     {
         if(*formatString == '%')
-            format((char *)++formatString, args, &characterSum);
+            formatString = format((char *)++formatString, args, &characterSum);
         else
         {
             write(1, formatString, 1);
@@ -33,12 +33,13 @@ int     ft_printf(const char *formatString, ...)
     return (characterSum);
 }
 
-void	format(char *formatString, va_list args, int *characterSum)
+char	*format(char *formatString, va_list args, int *characterSum)
 {
 	t_modifiers modifiers;
 
+	modifiers = ft_initialize_struct();
     // Si entra aquí se ha encontrado '%'
-    while(!is_specifier(*formatString))
+    while (!is_specifier(*formatString))
     {
         if (*formatString == '-')
 			modifiers.left_justified = TRUE;
@@ -63,13 +64,18 @@ void	format(char *formatString, va_list args, int *characterSum)
 		}
 		formatString++;
     }
+
+
+	//PODRÍA CORTAR LA FUNCIÓN POR AQUÍ EN DOS
+
+
     if (*formatString == 'c')
     	// Aquí le pasaría el struct como primer argumento
 		printChar(va_arg(args, int), characterSum);
 	else if (*formatString == 's')
 		printString(va_arg(args, char *), characterSum);
 	else if (*formatString == 'd')
-		printNumber(va_arg(args, int), characterSum);
+		handleNumber(va_arg(args, int), modifiers, characterSum);
 	else if (*formatString == 'x')
 	{
 		write(1, "0x", 2);
@@ -91,6 +97,7 @@ void	format(char *formatString, va_list args, int *characterSum)
 		// (*characterSum) += (modifiers.sign == 1) ? 2 : 0;
 		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
 	}
+	return (formatString);
 }
 
 void    printChar(char c, int *characterSum)
@@ -106,6 +113,29 @@ void	printString(char *string, int *characterSum)
 		write(1, string++, 1);
 		(*characterSum)++;
 	}
+}
+void	handleNumber(int n, t_modifiers modifiers, int *characterSum)
+{
+	char	c;
+	int		justification_width;
+
+	c = (modifiers.zero_padded) ? '0' : ' ';
+	justification_width = modifiers.width - get_digits(n);
+		if (justification_width > 0)
+		{
+			if (modifiers.width > get_digits(n))
+			{
+				*characterSum += justification_width;
+				if (modifiers.left_justified == FALSE)
+					print_justification(c, justification_width);
+				printNumber(n, characterSum);
+				// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+				if (modifiers.left_justified == TRUE)
+					print_justification(' ', justification_width);
+			}
+		}
+		else
+			printNumber(n, characterSum);
 }
 
 void	printNumber(int n, int *characterSum)
@@ -134,7 +164,10 @@ void	printNumber(int n, int *characterSum)
 void	printHex(long int n, int *characterSum, int letterType)
 {
 	long int	n_copy;
-	char		*hexCharacters = "0123456789abcdef";
+	char		*hexCharacters;
+
+	hexCharacters = "0123456789abcdef";
+	
 
 	n_copy = n;
 	// if (n_copy < 0)
@@ -151,12 +184,4 @@ void	printHex(long int n, int *characterSum, int letterType)
 	else
 		write(1, &hexCharacters[n_copy], 1);
 	(*characterSum)++;
-}
-
-
-int main(void)
-{
-	int number = 23;
-    printf("\nNº de carácteres: %d\n", ft_printf("%-0d %s\n%d %s\nDirección hexadecimal: %x", number,"cosas", 8, "buenas", &number));
-    return (0);
 }

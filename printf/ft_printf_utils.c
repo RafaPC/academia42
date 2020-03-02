@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/27 15:36:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:59:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,45 @@ int		ft_atoi(const char *str)
 		i++;
 	}
 	return (number * sign);
+}
+
+/*
+** This function return the number of digits of a given number
+*/
+
+unsigned int	get_digits(int n)
+{
+	unsigned int	digits;
+
+	digits = (n < 0) ? 1 : 0;
+	while (n != 0)
+	{
+		n /= 10;
+		digits++;
+	}
+	return (digits);
+}
+
+void	print_justification(char c, int times)
+{
+	while (times > 0)
+	{
+		write(1, &c, 1);
+		times--;
+	}
+}
+
+/*
+** This function initializes a t_modifier struct with all of its values to zero
+*/
+
+t_modifiers	ft_initialize_struct(void)
+{
+	t_modifiers modifiers;
+
+	modifiers.left_justified = 0;
+	modifiers.zero_padded = 0;
+	modifiers.precision = -1;
+	modifiers.width = -1;
+	return (modifiers);
 }
