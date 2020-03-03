@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/03/02 16:59:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/03/03 17:25:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,24 @@ t_modifiers	ft_initialize_struct(void)
 {
 	t_modifiers modifiers;
 
-	modifiers.left_justified = 0;
-	modifiers.zero_padded = 0;
+	modifiers.left_justified = FALSE;
+	modifiers.zero_padded = FALSE;
 	modifiers.precision = -1;
 	modifiers.width = -1;
 	return (modifiers);
+}
+
+int		ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9') ? TRUE : FALSE;
+}
+
+unsigned int	ft_strlen(const char *s)
+{
+	unsigned int	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }

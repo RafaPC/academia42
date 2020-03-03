@@ -12,43 +12,43 @@
 
 #include "ft_printf.h"
 
-int     ft_printf(const char *formatString, ...)
+int ft_printf(const char *formatString, ...)
 {
-    va_list     args;
-    int         characterSum;
+	va_list	args;
+	int 	characterSum;
 
-    va_start(args, formatString);
-    characterSum = 0;
-    while(*formatString)
-    {
-        if(*formatString == '%')
-            formatString = format((char *)++formatString, args, &characterSum);
-        else
-        {
-            write(1, formatString, 1);
-            characterSum++;
-        }
-        formatString++;
-    }
-    return (characterSum);
+	va_start(args, formatString);
+	characterSum = 0;
+	while (*formatString)
+	{
+		if (*formatString == '%')
+			formatString = format((char *)++formatString, args, &characterSum);
+		else
+		{
+			write(1, formatString, 1);
+			characterSum++;
+		}
+		formatString++;
+	}
+	return (characterSum);
 }
 
-char	*format(char *formatString, va_list args, int *characterSum)
+char *format(char *formatString, va_list args, int *characterSum)
 {
 	t_modifiers modifiers;
 
 	modifiers = ft_initialize_struct();
-    // Si entra aquí se ha encontrado '%'
-    while (!is_specifier(*formatString))
-    {
-        if (*formatString == '-')
+	// Si entra aquí se ha encontrado '%'
+	while (!is_specifier(*formatString))
+	{
+		if (*formatString == '-')
 			modifiers.left_justified = TRUE;
 		else if (*formatString == '0')
 			modifiers.zero_padded = TRUE;
-		else if(ft_atoi(formatString) != 0)
+		else if (ft_atoi(formatString) != 0)
 		{
 			modifiers.width = ft_atoi(formatString);
-			while (!is_specifier(*(formatString + 1)))
+			while (ft_isdigit(*(formatString + 1)))
 				formatString++;
 		}
 		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
@@ -63,85 +63,88 @@ char	*format(char *formatString, va_list args, int *characterSum)
 				formatString++;
 		}
 		formatString++;
-    }
-
-
-	//PODRÍA CORTAR LA FUNCIÓN POR AQUÍ EN DOS
-
-
-    if (*formatString == 'c')
-    	// Aquí le pasaría el struct como primer argumento
-		printChar(va_arg(args, int), characterSum);
-	else if (*formatString == 's')
-		printString(va_arg(args, char *), characterSum);
-	else if (*formatString == 'd')
-		handleNumber(va_arg(args, int), modifiers, characterSum);
-	else if (*formatString == 'x')
-	{
-		write(1, "0x", 2);
-		(*characterSum) += 2;
-		printHex((long int)va_arg(args, void *), characterSum, LOWER_CASE);
 	}
-	else if (*formatString == 'X')
-	{
-		write(1, "0x", 2);
-		// (*characterSum) += (modifiers.sign == 1) ? 2 : 0; 
-		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
-	}
-	else if (*formatString == 'f')
-	{
-		// printFloat();
-	}
-	else if (*formatString == 'p')
-	{
-		// (*characterSum) += (modifiers.sign == 1) ? 2 : 0;
-		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
-	}
+	format2(formatString, modifiers, args, characterSum);
 	return (formatString);
 }
 
-void    printChar(char c, int *characterSum)
+// Buenos dias :D
+//PODRÍA CORTAR LA FUNCIÓN POR AQUÍ EN DOS
+void	format2(char *formatString, t_modifiers modifiers, va_list args, int *characterSum)
 {
-    write(1, &c, 1);
+	if (*formatString == 'c')
+		// Aquí le pasaría el struct como primer argumento
+		printChar(va_arg(args, int), characterSum);
+	else if (*formatString == 's')
+		printString(va_arg(args, char *), modifiers, characterSum);
+	else if (*formatString == 'd')
+		handleNumber(va_arg(args, int), modifiers, characterSum);
+	else if (*formatString == 'x')
+		printHex(va_arg(args, unsigned int), characterSum, LOWER_CASE);
+	else if (*formatString == 'X')
+		printHex(va_arg(args, unsigned int), characterSum, UPPER_CASE);
+	else if (*formatString == 'p')
+	{
+		write(1, "0x", 2);
+		(*characterSum) += 2;
+		printHex((long int)va_arg(args, void *), characterSum, UPPER_CASE);
+	}
+}
+
+void printChar(char c, int *characterSum)
+{
+	write(1, &c, 1);
 	(*characterSum)++;
 }
 
-void	printString(char *string, int *characterSum)
+void printString(char *string, t_modifiers modifiers, int *characterSum)
 {
-	while(*string != '\0')
+	int		i;
+	int		len;
+	char	c;
+
+	len = (modifiers.precision == -1) ? ft_strlen(string) : modifiers.precision;
+	i = 0;
+	c = (modifiers.zero_padded) ? '0' : ' ';
+	if (!modifiers.left_justified && modifiers.width > len)
+		print_justification(c, modifiers.width - len);
+	while (*string != '\0' && i < len)
 	{
 		write(1, string++, 1);
 		(*characterSum)++;
+		i++;
 	}
+	if (modifiers.left_justified && modifiers.width > len && modifiers.width > modifiers.precision)
+		print_justification(c, modifiers.width - modifiers.precision);
+	*characterSum += (len > modifiers.width) ? len : modifiers.width;
 }
-void	handleNumber(int n, t_modifiers modifiers, int *characterSum)
+void handleNumber(int n, t_modifiers modifiers, int *characterSum)
 {
-	char	c;
-	int		justification_width;
+	int justification_width;
 
-	c = (modifiers.zero_padded) ? '0' : ' ';
 	justification_width = modifiers.width - get_digits(n);
-		if (justification_width > 0)
+	if (justification_width > 0)
+	{
+		if (modifiers.width > get_digits(n))
 		{
-			if (modifiers.width > get_digits(n))
-			{
-				*characterSum += justification_width;
-				if (modifiers.left_justified == FALSE)
-					print_justification(c, justification_width);
-				printNumber(n, characterSum);
-				// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
-				if (modifiers.left_justified == TRUE)
-					print_justification(' ', justification_width);
-			}
-		}
-		else
+			*characterSum += justification_width;
+			if (modifiers.left_justified == FALSE)
+				print_justification((modifiers.zero_padded) ? '0' : ' ',
+				justification_width);
 			printNumber(n, characterSum);
+			// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+			if (modifiers.left_justified == TRUE)
+				print_justification(' ', justification_width);
+		}
+	}
+	else
+		printNumber(n, characterSum);
 }
 
-void	printNumber(int n, int *characterSum)
+void printNumber(int n, int *characterSum)
 {
-	long int	n_copy;
-	char		c;
+	long int n_copy;
+	char c;
 
 	n_copy = n;
 	if (n_copy < 0)
@@ -161,14 +164,13 @@ void	printNumber(int n, int *characterSum)
 	(*characterSum)++;
 }
 
-void	printHex(long int n, int *characterSum, int letterType)
+void printHex(long int n, int *characterSum, int letterType)
 {
 	long int	n_copy;
-	char		*hexCharacters;
+	char		*hex_characters;
 
-	hexCharacters = "0123456789abcdef";
-	
-
+	hex_characters = (letterType == LOWER_CASE)
+	? "0123456789abcdef" : "0123456789ABCDEF";
 	n_copy = n;
 	// if (n_copy < 0)
 	// {
@@ -179,9 +181,9 @@ void	printHex(long int n, int *characterSum, int letterType)
 	if (n_copy > 15)
 	{
 		printHex(n_copy / 16, characterSum, letterType);
-		write(1, &hexCharacters[n_copy % 16], 1);
+		write(1, &hex_characters[n_copy % 16], 1);
 	}
 	else
-		write(1, &hexCharacters[n_copy], 1);
+		write(1, &hex_characters[n_copy], 1);
 	(*characterSum)++;
 }

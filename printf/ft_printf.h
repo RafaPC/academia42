@@ -32,7 +32,7 @@ typedef	struct	s_modifiers
 int    		ft_printf(const char *formatString, ...);
 char		*format(char *formatString, va_list args, int *characterSum);
 void		printChar(char c, int *characterSum);
-void		printString(char *string, int *characterSum);
+void		printString(char *string, t_modifiers modifiers, int *characterSum);
 void		handleNumber(int n, t_modifiers modifiers, int *characterSum);
 void		printNumber(int n, int *characterSum);
 void		printHex(long int n, int *characterSum, int letterType);
@@ -41,6 +41,8 @@ int			ft_atoi(const char *str);
 int			ft_isspace(int c);
 void		print_justification(char c, int times);
 unsigned int	get_digits(int n);
-
+int			ft_isdigit(int c);
+void		format2(char *formatString, t_modifiers modifiers, va_list args, int *characterSum);
+unsigned int	ft_strlen(const char *s);
 t_modifiers ft_initialize_struct(void);
 #endif
