@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/03/03 17:25:46 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:27:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_modifiers	ft_initialize_struct(void)
 	modifiers.left_justified = FALSE;
 	modifiers.zero_padded = FALSE;
 	modifiers.precision = -1;
-	modifiers.width = -1;
+	modifiers.width = 0;
 	return (modifiers);
 }
 

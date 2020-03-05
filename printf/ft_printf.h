@@ -32,9 +32,9 @@ typedef	struct	s_modifiers
 int    		ft_printf(const char *formatString, ...);
 char		*format(char *formatString, va_list args, int *characterSum);
 void		printChar(char c, int *characterSum);
-void		printString(char *string, t_modifiers modifiers, int *characterSum);
-void		handleNumber(int n, t_modifiers modifiers, int *characterSum);
-void		printNumber(int n, int *characterSum);
+void		print_string(char *string, t_modifiers modifiers, int *char_sum);
+void		handle_number(int n, t_modifiers modifiers, int *char_sum);
+void		print_number(int n, int *characterSum);
 void		printHex(long int n, int *characterSum, int letterType);
 int			is_specifier(char c);
 int			ft_atoi(const char *str);
