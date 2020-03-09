@@ -51,6 +51,8 @@ char *format(char *formatString, va_list args, int *char_sum)
 			while (ft_isdigit(*(formatString + 1)))
 				formatString++;
 		}
+		else if (*formatString == '*')
+			modifiers.width = va_arg(args, int);
 		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
 		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
 		else if (*(formatString++) == '.')
@@ -64,26 +66,26 @@ char *format(char *formatString, va_list args, int *char_sum)
 		}
 		formatString++;
 	}
-	format2(formatString, modifiers, args, char_sum);
+	format2(*formatString, modifiers, args, char_sum);
 	return (formatString);
 }
 
 // Buenos dias :D
 //PODRÍA CORTAR LA FUNCIÓN POR AQUÍ EN DOS
-void	format2(char *formatString, t_modifiers modifiers, va_list args, int *char_sum)
+void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 {
-	if (*formatString == 'c')
+	if (specifier == 'c')
 		// Aquí le pasaría el struct como primer argumento
 		printChar(va_arg(args, int), char_sum);
-	else if (*formatString == 's')
-		print_string(va_arg(args, char *), modifiers, char_sum);
-	else if (*formatString == 'd')
+	else if (specifier == 's')
+		handle_string(va_arg(args, char *), modifiers, char_sum);
+	else if (specifier == 'd')
 		handle_number(va_arg(args, int), modifiers, char_sum);
-	else if (*formatString == 'x')
+	else if (specifier == 'x')
 		printHex(va_arg(args, unsigned int), char_sum, LOWER_CASE);
-	else if (*formatString == 'X')
+	else if (specifier == 'X')
 		printHex(va_arg(args, unsigned int), char_sum, UPPER_CASE);
-	else if (*formatString == 'p')
+	else if (specifier == 'p')
 	{
 		write(1, "0x", 2);
 		(*char_sum) += 2;

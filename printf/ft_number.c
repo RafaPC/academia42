@@ -17,6 +17,7 @@ void	handle_number(int n, t_modifiers modifiers, int *char_sum)
 	int justification_width;
 
 	justification_width = modifiers.width - get_digits(n);
+	//TODO: creo que este if se puede quitar
 	if (justification_width > 0)
 	{
 		if (modifiers.width > get_digits(n))
