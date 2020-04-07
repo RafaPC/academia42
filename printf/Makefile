@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/04/07 17:19:14 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/04/07 18:01:50 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,24 +14,21 @@
 NAME = ft_printf.a
 
 CC = gcc -c
-
-FUNC = 
-
-OBJTS = 
-
+SRCS = ft_number.c ft_printf.c ft_printf_utils.c ft_string.c
+OBJS = ${SRCS:.c=.o};
 CFLAGS = -Wall -Wextra -Werror
 
-all: $(NAME)
+all: ${NAME}
 
-$(NAME): $(OBJTS) ft_printf.h
-		@gcc -c -I $(CFLAGS) $(FUNC)
-		@ar rc $(NAME) $(OBJTS)
-		@ranlib $(NAME)
+${NAME}: ${SRCS}
+				${CC} ${SRCS}
+				ar rc ${NAME} ${OBJS}
 
 clean:
-		@rm -f $(OBJTS)
+		@rm -f ${OBJS}
 
 fclean: clean
-		@rm -f $(NAME)
+		@rm -f ${NAME}
 
 re: fclean all
+.PHONY:	all clean fclean
