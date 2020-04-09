@@ -12,7 +12,7 @@
 
 
 NAME = ft_printf.a
-
+TEST = a.out
 CC = gcc -c
 SRCS = ft_number.c ft_printf.c ft_printf_utils.c ft_string.c
 OBJS = ${SRCS:.c=.o};
@@ -24,6 +24,10 @@ ${NAME}: ${SRCS}
 				${CC} ${SRCS}
 				ar rc ${NAME} ${OBJS}
 
+test: ${TEST}
+
+${TEST}: ${SRCS} main.c
+				gcc ${SRCS} main.c
 clean:
 		@rm -f ${OBJS}
 

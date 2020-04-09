@@ -64,8 +64,6 @@ char *format(char *formatString, va_list args, int *char_sum)
 			while (!is_specifier(*(formatString + 1)))
 				formatString++;
 		}
-		else if (*formatString == '%')
-			write(1, "%", 1);
 		formatString++;
 	}
 	format2(*formatString, modifiers, args, char_sum);
@@ -92,6 +90,11 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 		write(1, "0x", 2);
 		(*char_sum) += 2;
 		printHex((long int)va_arg(args, void *), char_sum, UPPER_CASE);
+	}
+	else if (specifier == '%')
+	{
+		write(1, "%", 1);
+		(*char_sum)++;
 	}
 }
 
