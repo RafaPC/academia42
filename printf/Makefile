@@ -6,12 +6,12 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/04/07 18:01:50 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/09/08 16:55:37 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = ft_printf.a
+NAME = libftprintf.a
 TEST = a.out
 CC = gcc -c
 SRCS = ft_number.c ft_printf.c ft_printf_utils.c ft_string.c
