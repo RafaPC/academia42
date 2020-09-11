@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 11:58:54 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/03/04 12:53:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/11 13:23:32 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
-	if (modifiers.width < 0)
+	if (modifiers.precision != -1)
 	{
-		modifiers.left_justified = TRUE;
-		modifiers.width = -modifiers.width;
+		if (modifiers.width < 0)
+		{
+			modifiers.left_justified = TRUE;
+			modifiers.width = -modifiers.width;
+		}
+		print_string(string, modifiers, char_sum);
 	}
-	print_string(string, modifiers, char_sum);
 }
 
 void	print_string(char *string, t_modifiers modifiers, int *char_sum)
@@ -27,13 +30,14 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 	int		i;
 	int		len;
 	char	c;
-
+	//FIXME: Esto puede que sobre
 	if (modifiers.width < 0)
 		modifiers.left_justified = TRUE;
 	i = 0;
 	//podría ser que hubieran puesto la precisión con el asterisco a -1
 	//TODO: a lo mejor debería de checkear si es negativo
-	len = (modifiers.precision == -1) ? ft_strlen(string) : modifiers.precision;
+	//FIXME: Cambiar el ultimo operando a -1
+	len = (ft_strlen(string) < modifiers.precision) ? ft_strlen(string) : modifiers.precision;
 	c = (modifiers.zero_padded) ? '0' : ' ';
 	*(char_sum) += (modifiers.width > len) ? modifiers.width : len;
 	if (!modifiers.left_justified && modifiers.width > len)

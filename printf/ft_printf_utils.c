@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/03/04 12:27:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/11 13:46:02 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,11 @@ int		ft_atoi(const char *str)
 
 	i = 0;
 	sign = 1;
-	number = 0;
+	number = -1;
 	string = (char*)str;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-		sign *= (str[i++] == '-') ? -1 : 1;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (number == 0)
+		if (number == -1)
 			number = str[i] - 48;
 		else
 			number = number * 10 + str[i] - 48;
@@ -67,6 +63,23 @@ unsigned int	get_digits(int n)
 	return (digits);
 }
 
+/*
+** This function return the number of digits of an hexadecimal given number
+*/
+
+unsigned int	get_hex_digits(int n)
+{
+	unsigned int	digits;
+
+	digits = (n < 0) ? 1 : 0;
+	while (n != 0)
+	{
+		n /= 16;
+		digits++;
+	}
+	return (digits);
+}
+
 void	print_justification(char c, int times)
 {
 	while (times > 0)
@@ -86,7 +99,7 @@ t_modifiers	ft_initialize_struct(void)
 
 	modifiers.left_justified = FALSE;
 	modifiers.zero_padded = FALSE;
-	modifiers.precision = -1;
+	modifiers.precision = -2;
 	modifiers.width = 0;
 	return (modifiers);
 }

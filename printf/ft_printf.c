@@ -45,7 +45,7 @@ char *format(char *formatString, va_list args, int *char_sum)
 			modifiers.left_justified = TRUE;
 		else if (*formatString == '0')
 			modifiers.zero_padded = TRUE;
-		else if (ft_atoi(formatString) != 0)
+		else if (ft_atoi(formatString) != -1)
 		{
 			modifiers.width = ft_atoi(formatString);
 			while (ft_isdigit(*(formatString + 1)))
@@ -55,14 +55,17 @@ char *format(char *formatString, va_list args, int *char_sum)
 			modifiers.width = va_arg(args, int);
 		// Cuando se encuentra un punto, si lo siguiente que se encuentra es un asterisco
 		// iguala la precision al siguiente argumento, si no, hace un atoi al string de formato
-		else if (*(formatString++) == '.')
+		else if (*(formatString) == '.')
 		{
-			if (*formatString == '*')
+			if (*(formatString + 1) == '*')
 				modifiers.precision = va_arg(args, int);
 			else
-				modifiers.precision = (ft_atoi(formatString) < 0) ? 0 : ft_atoi(formatString);
-			while (!is_specifier(*(formatString + 1)))
-				formatString++;
+				modifiers.precision = (ft_atoi(formatString + 1) == -2) ? 0 : ft_atoi(formatString + 1);
+			if (modifiers.precision != -1)
+			{
+				while (!is_specifier(*(formatString + 1)) || (*formatString) == '.')
+					formatString++;
+			}
 		}
 		formatString++;
 	}
@@ -75,41 +78,57 @@ char *format(char *formatString, va_list args, int *char_sum)
 void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 {
 	if (specifier == 'c')
-		// Aquí le pasaría el struct como primer argumento
-		printChar(va_arg(args, int), char_sum);
+		printChar(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 's')
 		handle_string(va_arg(args, char *), modifiers, char_sum);
-	else if (specifier == 'd')
+	else if (specifier == 'd' || specifier == 'i')
 		handle_number(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 'x')
-		printHex(va_arg(args, unsigned int), char_sum, LOWER_CASE);
+		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum, LOWER_CASE);
 	else if (specifier == 'X')
-		printHex(va_arg(args, unsigned int), char_sum, UPPER_CASE);
+		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum, UPPER_CASE);
 	else if (specifier == 'p')
 	{
-		write(1, "0x", 2);
-		(*char_sum) += 2;
-		printHex((long int)va_arg(args, void *), char_sum, UPPER_CASE);
+		(*char_sum) += write(1, "0x", 2);
+		printHex((long int)va_arg(args, void *), char_sum, LOWER_CASE);
 	}
 	else if (specifier == '%')
 	{
 		write(1, "%", 1);
 		(*char_sum)++;
 	}
+	else if (specifier == 'u')
+	{
+		//TODO: hacer aquí su cosa
+		//handle_number(va_arg(args, int), modifiers, char_sum);
+	}
 }
 
-void printChar(char c, int *char_sum)
+void printChar(char c, t_modifiers modifiers, int *char_sum)
 {
-	write(1, &c, 1);
-	(*char_sum)++;
+	if (modifiers.width > 1)
+	{
+		*char_sum += modifiers.width;
+		if (modifiers.left_justified == FALSE)
+			print_justification((modifiers.zero_padded) ? '0' : ' ', modifiers.width - 1);
+		write(1, &c, 1);
+		(*char_sum)++;
+		// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+		if (modifiers.left_justified == TRUE)
+			print_justification((modifiers.zero_padded) ? '0' : ' ', modifiers.width - 1);
+	}
+	else {
+		write(1, &c, 1);
+		(*char_sum)++;
+	}
 }
 
-void printHex(long int n, int *char_sum, int letterType)
+void printHex(long n, int *char_sum, int letter_type)
 {
 	long int	n_copy;
 	char		*hex_characters;
 
-	hex_characters = (letterType == LOWER_CASE)
+	hex_characters = (letter_type == LOWER_CASE)
 	? "0123456789abcdef" : "0123456789ABCDEF";
 	n_copy = n;
 	// if (n_copy < 0)
@@ -120,7 +139,7 @@ void printHex(long int n, int *char_sum, int letterType)
 	// }
 	if (n_copy > 15)
 	{
-		printHex(n_copy / 16, char_sum, letterType);
+		printHex(n_copy / 16, char_sum, letter_type);
 		write(1, &hex_characters[n_copy % 16], 1);
 	}
 	else

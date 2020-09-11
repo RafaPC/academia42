@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/03/04 12:07:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/08 18:44:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,30 @@ void	handle_number(int n, t_modifiers modifiers, int *char_sum)
 	}
 	else
 		print_number(n, char_sum);
+}
+
+void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_type)
+{
+	int justification_width;
+
+	justification_width = modifiers.width - get_hex_digits(n);
+	//TODO: creo que este if se puede quitar
+	if (justification_width > 0)
+	{
+		if (modifiers.width > get_hex_digits(n))
+		{
+			*char_sum += justification_width;
+			if (modifiers.left_justified == FALSE)
+				print_justification((modifiers.zero_padded) ? '0' : ' ',
+				justification_width);
+			printHex(n, char_sum, letter_type);
+			// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+			if (modifiers.left_justified == TRUE)
+				print_justification(' ', justification_width);
+		}
+	}
+	else
+		printHex(n, char_sum, letter_type);
 }
 
 void	print_number(int n, int *char_sum)

@@ -31,17 +31,19 @@ typedef	struct	s_modifiers
 
 int    		ft_printf(const char *formatString, ...);
 char		*format(char *formatString, va_list args, int *characterSum);
-void		printChar(char c, int *characterSum);
+void		printChar(char c, t_modifiers modifiers, int *characterSum);
 void		handle_string(char *string, t_modifiers modifiers, int *char_sum);
 void		print_string(char *string, t_modifiers modifiers, int *char_sum);
 void		handle_number(int n, t_modifiers modifiers, int *char_sum);
 void		print_number(int n, int *characterSum);
-void		printHex(long int n, int *characterSum, int letterType);
+void		printHex(long n, int *characterSum, int letter_type);
+void		handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_type);
 int			is_specifier(char c);
 int			ft_atoi(const char *str);
 int			ft_isspace(int c);
 void		print_justification(char c, int times);
 unsigned int	get_digits(int n);
+unsigned int	get_hex_digits(int n);
 int			ft_isdigit(int c);
 void		format2(char specifier, t_modifiers modifiers, va_list args, int *characterSum);
 unsigned int	ft_strlen(const char *s);
