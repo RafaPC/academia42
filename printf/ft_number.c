@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/08 18:44:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/14 17:07:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_
 		printHex(n, char_sum, letter_type);
 }
 
+void	handle_pointer(long pointer, t_modifiers modifiers, int *char_sum)
+{
+	if (pointer == NULL)
+		*char_sum += ft_printf("(nil)");
+	else
+	{
+		*char_sum += write(1, "0x", 2);
+		printHex(pointer, char_sum, LOWER_CASE);
+	}
+}
 void	print_number(int n, int *char_sum)
 {
 	long int	n_copy;

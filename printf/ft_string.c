@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 11:58:54 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/11 13:23:32 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/14 16:52:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,24 @@
 
 void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
-	if (modifiers.precision != -1)
+	char print;
+
+	print = TRUE;
+	if (modifiers.precision == -1)
+		print = FALSE;
+	if (modifiers.width < 0)
 	{
-		if (modifiers.width < 0)
-		{
-			modifiers.left_justified = TRUE;
-			modifiers.width = -modifiers.width;
-		}
-		print_string(string, modifiers, char_sum);
+		modifiers.left_justified = TRUE;
+		modifiers.width = -modifiers.width;
 	}
+	if (string == NULL)
+	{
+		string = "(null)";
+		if (modifiers.precision > 0 && modifiers.precision < 6)
+			modifiers.precision = 0;
+	}
+	if (print)
+		print_string(string, modifiers, char_sum);
 }
 
 void	print_string(char *string, t_modifiers modifiers, int *char_sum)

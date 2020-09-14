@@ -59,11 +59,13 @@ char *format(char *formatString, va_list args, int *char_sum)
 		{
 			if (*(formatString + 1) == '*')
 				modifiers.precision = va_arg(args, int);
+			else if (is_specifier(*(formatString + 1)))
+				modifiers.precision = 0;
 			else
 				modifiers.precision = (ft_atoi(formatString + 1) == -2) ? 0 : ft_atoi(formatString + 1);
-			if (modifiers.precision != -1)
+			if (modifiers.precision != -1 && !is_specifier(*formatString))
 			{
-				while (!is_specifier(*(formatString + 1)) || (*formatString) == '.')
+				while (!is_specifier(*(formatString + 1)))
 					formatString++;
 			}
 		}
@@ -89,8 +91,9 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum, UPPER_CASE);
 	else if (specifier == 'p')
 	{
-		(*char_sum) += write(1, "0x", 2);
-		printHex((long int)va_arg(args, void *), char_sum, LOWER_CASE);
+		handle_pointer((long)va_arg(args, void *), modifiers, char_sum);
+		// (*char_sum) += write(1, "0x", 2);
+		// printHex((long int)va_arg(args, void *), char_sum, LOWER_CASE);
 	}
 	else if (specifier == '%')
 	{
