@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/16 10:48:24 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/16 12:32:04 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ unsigned int	get_digits(int n)
 {
 	unsigned int	digits;
 
-	digits = (n < 0) ? 1 : 0;
+	digits = (n <= 0) ? 1 : 0;
 	while (n != 0)
 	{
 		n /= 10;

@@ -49,4 +49,5 @@ void		format2(char specifier, t_modifiers modifiers, va_list args, int *characte
 unsigned int	ft_strlen(const char *s);
 t_modifiers ft_initialize_struct(void);
 void	handle_pointer(void *pointer, t_modifiers, int *char_sum);
+void	print_pointer(void *pointer, int *char_sum);
 #endif
