@@ -43,10 +43,10 @@ int			ft_atoi(const char *str);
 int			ft_isspace(int c);
 void		print_justification(char c, int times);
 unsigned int	get_digits(int n);
-unsigned int	get_hex_digits(int n);
+unsigned int	get_hex_digits(long n);
 int			ft_isdigit(int c);
 void		format2(char specifier, t_modifiers modifiers, va_list args, int *characterSum);
 unsigned int	ft_strlen(const char *s);
 t_modifiers ft_initialize_struct(void);
-void	handle_pointer(long pointer, t_modifiers, int *char_sum);
+void	handle_pointer(void *pointer, t_modifiers, int *char_sum);
 #endif

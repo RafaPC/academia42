@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/14 17:07:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/16 11:08:41 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,31 @@ void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_
 		printHex(n, char_sum, letter_type);
 }
 
-void	handle_pointer(long pointer, t_modifiers modifiers, int *char_sum)
+void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
+	int pointer_length;
+
 	if (pointer == NULL)
-		*char_sum += ft_printf("(nil)");
+	{
+		*char_sum += 5;
+		pointer_length = 5;
+	}
 	else
 	{
-		*char_sum += write(1, "0x", 2);
-		printHex(pointer, char_sum, LOWER_CASE);
+		// pointer_length = 8;
+		pointer_length = 2 + get_hex_digits((long)pointer);
 	}
+	// Solo para justificación normal
+	if (modifiers.width > pointer_length)
+		print_justification(' ', modifiers.width - pointer_length);
+	// Eventualmente puedo meter esto dentro del print hex? bueno maybe lo de (nil) es solo para punteros
+	if (pointer != NULL)
+	{
+		*char_sum += write(1, "0x", 2);
+		printHex((long)pointer, char_sum, LOWER_CASE);
+	}
+	else
+		write(1, "(nil)", 5);
 }
 void	print_number(int n, int *char_sum)
 {

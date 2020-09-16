@@ -91,7 +91,7 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum, UPPER_CASE);
 	else if (specifier == 'p')
 	{
-		handle_pointer((long)va_arg(args, void *), modifiers, char_sum);
+		handle_pointer(va_arg(args, void *), modifiers, char_sum);
 		// (*char_sum) += write(1, "0x", 2);
 		// printHex((long int)va_arg(args, void *), char_sum, LOWER_CASE);
 	}

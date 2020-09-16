@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 15:59:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/14 17:19:41 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/16 10:48:24 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ unsigned int	get_digits(int n)
 ** This function return the number of digits of an hexadecimal given number
 */
 
-unsigned int	get_hex_digits(int n)
+unsigned int	get_hex_digits(long n)
 {
 	unsigned int	digits;
 
