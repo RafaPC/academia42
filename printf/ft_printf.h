@@ -19,7 +19,7 @@
 #define FALSE 0
 #define UPPER_CASE 1
 #define LOWER_CASE 2
-
+#define ABS(n) (n < 0) ? -n : n
 
 typedef	struct	s_modifiers
 {
@@ -50,4 +50,7 @@ unsigned int	ft_strlen(const char *s);
 t_modifiers ft_initialize_struct(void);
 void	handle_pointer(void *pointer, t_modifiers, int *char_sum);
 void	print_pointer(void *pointer, int *char_sum);
+void	handle_decimal(int n, t_modifiers modifiers, int *char_sum);
+
+void	print_number2(int n, t_modifiers modifiers, int *char_sum);
 #endif

@@ -83,7 +83,9 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 		printChar(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 's')
 		handle_string(va_arg(args, char *), modifiers, char_sum);
-	else if (specifier == 'd' || specifier == 'i')
+	else if (specifier == 'd')
+		handle_decimal(va_arg(args, int), modifiers, char_sum);
+	else if (specifier == 'i')
 		handle_number(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 'x')
 		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum, LOWER_CASE);
@@ -102,6 +104,7 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 	}
 	else if (specifier == 'u')
 	{
+		handle_number((unsigned)va_arg(args, int), modifiers, char_sum);
 		//TODO: hacer aquí su cosa
 		//handle_number(va_arg(args, int), modifiers, char_sum);
 	}
