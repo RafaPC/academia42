@@ -58,7 +58,10 @@ char *format(char *formatString, va_list args, int *char_sum)
 		else if (*(formatString) == '.')
 		{
 			if (*(formatString + 1) == '*')
+			{
 				modifiers.precision = va_arg(args, int);
+				formatString++;
+			}
 			else if (is_specifier(*(formatString + 1)))
 				modifiers.precision = 0;
 			else
@@ -104,9 +107,7 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 	}
 	else if (specifier == 'u')
 	{
-		handle_number((unsigned)va_arg(args, int), modifiers, char_sum);
-		//TODO: hacer aquí su cosa
-		//handle_number(va_arg(args, int), modifiers, char_sum);
+		handle_number((unsigned)va_arg(args, long), modifiers, char_sum);
 	}
 }
 

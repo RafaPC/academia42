@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/20 17:48:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/09/22 17:49:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,46 @@
 void	handle_number(int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
-
-	if (modifiers.precision!= -2 && modifiers.width)
-		print_number2(n, modifiers, char_sum);
-	else
+	if (!(n == 0 && modifiers.precision == 0 || modifiers.precision == -1))
 	{
-		if (modifiers.zero_padded && modifiers.width != 0 && n < 0)
-			modifiers.width--;
-		//Rellena con zeros si bien tiene el zero padded puesto o si tiene puesta la precision
-		if (n < 0 && ((modifiers.zero_padded && modifiers.width) || (modifiers.precision != -2)) && modifiers.left_justified == FALSE)
-		{
-			write(1, "-", 1);
-			(*char_sum)++;
-			n = -n;
-			// if (modifiers.width != 0)
-			// 	justification_width--;
-		}
-		if (modifiers.precision != -2 && modifiers.width == 0)
-		{
-			modifiers.width = modifiers.precision;
-			modifiers.zero_padded = TRUE;
-		}
-		justification_width = modifiers.width - get_digits(n);
-		if (modifiers.width > get_digits(n))
-		{
-			*char_sum += justification_width;
-			if (modifiers.left_justified == FALSE)
-				print_justification((modifiers.zero_padded) ? '0' : ' ',
-				justification_width);
-			print_number(n, char_sum);
-			// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
-			if (modifiers.left_justified == TRUE)
-				print_justification(' ', justification_width);
-		}
+		if (modifiers.precision!= -2 && modifiers.width)
+			print_number2(n, modifiers, char_sum);
 		else
-			print_number(n, char_sum);
+		{
+			if (modifiers.zero_padded && modifiers.width != 0 && n < 0)
+				modifiers.width--;
+			//Rellena con zeros si bien tiene el zero padded puesto o si tiene puesta la precision
+			if (n < 0 && ((modifiers.zero_padded && modifiers.width) || (modifiers.precision != -2)) && modifiers.left_justified == FALSE)
+			{
+				write(1, "-", 1);
+				(*char_sum)++;
+				n = -n;
+				// if (modifiers.width != 0)
+				// 	justification_width--;
+			}
+			if (modifiers.precision != -2 && modifiers.width == 0)
+			{
+				modifiers.width = modifiers.precision;
+				modifiers.zero_padded = TRUE;
+			}
+			justification_width = modifiers.width - get_digits(n);
+			if (modifiers.width > get_digits(n))
+			{
+				*char_sum += justification_width;
+				if (modifiers.left_justified == FALSE)
+					print_justification((modifiers.zero_padded) ? '0' : ' ',
+					justification_width);
+				print_number(n, char_sum);
+				// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+				if (modifiers.left_justified == TRUE)
+					print_justification(' ', justification_width);
+			}
+			else
+				print_number(n, char_sum);
+		}
 	}
+	else
+		*char_sum += ft_printf("%*s", modifiers.width, "");
 }
 
 void	print_number2(int n, t_modifiers modifiers, int *char_sum)
@@ -69,7 +73,6 @@ void	print_number2(int n, t_modifiers modifiers, int *char_sum)
 		*char_sum += write(1, "-", 1);
 		number_width--;
 	}
-
 	if (modifiers.precision > get_digits(ABS(n)))
 		print_justification('0', modifiers.precision - get_digits(ABS(n)));
 	print_number(ABS(n), char_sum);
@@ -79,22 +82,36 @@ void	print_number2(int n, t_modifiers modifiers, int *char_sum)
 		print_justification(' ', modifiers.width - number_width);
 	}
 }
-	
 
 void	handle_decimal(int n, t_modifiers modifiers, int *char_sum)
 {
-	modifiers.zero_padded = TRUE;
-	if (modifiers.precision != -2)
+	if (modifiers.precision != 0 && modifiers.precision != -1)
 	{
-		if (modifiers.width == 0)
+		if (modifiers.precision != -2)
 		{
-			modifiers.width = modifiers.precision;
-			modifiers.precision = -2;
+			if (modifiers.width == 0)
+			{
+				modifiers.zero_padded = TRUE;
+				modifiers.width = modifiers.precision;
+				modifiers.precision = -2;
+				if (n < 0)
+					modifiers.width++;
+			}
 		}
-	}else if (modifiers.precision == -2 && modifiers.width != 0 && n < 0)
-		modifiers.width--;
-	
-	handle_number(n ,modifiers, char_sum);
+		// else if (modifiers.width != 0)
+		// {
+			
+		// }
+		handle_number(n ,modifiers, char_sum);
+	}
+	else if(modifiers.width != 0 && modifiers.precision == 0)
+	{
+		*char_sum += ft_printf("%*s", modifiers.width, "");
+	}
+	else if(modifiers.precision == -1)
+	{
+		*char_sum += ft_printf("%i", n);
+	}
 }
 
 void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_type)
