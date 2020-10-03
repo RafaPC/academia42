@@ -6,15 +6,23 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/09/22 17:49:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/03 19:12:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	handle_number(int n, t_modifiers modifiers, int *char_sum)
+void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
+
+	if (modifiers.width < 0)
+	{
+		modifiers.width = -modifiers.width;
+		modifiers.left_justified = TRUE;
+		if (n < 0)
+			modifiers.width++;
+	}
 	if (!(n == 0 && modifiers.precision == 0 || modifiers.precision == -1))
 	{
 		if (modifiers.precision!= -2 && modifiers.width)
@@ -38,7 +46,7 @@ void	handle_number(int n, t_modifiers modifiers, int *char_sum)
 				modifiers.zero_padded = TRUE;
 			}
 			justification_width = modifiers.width - get_digits(n);
-			if (modifiers.width > get_digits(n))
+			if (justification_width > 0)
 			{
 				*char_sum += justification_width;
 				if (modifiers.left_justified == FALSE)
@@ -57,9 +65,8 @@ void	handle_number(int n, t_modifiers modifiers, int *char_sum)
 		*char_sum += ft_printf("%*s", modifiers.width, "");
 }
 
-void	print_number2(int n, t_modifiers modifiers, int *char_sum)
+void	print_number2(long int n, t_modifiers modifiers, int *char_sum)
 {
-	int justification_width;
 	int number_width;
 
 	number_width = (modifiers.precision > get_digits(ABS(n))) 
@@ -83,7 +90,7 @@ void	print_number2(int n, t_modifiers modifiers, int *char_sum)
 	}
 }
 
-void	handle_decimal(int n, t_modifiers modifiers, int *char_sum)
+void	handle_decimal(long int n, t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.precision != 0 && modifiers.precision != -1)
 	{
@@ -114,25 +121,41 @@ void	handle_decimal(int n, t_modifiers modifiers, int *char_sum)
 	}
 }
 
-void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_type)
+void	handle_hex_number(long int n, t_modifiers modifiers, int *char_sum, int letter_type)
 {
 	int justification_width;
-
-	justification_width = modifiers.width - get_hex_digits(n);
+	int number_width;
+	
+	number_width = (modifiers.precision != -2 && modifiers.precision > get_hex_digits(n)) 
+	? modifiers.precision : get_hex_digits(n);
+	justification_width = modifiers.width - ((number_width > 0) ? number_width : 0);
 	//TODO: creo que este if se puede quitar
-	if (modifiers.width > get_hex_digits(n))
+	if (n == 0 && (modifiers.precision == -2 || modifiers.width == 0))
+		justification_width--;
+	if (n == 0 && modifiers.precision != -2)
+		modifiers.precision--;
+	if (justification_width > 0)
 	{
 		*char_sum += justification_width;
 		if (modifiers.left_justified == FALSE)
-			print_justification((modifiers.zero_padded) ? '0' : ' ',
-			justification_width);
-		printHex(n, char_sum, letter_type);
-		// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
-		if (modifiers.left_justified == TRUE)
-			print_justification(' ', justification_width);
+		{
+			if (modifiers.zero_padded && modifiers.precision != -2 && modifiers.width != -1)
+				print_justification(' ', justification_width);
+			else
+				print_justification((modifiers.zero_padded) ? '0' : ' ', justification_width);
+		}
+			// print_justification(' ', justification_width);
 	}
-	else
+	// // Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+	// if (modifiers.left_justified == TRUE)
+	// 	print_justification(' ', justification_width);
+	if (modifiers.precision != -2)
+		print_justification('0', modifiers.precision - get_hex_digits(n));
+	// if (n != 0 || (modifiers.width == -1 || modifiers.precision == -2))
+	if (n != 0 || (modifiers.precision != 0 && modifiers.precision != -1))
 		printHex(n, char_sum, letter_type);
+	if (justification_width > 0 && modifiers.left_justified)
+		print_justification(' ', justification_width);
 }
 
 void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
@@ -172,7 +195,7 @@ void	print_pointer(void *pointer, int *char_sum)
 	}
 }
 
-void	print_number(int n, int *char_sum)
+void	print_number(long n, int *char_sum)
 {
 	long int	n_copy;
 	char		c;
@@ -194,3 +217,6 @@ void	print_number(int n, int *char_sum)
 	write(1, &c, 1);
 	(*char_sum)++;
 }
+
+//TODO: lo dejo por aqui, a lo mejor hacer una función, que reciba los modifiers, el dato, y un puntero a una funcion
+//y esto comprueba si tiene que hacer la justificacion antes o despues, y cuando toca llama a la funcion apuntada con el dato

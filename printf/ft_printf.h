@@ -34,10 +34,10 @@ char		*format(char *formatString, va_list args, int *characterSum);
 void		printChar(char c, t_modifiers modifiers, int *characterSum);
 void		handle_string(char *string, t_modifiers modifiers, int *char_sum);
 void		print_string(char *string, t_modifiers modifiers, int *char_sum);
-void		handle_number(int n, t_modifiers modifiers, int *char_sum);
-void		print_number(int n, int *characterSum);
+void		handle_number(long int n, t_modifiers modifiers, int *char_sum);
+void		print_number(long int n, int *characterSum);
 void		printHex(long n, int *characterSum, int letter_type);
-void		handle_hex_number(long n, t_modifiers modifiers, int *char_sum, int letter_type);
+void		handle_hex_number(long int n, t_modifiers modifiers, int *char_sum, int letter_type);
 int			is_specifier(char c);
 int			ft_atoi(const char *str);
 int			ft_isspace(int c);
@@ -50,7 +50,6 @@ unsigned int	ft_strlen(const char *s);
 t_modifiers ft_initialize_struct(void);
 void	handle_pointer(void *pointer, t_modifiers, int *char_sum);
 void	print_pointer(void *pointer, int *char_sum);
-void	handle_decimal(int n, t_modifiers modifiers, int *char_sum);
-
-void	print_number2(int n, t_modifiers modifiers, int *char_sum);
+void	handle_decimal(long int n, t_modifiers modifiers, int *char_sum);
+void	print_number2(long n, t_modifiers modifiers, int *char_sum);
 #endif

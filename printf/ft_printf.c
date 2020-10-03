@@ -107,7 +107,7 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 	}
 	else if (specifier == 'u')
 	{
-		handle_number((unsigned)va_arg(args, long), modifiers, char_sum);
+		handle_decimal((long int)va_arg(args, long int), modifiers, char_sum);
 	}
 }
 
