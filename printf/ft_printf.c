@@ -71,7 +71,8 @@ char *format(char *formatString, va_list args, int *char_sum)
 				while (!is_specifier(*(formatString + 1)))
 					formatString++;
 			}
-		}
+		}else if(*(formatString) == ' ')
+			*char_sum += write(1, " ", 1);
 		formatString++;
 	}
 	format2(*formatString, modifiers, args, char_sum);
