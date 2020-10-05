@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/03 19:12:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/05 19:39:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,13 +186,11 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 
 void	print_pointer(void *pointer, int *char_sum)
 {
+	*char_sum += write(1, "0x", 2);
 	if (pointer == NULL)
-		char_sum += write(1, "(nil)", 5);
+		char_sum += write(1, "0", 1);
 	else
-	{
-		char_sum += write(1, "0x", 2);
 		printHex((long)pointer, char_sum, LOWER_CASE);
-	}
 }
 
 void	print_number(long n, int *char_sum)
