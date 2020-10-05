@@ -101,15 +101,30 @@ void	format2(char specifier, t_modifiers modifiers, va_list args, int *char_sum)
 		// (*char_sum) += write(1, "0x", 2);
 		// printHex((long int)va_arg(args, void *), char_sum, LOWER_CASE);
 	}
-	else if (specifier == '%')
-	{
-		write(1, "%", 1);
-		(*char_sum)++;
-	}
 	else if (specifier == 'u')
-	{
 		handle_decimal((long int)va_arg(args, long int), modifiers, char_sum);
+	else
+	{
+		//TODO: checkear que hace la precision aqui
+		if (modifiers.width > 0)
+		{
+			*char_sum += modifiers.width;
+			if (modifiers.left_justified)
+			{
+				write(1, "%", 1);
+				modifiers.zero_padded = FALSE;
+			}
+			print_justification((modifiers.zero_padded) ? '0' : ' ', modifiers.width - 1);
+			if (!modifiers.left_justified)
+				write(1, "%", 1);
+		}
+		else
+		{
+			write(1, "%", 1);
+			(*char_sum)++;
+		}
 	}
+	
 }
 
 void printChar(char c, t_modifiers modifiers, int *char_sum)
