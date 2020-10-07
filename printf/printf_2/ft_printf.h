@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/06 20:54:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/07 19:04:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "libft.h"
 #define TRUE 1
 #define FALSE 0
 
@@ -29,11 +30,12 @@ typedef	struct	s_modifiers
 /* FUNCTIONS DECLARATIONS SEPARATED BY FILE */
 /* ft_printf.c */
 int    		ft_printf(const char *formatString, ...);
-char		*format(char *formatString, va_list args, int *characterSum);
+char		*format( va_list args, char *formatString, int *characterSum);
+void	format2(va_list args, char specifier, t_modifiers modifiers, int *char_sum);
 /* ft_printf_utils.c */
 t_modifiers ft_initialize_struct(void);
 int		    is_specifier(char c);
 void        get_precision(va_list args, char **format_string, t_modifiers *modifiers);
 int		    ft_atoi(const char *str);
-int			ft_isdigit(int c);
+char		*ft_strjoin_and_free(char const *s1, char const *s2);
 #endif
