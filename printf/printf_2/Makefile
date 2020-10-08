@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/07 12:50:03 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/07 21:08:50 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ clean:
 		@rm -f ${OBJS}
 
 fclean: clean
-		@rm -f ${NAME}
+		@rm -f ${NAME} main a.out
 
 re: fclean all
 .PHONY:	all clean fclean

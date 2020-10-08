@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/06 21:01:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/07 21:05:28 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,36 @@ int		ft_atoi(const char *str)
 	return (number);
 }
 
-int		ft_isdigit(int c)
+char	*ft_strjoin_and_free(char const *s1, char const *s2)
 {
-	return (c >= '0' && c <= '9') ? TRUE : FALSE;
+	char	*joined_str;
+	int		i;
+	int		j;
+	char	*aux;
+
+	aux = (char*)s1;
+	if (!s1 || !s2)
+		return (!s1) ? (char*)s2 : (char*)s1;
+	if (!(joined_str = (char*)malloc((ft_strlen(s1) + ft_strlen(s2) + 1)
+	* sizeof(char))))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+		joined_str[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		joined_str[j++] = s2[i++];
+	joined_str[j] = '\0';
+	free(aux);
+	return (joined_str);
+}
+
+void	print_justification(char c, int times)
+{
+	while (times > 0)
+	{
+		write(1, &c, 1);
+		times--;
+	}
 }
