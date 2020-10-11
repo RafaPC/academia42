@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/11 10:47:38 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/11 13:06:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	format2(va_list args, char specifier, t_modifiers modifiers, int *char_sum)
 void	print_string(char *string, t_modifiers modifiers, int *char_sum);
 void	handle_string(char *string, t_modifiers modifiers, int *char_sum);
 char	*modifiers_to_string(t_modifiers modifiers);
+void	print_char(char c, t_modifiers modifiers, int *char_sum);
 /* ft_printf_utils.c */
 t_modifiers ft_initialize_struct(void);
 int		    is_specifier(char c);

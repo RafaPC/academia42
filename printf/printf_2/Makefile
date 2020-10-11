@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/11 10:30:56 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/11 11:21:37 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ test: ${TEST}
 
 ${OBJS}: ${SRCS}
 				${CC} ${CFLAGS} ${SRCS}
-${TEST}: ${SRCS} main.c
-				gcc ${SRCS} main.c libft.a
+${TEST}: ${SRCS} ${NAME} main.c
+				gcc ${SRCS} main.c ${NAME}
 clean:
 		@rm -f ${OBJS}
 		@make -C $(LIB_DIR) clean

@@ -7,7 +7,7 @@
             "args": [
                 "-g",
                 "${fileDirname}/*.c",
-                "${fileDirname}/libft.a",
+                "${fileDirname}/libftprintf.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

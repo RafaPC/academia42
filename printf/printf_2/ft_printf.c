@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/11 10:35:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/11 13:10:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,19 @@ char	*format(va_list args, char *format_string, int *char_sum)
 
 void	format2(va_list args, char specifier, t_modifiers modifiers, int *char_sum)
 {
-	if (specifier != 's')
-	{
+	char *string;
+	char *format_string;
 
-		*char_sum = ft_printf(modifiers_to_string(modifiers), va_arg(args, char *));
+	if (specifier != 's' && specifier != 'c')
+	{
+		string = "hola";
+		format_string = modifiers_to_string(modifiers);
+		*char_sum = ft_printf(format_string, string);
+		free(string);
+		free(format_string);
 	}
+	else if (specifier == 'c')
+		print_char(va_arg(args, int), modifiers, char_sum);
 	else
 		handle_string(va_arg(args, char*), modifiers, char_sum);
 }
@@ -112,11 +120,12 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 	int		i;
 	int		len;
 	char	c;
+
 	i = 0;
-	//podría ser que hubieran puesto la precisión con el asterisco a -1
-	//TODO: a lo mejor debería de checkear si es negativo
-	//FIXME: Cambiar el ultimo operando a -1
-	len = ((int)ft_strlen(string) < modifiers.precision) ? (int)ft_strlen(string) : modifiers.precision;
+	if (modifiers.precision >= 0)
+		len = ((int)ft_strlen(string) < modifiers.precision) ? (int)ft_strlen(string) : modifiers.precision;
+	else
+		len = (int)ft_strlen(string);
 	c = (modifiers.zero_padded) ? '0' : ' ';
 	*(char_sum) += (modifiers.width > len) ? modifiers.width : len;
 	if (!modifiers.left_justified && modifiers.width > len)
@@ -129,4 +138,22 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 	if (modifiers.left_justified && modifiers.width > len &&
 	modifiers.width > modifiers.precision)
 		print_justification(' ', modifiers.width - len);
+}
+
+void print_char(char c, t_modifiers modifiers, int *char_sum)
+{
+	if (modifiers.width > 1)
+	{
+		*char_sum += modifiers.width;
+		if (modifiers.left_justified == FALSE)
+			print_justification((modifiers.zero_padded) ? '0' : ' ', modifiers.width - 1);
+		write(1, &c, 1);
+		// Aquí hago que si está justificado a la izquierda imprima espacios, o sea que suda de los ceros
+		if (modifiers.left_justified == TRUE)
+			print_justification((modifiers.zero_padded) ? '0' : ' ', modifiers.width - 1);
+	}
+	else {
+		write(1, &c, 1);
+		(*char_sum)++;
+	}
 }
