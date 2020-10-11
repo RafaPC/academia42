@@ -6,33 +6,43 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/07 21:08:50 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/11 10:30:56 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = libftprintf.a
+NAME =		libftprintf.a
+LIBFT_A = 	libft.a
 TEST = a.out
 CC = gcc -c
+LIB_DIR = libft/
 SRCS = ft_printf.c ft_printf_utils.c
 OBJS = ${SRCS:.c=.o}
+
 CFLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}
 
-${NAME}: ${SRCS}
-				${CC} ${SRCS}
-				ar rc ${NAME} ${OBJS} libft.a
+${NAME}: ${OBJS}
+				@make -C ${LIB_DIR}
+				@cp ${LIB_DIR}${LIBFT_A} .
+				@mv ${LIBFT_A} ${NAME}
+				@ar rc ${NAME} ${OBJS}
+				@ranlib ${NAME}
 
 test: ${TEST}
 
+${OBJS}: ${SRCS}
+				${CC} ${CFLAGS} ${SRCS}
 ${TEST}: ${SRCS} main.c
 				gcc ${SRCS} main.c libft.a
 clean:
 		@rm -f ${OBJS}
+		@make -C $(LIB_DIR) clean
 
 fclean: clean
 		@rm -f ${NAME} main a.out
+		@make -C $(LIB_DIR) fclean
 
 re: fclean all
 .PHONY:	all clean fclean

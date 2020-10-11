@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/07 21:11:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/11 10:47:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "libft.h"
 #define TRUE 1
 #define FALSE 0
 

@@ -6,11 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/07 21:05:28 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/11 10:34:42 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft/libft.h"
 t_modifiers ft_initialize_struct(void)
 {
 	t_modifiers modifiers;
@@ -50,11 +51,9 @@ int		ft_atoi(const char *str)
 {
 	int			i;
 	long int	number;
-	char		*string;
 
 	i = 0;
 	number = -1;
-	string = (char*)str;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (number == -1)

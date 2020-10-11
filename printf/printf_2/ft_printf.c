@@ -6,12 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/07 22:17:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/11 10:35:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+#include "libft/libft.h"
 int		ft_printf(const char *format_string, ...)
 {
 	va_list	args;
@@ -99,9 +99,6 @@ char	*modifiers_to_string(t_modifiers modifiers)
 
 void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
-	char print;
-
-	print = TRUE;
 	if (modifiers.precision != -1 || string == NULL)
 	{
 		if (string == NULL)
@@ -119,7 +116,7 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 	//podría ser que hubieran puesto la precisión con el asterisco a -1
 	//TODO: a lo mejor debería de checkear si es negativo
 	//FIXME: Cambiar el ultimo operando a -1
-	len = (ft_strlen(string) < modifiers.precision) ? ft_strlen(string) : modifiers.precision;
+	len = ((int)ft_strlen(string) < modifiers.precision) ? (int)ft_strlen(string) : modifiers.precision;
 	c = (modifiers.zero_padded) ? '0' : ' ';
 	*(char_sum) += (modifiers.width > len) ? modifiers.width : len;
 	if (!modifiers.left_justified && modifiers.width > len)
