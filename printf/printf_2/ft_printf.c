@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/11 13:10:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/12 16:39:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,56 @@
 #include "libft/libft.h"
 int		ft_printf(const char *format_string, ...)
 {
-	va_list	args;
-	int		char_sum;
+	va_list		args;
+	int			char_sum;
+	t_modifiers	modifiers;
 
 	va_start(args, format_string);
 	char_sum = 0;
 	while (*format_string)
 	{
 		if (*format_string == '%')
-			format_string = format(args, (char *)++format_string, &char_sum);
+		{
+			modifiers = ft_initialize_struct();
+			format_string = read_modifiers(args, (char *)++format_string, &modifiers, &char_sum);
+			format2(args, *format_string, modifiers, &char_sum);
+			//Mover puntero hasta el siguiente specifier
+		}
 		else
 			char_sum += write(1, format_string, 1);
 		format_string++;
 	}
 	return (char_sum);
 }
-
-char	*format(va_list args, char *format_string, int *char_sum)
+//TODO: aqui al final o algo hacer que imprima los caracteres escapados
+char	*read_modifiers(va_list args, char *format_string, t_modifiers *modifiers, int *char_sum)
 {
-	t_modifiers modifiers;
-
-	modifiers = ft_initialize_struct();
 	while (!is_specifier(*format_string))
 	{
 		if (*format_string == '-')
-			modifiers.left_justified = TRUE;
+			modifiers->left_justified = TRUE;
 		else if (*format_string == '0')
-			modifiers.zero_padded = TRUE;
+			modifiers->zero_padded = TRUE;
 		else if (*(format_string) == '.')
-			get_precision(args, &format_string, &modifiers);
+			format_string = get_precision(args, format_string, modifiers);
 		else if (*(format_string) == ' ')
 			*char_sum += write(1, " ", 1);
 		else if (*format_string == '*')
-			modifiers.width = va_arg(args, int);
+			modifiers->width = va_arg(args, int);
 		else
-		{
-			modifiers.width = ft_atoi(format_string);
-			while (ft_isdigit(*(format_string + 1)))
-				format_string++;
-			//Esto hace que pase de las 15 lineas
-			if (modifiers.width < 0)
-			{
-				modifiers.width = -modifiers.width;
-				modifiers.left_justified = TRUE;
-			}
-		}
+			format_string = get_width(format_string, modifiers);
 		format_string++;
 	}
-	format2(args, *format_string, modifiers, char_sum);
 	return (format_string);
 }
 
 void	format2(va_list args, char specifier, t_modifiers modifiers, int *char_sum)
 {
-	char *string;
-	char *format_string;
-
-	if (specifier != 's' && specifier != 'c')
-	{
-		string = "hola";
-		format_string = modifiers_to_string(modifiers);
-		*char_sum = ft_printf(format_string, string);
-		free(string);
-		free(format_string);
-	}
+	if (specifier == 'i')
+		handle_number(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 'c')
 		print_char(va_arg(args, int), modifiers, char_sum);
-	else
+	else if(specifier == 's')
 		handle_string(va_arg(args, char*), modifiers, char_sum);
 }
 

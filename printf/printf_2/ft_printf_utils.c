@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/11 10:34:42 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/12 15:08:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,38 @@ int		    is_specifier(char c)
 	c == 'u' || c == 'x' || c == 'X' || c == '%') ? TRUE : FALSE;
 }
 
-void        get_precision(va_list args, char **format_string, t_modifiers *modifiers)
+char        *get_precision(va_list args, char *format_string, t_modifiers *modifiers)
 {
-    if (*(*(format_string) + 1) == '*')
+    if (*(format_string + 1) == '*')
     {
         modifiers->precision = va_arg(args, int);
-        (*format_string)++;
+        format_string++;
     }
-    else if (is_specifier(*(*(format_string) + 1)))
+    else if (is_specifier(*(format_string + 1)))
         modifiers->precision = 0;
     else
     // TODO: aqui antes estaba esto pero no tenía sentido porque el atoi no puede devolver -2, solo -1
     //modifiers->precision = (ft_atoi(format_string + 1) == -2)
         //? 0 : ft_atoi(format_string);
-        modifiers->precision = ft_atoi(*format_string + 1);
-    while (!is_specifier(*(*(format_string) + 1)))
-        (*format_string)++;
+        modifiers->precision = ft_atoi(format_string + 1);
+    while (!is_specifier(*(format_string + 1)))
+	{
+        format_string++;
+	}
+	return (format_string);
+}
+
+char	*get_width(char *format_string, t_modifiers *modifiers)
+{
+	modifiers->width = ft_atoi(format_string);
+	while (ft_isdigit(*(format_string + 1)))
+		format_string++;
+	if (modifiers->width < 0)
+	{
+		modifiers->width = -modifiers->width;
+		modifiers->left_justified = TRUE;
+	}
+	return (format_string);
 }
 
 int		ft_atoi(const char *str)
@@ -98,3 +114,29 @@ void	print_justification(char c, int times)
 		times--;
 	}
 }
+
+int		get_greater(int n1, int n2)
+{
+	int greater;
+	if (n1 >= n2)
+		greater = n1;
+	else
+		greater = n2;
+	return (greater);
+}
+/*
+** This function return the number of digits of a given number
+*/
+
+// unsigned int	get_digits(int n)
+// {
+// 	unsigned int	digits;
+
+// 	digits = (n <= 0) ? 1 : 0;
+// 	while (n != 0)
+// 	{
+// 		n /= 10;
+// 		digits++;
+// 	}
+// 	return (digits);
+// }
