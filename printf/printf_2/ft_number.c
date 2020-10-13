@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 15:22:32 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/13 16:41:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,13 @@ void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
 
-	if (n < 0 && modifiers.width < 0)
-		modifiers.width++;
 	if (!(n == 0 && (modifiers.precision == 0 || modifiers.precision == -1)))
 	{
 		if (modifiers.precision != -2 && modifiers.width)
 			handle_number2(n, modifiers, char_sum);
 		else
 		{
-			if (modifiers.zero_padded && modifiers.width != 0 && n < 0)
+			if (modifiers.zero_padded && n < 0 && !modifiers.left_justified)
 				modifiers.width--;
 			/* Rellena con zeros si bien tiene el zero padded puesto o si tiene puesta la precision */
 			if (n < 0 && ((modifiers.zero_padded && modifiers.width) ||

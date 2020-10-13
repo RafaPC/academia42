@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 13:39:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/13 18:08:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 		pointer_length = 3;
 	else
 		pointer_length = 2 + get_hex_digits((long)pointer);
-/* Solo para justificación normal */
+//Solo para justificación normal
 	if (modifiers.width > pointer_length)
 	{
 		if (modifiers.left_justified)

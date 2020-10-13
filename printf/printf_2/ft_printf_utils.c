@@ -6,23 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 13:16:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:17:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft/libft.h"
-
-t_modifiers	ft_initialize_struct(void)
-{
-	t_modifiers modifiers;
-
-	modifiers.left_justified = FALSE;
-	modifiers.zero_padded = FALSE;
-	modifiers.precision = -2;
-	modifiers.width = 0;
-	return (modifiers);
-}
 
 int			is_specifier(char c)
 {
@@ -63,7 +52,7 @@ char		*get_width(char *format_string, t_modifiers *modifiers)
 }
 
 /*
-* TODO: Mirar si esto hace falta si quiera
+** TODO: Mirar si esto hace falta si quiera
 */
 
 int			ft_atoi(const char *str)

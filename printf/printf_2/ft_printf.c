@@ -6,14 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 15:27:15 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/13 17:38:35 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft/libft.h"
 
-int		ft_printf(const char *format_string, ...)
+int			ft_printf(const char *format_string, ...)
 {
 	va_list		args;
 	int			char_sum;
@@ -37,8 +37,11 @@ int		ft_printf(const char *format_string, ...)
 	return (char_sum);
 }
 
-/*TODO: aqui al final o algo hacer que imprima los caracteres escapados */
-char	*read_modifiers(va_list args, char *format_string,
+/*
+** TODO: aqui al final o algo hacer que imprima los caracteres escapados
+*/
+
+char		*read_modifiers(va_list args, char *format_string,
 t_modifiers *modifiers, int *char_sum)
 {
 	while (!is_specifier(*format_string))
@@ -67,7 +70,7 @@ t_modifiers *modifiers, int *char_sum)
 	return (format_string);
 }
 
-void	format2(va_list args, char specifier, t_modifiers modifiers,
+void		format2(va_list args, char specifier, t_modifiers modifiers,
 int *char_sum)
 {
 	if (specifier == 'i')
@@ -88,4 +91,19 @@ int *char_sum)
 		handle_string(va_arg(args, char*), modifiers, char_sum);
 	else
 		print_symbol(modifiers, char_sum);
+}
+
+/*
+** This function initialices modifiers values and return them in a struct
+*/
+
+t_modifiers	ft_initialize_struct(void)
+{
+	t_modifiers modifiers;
+
+	modifiers.left_justified = FALSE;
+	modifiers.zero_padded = FALSE;
+	modifiers.precision = -2;
+	modifiers.width = 0;
+	return (modifiers);
 }
