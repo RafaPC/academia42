@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 12:58:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/13 15:22:32 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,33 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 	print_number(ABS(n), char_sum);
 	if (modifiers.left_justified)
 		*char_sum += print_justification(' ', modifiers.width - number_width);
+}
+
+void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
+{
+	if (modifiers.precision != 0 && modifiers.precision != -1)
+	{
+		if (modifiers.precision != -2)
+		{
+			if (modifiers.width == 0)
+			{
+				modifiers.zero_padded = TRUE;
+				modifiers.width = modifiers.precision;
+				modifiers.precision = -2;
+				if (n < 0)
+					modifiers.width++;
+			}
+		}
+		handle_number(n ,modifiers, char_sum);
+	}
+	else if(modifiers.width != 0 && modifiers.precision == 0)
+	{
+		*char_sum += ft_printf("%*s", modifiers.width, "");
+	}
+	else if(modifiers.precision == -1)
+	{
+		*char_sum += ft_printf("%i", n);
+	}
 }
 
 void	print_number(long n, int *char_sum)
