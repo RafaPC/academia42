@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 12:00:42 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/05 19:40:05 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/12 19:34:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,3 @@ void	print_number(long n, int *char_sum)
 	write(1, &c, 1);
 	(*char_sum)++;
 }
-
-//TODO: lo dejo por aqui, a lo mejor hacer una función, que reciba los modifiers, el dato, y un puntero a una funcion
-//y esto comprueba si tiene que hacer la justificacion antes o despues, y cuando toca llama a la funcion apuntada con el dato
