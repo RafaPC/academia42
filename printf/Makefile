@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/14 12:04:21 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/14 15:03:21 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME = libftprintf.a
 TEST = a.out
 CC = gcc -c
-SRCS = ft_printf.c ft_printf_utils.c ft_strings.c ft_number.c ft_hex.c
+SRCS = ft_printf.c ft_printf_utils.c ft_printf_modifiers_utils.c ft_strings.c ft_number.c ft_hex.c
 OBJS = ${SRCS:.c=.o}
 
 CFLAGS = -Wall -Wextra -Werror
