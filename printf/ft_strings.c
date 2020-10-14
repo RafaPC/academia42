@@ -6,14 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 18:03:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 13:15:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 
-void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
+void		handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.precision != -1 || string == NULL)
 	{
@@ -23,7 +22,7 @@ void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 	}
 }
 
-void	print_string(char *string, t_modifiers modifiers, int *char_sum)
+void		print_string(char *string, t_modifiers modifiers, int *char_sum)
 {
 	int		i;
 	int		len;
@@ -49,7 +48,7 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 		print_justification(' ', modifiers.width - len);
 }
 
-void	print_char(char c, t_modifiers modifiers, int *char_sum)
+void		print_char(char c, t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.width > 1)
 	{
@@ -58,10 +57,6 @@ void	print_char(char c, t_modifiers modifiers, int *char_sum)
 			print_justification((modifiers.zero_padded)
 			? '0' : ' ', modifiers.width - 1);
 		write(1, &c, 1);
-/*
-** Aquí hago que si está justificado a la izquierda imprima espacios,
-** o sea que suda de los ceros
-*/
 		if (modifiers.left_justified == TRUE)
 			print_justification((modifiers.zero_padded)
 			? '0' : ' ', modifiers.width - 1);
@@ -70,7 +65,7 @@ void	print_char(char c, t_modifiers modifiers, int *char_sum)
 		*char_sum += write(1, &c, 1);
 }
 
-void	print_symbol(t_modifiers modifiers, int *char_sum)
+void		print_symbol(t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.width > 0)
 	{
@@ -87,4 +82,14 @@ void	print_symbol(t_modifiers modifiers, int *char_sum)
 	}
 	else
 		*char_sum += write(1, "%", 1);
+}
+
+unsigned	ft_strlen(const char *s)
+{
+	unsigned int	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }

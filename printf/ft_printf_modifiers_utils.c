@@ -1,23 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*   ft_printf_modifiers_utils.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/13 17:17:52 by rprieto-         ###   ########.fr       */
+/*   Created: 2020/10/14 13:21:23 by rprieto-          #+#    #+#             */
+/*   Updated: 2020/10/14 13:31:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
-
-int			is_specifier(char c)
-{
-	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
-	c == 'u' || c == 'x' || c == 'X' || c == '%') ? TRUE : FALSE;
-}
 
 char		*get_precision(va_list args, char *format_string,
 t_modifiers *modifiers)
@@ -41,19 +34,15 @@ t_modifiers *modifiers)
 char		*get_width(char *format_string, t_modifiers *modifiers)
 {
 	modifiers->width = ft_atoi(format_string);
-	while (ft_isdigit(*(format_string + 1)))
-		format_string++;
 	if (modifiers->width < 0)
 	{
 		modifiers->width = -modifiers->width;
 		modifiers->left_justified = TRUE;
 	}
+	while (*(format_string + 1) >= '0' && *(format_string + 1) <= '9')
+		format_string++;
 	return (format_string);
 }
-
-/*
-** TODO: Mirar si esto hace falta si quiera
-*/
 
 int			ft_atoi(const char *str)
 {
@@ -71,17 +60,4 @@ int			ft_atoi(const char *str)
 		i++;
 	}
 	return (number);
-}
-
-int			print_justification(char c, int times)
-{
-	int times_copy;
-
-	times_copy = times;
-	while (times > 0)
-	{
-		write(1, &c, 1);
-		times--;
-	}
-	return (times_copy);
 }
