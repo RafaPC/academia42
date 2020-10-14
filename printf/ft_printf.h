@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 16:19:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 20:29:48 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ void			print_hex(long n, int *char_sum, char letter_type);
 int				get_hex_digits(long n);
 void			handle_pointer(void *pointer, t_modifiers modifiers,
 int *char_sum);
-void			print_pointer(void *pointer, int *char_sum);
+void			print_pointer(void *pointer, t_modifiers modifiers, int *char_sum);
 #endif

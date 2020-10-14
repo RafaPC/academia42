@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 20:15:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 20:58:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	int pointer_length;
 	int justification_width;
 
-	if (pointer == NULL)
+	if (modifiers.precision == -1)
+		pointer_length = 2;
+	else if (pointer == NULL)
 		pointer_length = 3;
 	else
 		pointer_length = 2 + get_hex_digits((long)pointer);
@@ -84,26 +86,30 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	{
 		justification_width = modifiers.width - pointer_length;
 		*char_sum += justification_width;
+		if (!modifiers.left_justified)
+			print_justification(' ', justification_width);
+		print_pointer(pointer, modifiers, char_sum);
 		if (modifiers.left_justified)
-		{
-			print_pointer(pointer, char_sum);
 			print_justification(' ', justification_width);
-		}
-		else
-		{
-			print_justification(' ', justification_width);
-			print_pointer(pointer, char_sum);
-		}
 	}
 	else
-		print_pointer(pointer, char_sum);
+		print_pointer(pointer, modifiers, char_sum);
 }
 
-void	print_pointer(void *pointer, int *char_sum)
+void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
 	*char_sum += write(1, "0x", 2);
 	if (pointer == NULL)
-		*char_sum += write(1, "0", 1);
+	{
+		if (modifiers.precision > 0)
+			*char_sum += print_justification('0', modifiers.precision);
+		else if (modifiers.precision != -1)
+			*char_sum += write(1, "0", 1);
+	}
 	else
+	{
+		if (modifiers.precision > 0 && modifiers.precision > get_hex_digits(n))
+			*char_sum += print_justification('0', modifiers.precision);
 		print_hex((long)pointer, char_sum, LOWER_CASE);
+	}
 }
