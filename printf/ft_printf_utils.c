@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 21:08:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 00:17:12 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,6 @@ char		*get_width(char *format_string, t_modifiers *modifiers)
 		format_string++;
 	return (format_string);
 }
-
-// int			ft_atoi(const char *str)
-// {
-// 	int			i;
-// 	long int	number;
-
-// 	i = 0;
-// 	number = -1;
-// 	while (str[i] >= '0' && str[i] <= '9')
-// 	{
-// 		if (number == -1)
-// 			number = str[i] - 48;
-// 		else
-// 			number = number * 10 + str[i] - 48;
-// 		i++;
-// 	}
-// 	return (number);
-// }
 
 int			print_justification(char c, int times)
 {
