@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 13:30:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 16:19:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,12 @@ int				is_specifier(char c);
 /*
 **				FT_PRINTF_UTILS.C
 */
-int				print_justification(char c, int times);
-unsigned		get_digits(int n);
-int				abs(int n);
-/*
-**				FT_PRINTF_MODIFIERS_UTILS.C
-*/
 char			*get_precision(va_list args, char *format_string,
 t_modifiers *modifiers);
 char			*get_width(char *format_string, t_modifiers *modifiers);
-int				ft_atoi(const char *str);
+// int				ft_atoi(const char *str);
+int				print_justification(char c, int times);
+unsigned		get_digits(int n);
 /*
 **				FT_STRINGS.H
 */
@@ -63,7 +59,6 @@ void			print_string(char *string, t_modifiers modifiers,
 int *char_sum);
 void			print_char(char c, t_modifiers modifiers, int *char_sum);
 void			print_symbol(t_modifiers modifiers, int *char_sum);
-unsigned		ft_strlen(const char *s);
 /*
 **				FT_NUMBERS.C
 */

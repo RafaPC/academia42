@@ -6,11 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 13:15:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 16:17:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft/libft.h"
 
 void		handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
@@ -82,14 +83,4 @@ void		print_symbol(t_modifiers modifiers, int *char_sum)
 	}
 	else
 		*char_sum += write(1, "%", 1);
-}
-
-unsigned	ft_strlen(const char *s)
-{
-	unsigned int	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
 }

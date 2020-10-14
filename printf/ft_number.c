@@ -6,11 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 12:38:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 16:13:26 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft/libft.h"
 
 void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
 {
@@ -64,7 +65,7 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 	int number_width;
 	int digits;
 
-	digits = (int)get_digits(abs(n));
+	digits = (int)get_digits(ft_abs(n));
 	number_width = modifiers.precision > digits ? modifiers.precision : digits;
 	if (n < 0)
 		number_width++;
@@ -74,7 +75,7 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 		*char_sum += write(1, "-", 1);
 	if (modifiers.precision > digits)
 		*char_sum += print_justification('0', modifiers.precision - digits);
-	print_number(abs(n), char_sum);
+	print_number(ft_abs(n), char_sum);
 	if (modifiers.left_justified)
 		*char_sum += print_justification(' ', modifiers.width - number_width);
 }
