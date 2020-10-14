@@ -1,6 +1,7 @@
 *.dSYM
 *.out
 *.o
+*.a
 *.exe
 main.c
 */pft/
