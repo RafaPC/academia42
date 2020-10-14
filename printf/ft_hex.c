@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 20:11:13 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 20:15:34 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	print_pointer(void *pointer, int *char_sum)
 {
 	*char_sum += write(1, "0x", 2);
 	if (pointer == NULL)
-		char_sum += write(1, "0", 1);
+		*char_sum += write(1, "0", 1);
 	else
 		print_hex((long)pointer, char_sum, LOWER_CASE);
 }
