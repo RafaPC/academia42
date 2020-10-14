@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 20:58:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 21:03:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 
 void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
+	int pointer_length;
+
+	pointer_length = get_hex_digits(pointer);
 	*char_sum += write(1, "0x", 2);
 	if (pointer == NULL)
 	{
@@ -108,8 +111,9 @@ void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	}
 	else
 	{
-		if (modifiers.precision > 0 && modifiers.precision > get_hex_digits(n))
-			*char_sum += print_justification('0', modifiers.precision);
+		if (modifiers.precision > 0 && modifiers.precision > pointer_length)
+			*char_sum += print_justification('0',
+			modifiers.precision - pointer_length);
 		print_hex((long)pointer, char_sum, LOWER_CASE);
 	}
 }
