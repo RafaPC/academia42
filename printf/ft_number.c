@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 19:29:17 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 00:13:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
 	}
 	else if (modifiers.width != 0 && modifiers.precision == 0)
 		*char_sum += ft_printf("%*s", modifiers.width, "");
-	else if (modifiers.precision == -1)
-		*char_sum += ft_printf("%i", n);
+	else if (modifiers.precision == -1 && modifiers.width > 0)
+		*char_sum += print_justification(' ', modifiers.width);
 }
 
 void	print_number(long n, int *char_sum)
