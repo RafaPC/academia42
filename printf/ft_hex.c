@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 17:01:17 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:40:06 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		get_hex_digits(long n)
 {
 	unsigned int	digits;
 
-	digits = (n <= 0) ? 1 : 0;
+	digits = (n < 0) ? 1 : 0;
 	while (n != 0)
 	{
 		n /= 16;

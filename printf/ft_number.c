@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 18:53:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 19:29:17 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
 
-	justification_width = modifiers.width - ft_nbrlen(n);
+	justification_width = modifiers.width - ft_nbrlen(n) - ((n < 0) ? 1 : 0);
 	if (justification_width > 0)
 	{
 		*char_sum += justification_width;
