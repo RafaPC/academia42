@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 21:04:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 21:12:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	int pointer_length;
 	int justification_width;
 
-	if (modifiers.precision == -1)
+	if (modifiers.precision == -1 || modifiers.precision == 0)
 		pointer_length = 2;
 	else if (pointer == NULL)
 		pointer_length = 3;
