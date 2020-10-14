@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 21:15:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 00:10:10 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char letter_type)
 	justification_width = modifiers.width - number_width;
 	if (n == 0 && modifiers.precision == -2)
 		justification_width--;
-	if (n == 0 && modifiers.precision != -2)
-		modifiers.precision--;
 	if (justification_width > 0 && modifiers.left_justified == FALSE)
 	{
 		if (modifiers.zero_padded && modifiers.precision != -2 &&
@@ -34,9 +32,9 @@ char letter_type)
 			*char_sum += print_justification((modifiers.zero_padded)
 			? '0' : ' ', justification_width);
 	}
-	if (modifiers.precision != -2)
+	if (modifiers.precision != 2 && modifiers.precision > get_hex_digits(n))
 		*char_sum += print_justification('0', modifiers.precision - get_hex_digits(n));
-	if (n != 0 || (modifiers.precision != 0 && modifiers.precision != -1))
+	if ((n == 0 && modifiers.precision == -2) || n != 0)
 		print_hex(n, char_sum, letter_type);
 	if (justification_width > 0 && modifiers.left_justified)
 		*char_sum += print_justification(' ', justification_width);
