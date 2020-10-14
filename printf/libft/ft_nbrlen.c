@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 11:44:29 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/28 13:05:20 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:47:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@ int	ft_nbrlen(int n)
 	long	nbr;
 	int		len;
 
-	len = 0;
+	len = (n == 0) ? 1 : 0;
 	nbr = (n < 0) ? -n : n;
 	while (nbr != 0)
 	{

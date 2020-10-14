@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 16:14:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:54:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,4 @@ int			print_justification(char c, int times)
 		times--;
 	}
 	return (times_copy);
-}
-
-unsigned	get_digits(int n)
-{
-	unsigned int	digits;
-
-	digits = (n <= 0) ? 1 : 0;
-	while (n != 0)
-	{
-		n /= 10;
-		digits++;
-	}
-	return (digits);
 }

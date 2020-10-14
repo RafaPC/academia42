@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 17:19:59 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 18:53:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
 
-	justification_width = modifiers.width - get_digits(n);
+	justification_width = modifiers.width - ft_nbrlen(n);
 	if (justification_width > 0)
 	{
 		*char_sum += justification_width;
@@ -66,7 +66,7 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 	int digits;
 	int justification_width;
 
-	digits = (int)get_digits(ft_abs(n));
+	digits = ft_nbrlen(ft_abs(n));
 	number_width = modifiers.precision > digits ? modifiers.precision : digits;
 	if (n < 0)
 		number_width++;
