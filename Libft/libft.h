@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:42:43 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/12/02 16:53:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 15:18:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ int					ft_checkchar(char c, char *set);
 int					ft_isspace(int c);
 int					ft_get_index_of(char *string, char c);
 int					ft_nbrlen(int n);
+int					ft_abs(int n);
 #endif
