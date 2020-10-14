@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 19:47:24 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 20:11:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,24 @@ int		get_hex_digits(long n)
 void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
 	int pointer_length;
+	int justification_width;
 
 	if (pointer == NULL)
 		pointer_length = 3;
 	else
 		pointer_length = 2 + get_hex_digits((long)pointer);
-//Solo para justificación normal
 	if (modifiers.width > pointer_length)
 	{
-		*char_sum += modifiers.width - pointer_length;
+		justification_width = modifiers.width - pointer_length;
+		*char_sum += justification_width;
 		if (modifiers.left_justified)
 		{
 			print_pointer(pointer, char_sum);
-			print_justification(' ', modifiers.width - pointer_length);
+			print_justification(' ', justification_width);
 		}
 		else
 		{
-			print_justification(' ', modifiers.width - pointer_length);
+			print_justification(' ', justification_width);
 			print_pointer(pointer, char_sum);
 		}
 	}
