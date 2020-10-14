@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 18:54:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 21:08:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_modifiers *modifiers)
 		format_string++;
 	}
 	else if (is_specifier(*(format_string + 1)))
-		modifiers->precision = 0;
+		modifiers->precision = -1;
 	else
 		modifiers->precision = ft_atoi(format_string + 1);
 	while (!is_specifier(*(format_string + 1)))
