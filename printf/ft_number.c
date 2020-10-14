@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 16:13:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/14 17:19:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,22 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int number_width;
 	int digits;
+	int justification_width;
 
 	digits = (int)get_digits(ft_abs(n));
 	number_width = modifiers.precision > digits ? modifiers.precision : digits;
 	if (n < 0)
 		number_width++;
-	if (!modifiers.left_justified)
-		*char_sum += print_justification(' ', modifiers.width - number_width);
+	justification_width = modifiers.width - number_width;
+	if (!modifiers.left_justified && justification_width > 0)
+		*char_sum += print_justification(' ', justification_width);
 	if (n < 0)
 		*char_sum += write(1, "-", 1);
 	if (modifiers.precision > digits)
 		*char_sum += print_justification('0', modifiers.precision - digits);
 	print_number(ft_abs(n), char_sum);
-	if (modifiers.left_justified)
-		*char_sum += print_justification(' ', modifiers.width - number_width);
+	if (modifiers.left_justified && justification_width > 0)
+		*char_sum += print_justification(' ', justification_width);
 }
 
 void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
@@ -112,8 +114,7 @@ void	print_number(long n, int *char_sum)
 	if (n_copy < 0)
 	{
 		n_copy = -n_copy;
-		write(1, "-", 1);
-		(*char_sum)++;
+		*char_sum += write(1, "-", 1);
 	}
 	if (n_copy > 9)
 	{
@@ -122,6 +123,5 @@ void	print_number(long n, int *char_sum)
 	}
 	else
 		c = n_copy + 48;
-	write(1, &c, 1);
-	(*char_sum)++;
+	*char_sum += write(1, &c, 1);
 }
