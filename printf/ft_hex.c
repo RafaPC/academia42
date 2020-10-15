@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:13:15 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:20:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ char letter_type)
 		justification_width--;
 	if (justification_width > 0 && !modifiers.left_justified)
 	{
-		if (modifiers.zero_padded && modifiers.precision != -2 &&
-		modifiers.width != -1)
+		if (modifiers.zero_padded && modifiers.precision != -2)
 			*char_sum += print_justification(' ', justification_width);
 		else
 			*char_sum += print_justification((modifiers.zero_padded)
