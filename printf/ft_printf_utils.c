@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 12:39:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 16:14:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char		*get_width(char *format_string, t_modifiers *modifiers)
 		modifiers->width = -modifiers->width;
 		modifiers->left_justified = true;
 	}
-	while (*(format_string + 1) >= '0' && *(format_string + 1) <= '9')
+	while (ft_isdigit(*(format_string + 1)))
 		format_string++;
 	return (format_string);
 }
