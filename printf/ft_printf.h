@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:09:52 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:17:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void			print_symbol(t_modifiers modifiers, int *char_sum);
 **				FT_NUMBERS.C
 */
 void			handle_number(long n, t_modifiers modifiers, int *char_sum);
-void			handle_number1_5(long n, t_modifiers modifiers, int *char_sum);
-void			handle_number2(long n, t_modifiers modifiers, int *char_sum);
+void			handle_number_no_prec(long n, t_modifiers modifiers, int *char_sum);
+void			handle_number_prec_width(long n, t_modifiers modifiers,
+int *char_sum);
 void			print_number(long n, int *char_sum);
 void			handle_decimal(long n, t_modifiers modifiers, int *char_sum);
-
 /*
 **				FT_HEX.C
 */
