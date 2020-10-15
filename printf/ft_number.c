@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 12:39:14 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 15:27:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
 
+	*char_sum += ft_nbrlen(n);
 	justification_width = modifiers.width - ft_nbrlen(n) - ((n < 0) ? 1 : 0);
 	if (justification_width > 0)
 	{
@@ -52,12 +53,12 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 		if (modifiers.left_justified == false)
 			print_justification((modifiers.zero_padded) ? '0' : ' ',
 			justification_width);
-		print_number(n, char_sum);
+		ft_putnbr_fd(n, 1);
 		if (modifiers.left_justified == true)
 			print_justification(' ', justification_width);
 	}
 	else
-		print_number(n, char_sum);
+		ft_putnbr_fd(n, 1);
 }
 
 void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
@@ -66,6 +67,7 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 	int digits;
 	int justification_width;
 
+	*char_sum += ft_nbrlen(ft_abs(n));
 	digits = ft_nbrlen(ft_abs(n));
 	number_width = modifiers.precision > digits ? modifiers.precision : digits;
 	if (n < 0)
@@ -77,7 +79,7 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 		*char_sum += write(1, "-", 1);
 	if (modifiers.precision > digits)
 		*char_sum += print_justification('0', modifiers.precision - digits);
-	print_number(ft_abs(n), char_sum);
+	ft_putnbr_fd(ft_abs(n), 1);
 	if (modifiers.left_justified && justification_width > 0)
 		*char_sum += print_justification(' ', justification_width);
 }
@@ -103,25 +105,4 @@ void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
 		*char_sum += ft_printf("%*s", modifiers.width, "");
 	else if (modifiers.precision == -1 && modifiers.width > 0)
 		*char_sum += print_justification(' ', modifiers.width);
-}
-
-void	print_number(long n, int *char_sum)
-{
-	long int	n_copy;
-	char		c;
-
-	n_copy = n;
-	if (n_copy < 0)
-	{
-		n_copy = -n_copy;
-		*char_sum += write(1, "-", 1);
-	}
-	if (n_copy > 9)
-	{
-		print_number(n_copy / 10, char_sum);
-		c = n_copy % 10 + 48;
-	}
-	else
-		c = n_copy + 48;
-	*char_sum += write(1, &c, 1);
 }
