@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:16:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:19:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_number(long n, t_modifiers modifiers, int *char_sum)
 	else
 	{
 		if (modifiers.precision != -2 && modifiers.width)
-			handle_number2(n, modifiers, char_sum);
+			handle_number_prec_width(n, modifiers, char_sum);
 		else
 		{
 			if (modifiers.zero_padded && n < 0 && !modifiers.left_justified)
@@ -40,7 +40,7 @@ void	handle_number(long n, t_modifiers modifiers, int *char_sum)
 				modifiers.width = modifiers.precision;
 				modifiers.zero_padded = true;
 			}
-			handle_number1_5(n, modifiers, char_sum);
+			handle_number_no_prec(n, modifiers, char_sum);
 		}
 	}
 }
