@@ -6,14 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 13:48:50 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 16:36:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft/libft.h"
 
-int					ft_printf(const char *format_string, ...)
+int			ft_printf(const char *format_string, ...)
 {
 	va_list		args;
 	int			char_sum;
@@ -38,10 +38,12 @@ int					ft_printf(const char *format_string, ...)
 }
 
 /*
-** TODO: aqui al final o algo hacer que imprima los caracteres escapados
+**	This function reads the format string searching for modifiers and
+**	setting the values in the modifiers struct
+**	Then returns the format string when it encounters a specifier
 */
 
-char			*read_modifiers(va_list args, char *format_string,
+char		*read_modifiers(va_list args, char *format_string,
 t_modifiers *modifiers, int *char_sum)
 {
 	while (!is_specifier(*format_string))
@@ -70,7 +72,12 @@ t_modifiers *modifiers, int *char_sum)
 	return (format_string);
 }
 
-void			format(va_list args, char specifier, t_modifiers modifiers,
+/*
+**	This function reads the specifier it gets as a parameter and calls
+**	the correct function depending on the type of specifier
+*/
+
+void		format(va_list args, char specifier, t_modifiers modifiers,
 int *char_sum)
 {
 	if (specifier == 'i')
@@ -94,7 +101,7 @@ int *char_sum)
 }
 
 /*
-**	This function initialices modifiers values and return them in a struct
+**	This function initialices modifiers values and returns them in a struct
 */
 
 t_modifiers	ft_initialize_struct(void)
@@ -109,10 +116,11 @@ t_modifiers	ft_initialize_struct(void)
 }
 
 /*
-**	This functions recieves a char and returns true if it's a specifier
+**	This functions recieves a char and returns true or false
+**	wether it's a specifier or not
 */
 
-t_bool				is_specifier(char c)
+t_bool		is_specifier(char c)
 {
 	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
 	c == 'u' || c == 'x' || c == 'X' || c == '%') ? true : false;

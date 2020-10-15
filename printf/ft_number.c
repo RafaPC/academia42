@@ -6,35 +6,18 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 16:12:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:16:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft/libft.h"
 
-void	print_number(long n, int *char_sum)
-{
-	long int	n_copy;
-	char		c;
+/*
+**	It receives a number and does some logic depending on the modifiers
+*/
 
-	n_copy = n;
-	if (n_copy < 0)
-	{
-		n_copy = -n_copy;
-		*char_sum += write(1, "-", 1);
-	}
-	if (n_copy > 9)
-	{
-		print_number(n_copy / 10, char_sum);
-		c = n_copy % 10 + 48;
-	}
-	else
-		c = n_copy + 48;
-	*char_sum += write(1, &c, 1);
-}
-
-void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
+void	handle_number(long n, t_modifiers modifiers, int *char_sum)
 {
 	if (n == 0 && (modifiers.precision == 0 || modifiers.precision == -1))
 		*char_sum += ft_printf("%*s", modifiers.width, "");
@@ -62,7 +45,13 @@ void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
 	}
 }
 
-void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
+/*
+**	This function receives a number without the precision set and prints
+**	some justification depending on the width
+**	Then prints the number
+*/
+
+void	handle_number_no_prec(long n, t_modifiers modifiers, int *char_sum)
 {
 	int justification_width;
 
@@ -70,18 +59,25 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 	if (justification_width > 0)
 	{
 		*char_sum += justification_width;
-		if (modifiers.left_justified == false)
+		if (!modifiers.left_justified)
 			print_justification((modifiers.zero_padded) ? '0' : ' ',
 			justification_width);
 		print_number(n, char_sum);
-		if (modifiers.left_justified == true)
+		if (modifiers.left_justified)
 			print_justification(' ', justification_width);
 	}
 	else
 		print_number(n, char_sum);
 }
 
-void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
+/*
+**	This function receives a number with precision and width
+**	and prints some justification depending on them
+**	Then prints the number
+*/
+
+void	handle_number_prec_width(long n, t_modifiers modifiers,
+int *char_sum)
 {
 	int number_width;
 	int digits;
@@ -102,6 +98,12 @@ void	handle_number2(long int n, t_modifiers modifiers, int *char_sum)
 	if (modifiers.left_justified && justification_width > 0)
 		*char_sum += print_justification(' ', justification_width);
 }
+
+/*
+**	This function changes some values of the modifiers
+**	depending on other modifiers values
+**	Then call other functions to print the result
+*/
 
 void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
 {
@@ -124,4 +126,30 @@ void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
 		*char_sum += ft_printf("%*s", modifiers.width, "");
 	else if (modifiers.precision == -1 && modifiers.width > 0)
 		*char_sum += print_justification(' ', modifiers.width);
+}
+
+/*
+**	This function receives a long number and a pointer to the character counter
+**	It prints the number and sums char_sum by 1 for each character it prints
+*/
+
+void	print_number(long n, int *char_sum)
+{
+	long int	n_copy;
+	char		c;
+
+	n_copy = n;
+	if (n_copy < 0)
+	{
+		n_copy = -n_copy;
+		*char_sum += write(1, "-", 1);
+	}
+	if (n_copy > 9)
+	{
+		print_number(n_copy / 10, char_sum);
+		c = n_copy % 10 + 48;
+	}
+	else
+		c = n_copy + 48;
+	*char_sum += write(1, &c, 1);
 }

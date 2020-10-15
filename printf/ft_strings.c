@@ -6,14 +6,20 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 14:08:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 17:14:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft/libft.h"
 
-void		handle_string(char *string, t_modifiers modifiers, int *char_sum)
+/*
+**	This function receives a string and does some logic depending
+**	on the modifiers
+**	If the precision is set well or is not set, then calls print_string()
+*/
+
+void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.precision != -1)
 	{
@@ -24,6 +30,10 @@ void		handle_string(char *string, t_modifiers modifiers, int *char_sum)
 	else if (modifiers.width > 0)
 		*char_sum += print_justification(' ', modifiers.width);
 }
+
+/*
+**	This function prints a string received according to the modifiers
+*/
 
 void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 {
@@ -51,7 +61,11 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 		print_justification(' ', modifiers.width - len);
 }
 
-void		print_char(char c, t_modifiers modifiers, int *char_sum)
+/*
+**	This function receives a char and prints it according to the modifiers
+*/
+
+void	print_char(char c, t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.width > 1)
 	{
@@ -68,7 +82,11 @@ void		print_char(char c, t_modifiers modifiers, int *char_sum)
 		*char_sum += write(1, &c, 1);
 }
 
-void		print_symbol(t_modifiers modifiers, int *char_sum)
+/*
+**	This function prints the symbol % according to the modifiers
+*/
+
+void	print_symbol(t_modifiers modifiers, int *char_sum)
 {
 	if (modifiers.width > 0)
 	{
