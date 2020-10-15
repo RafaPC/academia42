@@ -6,16 +6,16 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:33:34 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 15:27:41 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:09:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isalpha(int c)
+t_bool	ft_isalpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (TRUE);
+		return (true);
 	else
-		return (FALSE);
+		return (false);
 }
