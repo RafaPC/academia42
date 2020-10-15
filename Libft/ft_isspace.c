@@ -6,14 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:52:18 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:56:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:09:54 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isspace(int c)
+t_bool	ft_isspace(int c)
 {
 	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
-	c == '\r' || c == ' ') ? TRUE : FALSE;
+	c == '\r' || c == ' ') ? true : false;
 }

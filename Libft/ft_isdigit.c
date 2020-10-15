@@ -6,13 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 16:38:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/21 15:36:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:09:24 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isdigit(int c)
+t_bool	ft_isdigit(int c)
 {
-	return (c >= '0' && c <= '9') ? TRUE : FALSE;
+	return (c >= '0' && c <= '9') ? true : false;
 }

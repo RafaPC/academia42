@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:42:43 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 15:18:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:17:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ typedef struct		s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
-# define TRUE	1
-# define FALSE	0
+typedef enum	e_bool
+{false, true}	t_bool;
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -32,11 +32,12 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 unsigned int		ft_strlen(const char *s);
-int					ft_isalpha(int c);
-int					ft_isdigit(int c);
-int					ft_isalnum(int c);
-int					ft_isascii(int c);
-int					ft_isprint(int c);
+t_bool				ft_isalpha(int c);
+t_bool				ft_isdigit(int c);
+t_bool				ft_isalnum(int c);
+t_bool				ft_isascii(int c);
+t_bool				ft_isprint(int c);
+t_bool				ft_isspace(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 char				*ft_strchr(const char *s, int c);
@@ -67,8 +68,7 @@ void				ft_lstadd_back(t_list **alst, t_list *new);
 void				ft_lstdelone(t_list *lst, void (*del)(void*));
 void				ft_lstclear(t_list **lst, void (*del)(void*));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
-int					ft_checkchar(char c, char *set);
-int					ft_isspace(int c);
+t_bool				ft_checkchar(char c, char *set);
 int					ft_get_index_of(char *string, char c);
 int					ft_nbrlen(int n);
 int					ft_abs(int n);
