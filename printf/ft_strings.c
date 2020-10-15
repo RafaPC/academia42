@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 13:49:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 14:03:06 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		print_char(char c, t_modifiers modifiers, int *char_sum)
 			print_justification((modifiers.zero_padded)
 			? '0' : ' ', modifiers.width - 1);
 		write(1, &c, 1);
-		if (modifiers.left_justified)
+		if (!modifiers.left_justified)
 			print_justification((modifiers.zero_padded)
 			? '0' : ' ', modifiers.width - 1);
 	}
