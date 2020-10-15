@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 00:17:12 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:39:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char		*get_width(char *format_string, t_modifiers *modifiers)
 	if (modifiers->width < 0)
 	{
 		modifiers->width = -modifiers->width;
-		modifiers->left_justified = TRUE;
+		modifiers->left_justified = true;
 	}
 	while (*(format_string + 1) >= '0' && *(format_string + 1) <= '9')
 		format_string++;

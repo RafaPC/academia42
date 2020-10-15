@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 00:13:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 12:39:14 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	handle_number(long int n, t_modifiers modifiers, int *char_sum)
 			if (modifiers.precision != -2 && modifiers.width == 0)
 			{
 				modifiers.width = modifiers.precision;
-				modifiers.zero_padded = TRUE;
+				modifiers.zero_padded = true;
 			}
 			handle_number1_5(n, modifiers, char_sum);
 		}
@@ -49,11 +49,11 @@ void	handle_number1_5(long int n, t_modifiers modifiers, int *char_sum)
 	if (justification_width > 0)
 	{
 		*char_sum += justification_width;
-		if (modifiers.left_justified == FALSE)
+		if (modifiers.left_justified == false)
 			print_justification((modifiers.zero_padded) ? '0' : ' ',
 			justification_width);
 		print_number(n, char_sum);
-		if (modifiers.left_justified == TRUE)
+		if (modifiers.left_justified == true)
 			print_justification(' ', justification_width);
 	}
 	else
@@ -90,7 +90,7 @@ void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
 		{
 			if (modifiers.width == 0)
 			{
-				modifiers.zero_padded = TRUE;
+				modifiers.zero_padded = true;
 				modifiers.width = modifiers.precision;
 				modifiers.precision = -2;
 				if (n < 0)

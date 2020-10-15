@@ -6,13 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 00:10:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/15 13:49:01 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum,
+void		handle_hex_number(long n, t_modifiers modifiers, int *char_sum,
 char letter_type)
 {
 	int justification_width;
@@ -23,7 +23,7 @@ char letter_type)
 	justification_width = modifiers.width - number_width;
 	if (n == 0 && modifiers.precision == -2)
 		justification_width--;
-	if (justification_width > 0 && modifiers.left_justified == FALSE)
+	if (justification_width > 0 && !modifiers.left_justified)
 	{
 		if (modifiers.zero_padded && modifiers.precision != -2 &&
 		modifiers.width != -1)
@@ -33,18 +33,19 @@ char letter_type)
 			? '0' : ' ', justification_width);
 	}
 	if (modifiers.precision != 2 && modifiers.precision > get_hex_digits(n))
-		*char_sum += print_justification('0', modifiers.precision - get_hex_digits(n));
+		*char_sum += print_justification('0',
+		modifiers.precision - get_hex_digits(n));
 	if ((n == 0 && modifiers.precision == -2) || n != 0)
 		print_hex(n, char_sum, letter_type);
 	if (justification_width > 0 && modifiers.left_justified)
 		*char_sum += print_justification(' ', justification_width);
 }
 
-void	print_hex(long n, int *char_sum, char letter_type)
+void	print_hex(long n, int *char_sum, t_case_type letter_type)
 {
 	char		*hex_characters;
 
-	hex_characters = (letter_type == LOWER_CASE)
+	hex_characters = (letter_type == lower_case)
 	? "0123456789abcdef" : "0123456789ABCDEF";
 	if (n > 15)
 	{
@@ -56,9 +57,9 @@ void	print_hex(long n, int *char_sum, char letter_type)
 	(*char_sum)++;
 }
 
-int		get_hex_digits(long n)
+int			get_hex_digits(long n)
 {
-	unsigned int	digits;
+	int	digits;
 
 	digits = (n < 0) ? 1 : 0;
 	while (n != 0)
@@ -69,7 +70,7 @@ int		get_hex_digits(long n)
 	return (digits);
 }
 
-void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
+void		handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
 	int pointer_length;
 	int justification_width;
@@ -109,12 +110,12 @@ void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 			else if (modifiers.precision != -1)
 				*char_sum += write(1, "0", 1);
 		}
-		else if(modifiers.precision)
+		else if (modifiers.precision)
 		{
 			if (modifiers.precision > 0 && modifiers.precision > pointer_length)
-			*char_sum += print_justification('0',
+				*char_sum += print_justification('0',
 				modifiers.precision - pointer_length);
-			print_hex((long)pointer, char_sum, LOWER_CASE);
+			print_hex((long)pointer, char_sum, lower_case);
 		}
 	}
 }
