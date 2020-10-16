@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:17:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 01:04:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define FT_PRINTF_H
 # include <stdarg.h>
 # include <unistd.h>
-#include "libft/libft.h"
+# include "libft/libft.h"
+
 typedef enum				e_case_type
 {lower_case, upper_case}	t_case_type;
 typedef	struct	s_modifiers
@@ -57,7 +58,8 @@ void			print_symbol(t_modifiers modifiers, int *char_sum);
 **				FT_NUMBERS.C
 */
 void			handle_number(long n, t_modifiers modifiers, int *char_sum);
-void			handle_number_no_prec(long n, t_modifiers modifiers, int *char_sum);
+void			handle_number_no_prec(long n, t_modifiers modifiers,
+int *char_sum);
 void			handle_number_prec_width(long n, t_modifiers modifiers,
 int *char_sum);
 void			print_number(long n, int *char_sum);
@@ -65,12 +67,11 @@ void			handle_decimal(long n, t_modifiers modifiers, int *char_sum);
 /*
 **				FT_HEX.C
 */
-void			handle_hex_number(long n, t_modifiers modifiers,
+void			handle_hex_number(unsigned long n, t_modifiers modifiers,
 int *char_sum, char letter_type);
-void			handle_hex_number2(long n, t_modifiers modifiers,
-int *char_sum, char letter_type, int justification_width);
-void			print_hex(long n, int *char_sum, t_case_type case_type);
-int				get_hex_digits(long n);
+void			print_hex(unsigned long n, int *char_sum,
+t_case_type case_type);
+int				get_hex_digits(unsigned long n);
 void			handle_pointer(void *pointer, t_modifiers modifiers,
 int *char_sum);
 void			print_pointer(void *pointer, t_modifiers modifiers,

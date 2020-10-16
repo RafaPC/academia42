@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 16:36:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 01:01:17 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int			ft_printf(const char *format_string, ...)
 			char_sum += write(1, format_string, 1);
 		format_string++;
 	}
+	va_end(args);
 	return (char_sum);
 }
 

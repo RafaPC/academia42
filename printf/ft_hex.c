@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:20:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 01:05:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	on the modifiers
 */
 
-void	handle_hex_number(long n, t_modifiers modifiers, int *char_sum,
+void	handle_hex_number(unsigned long n, t_modifiers modifiers, int *char_sum,
 char letter_type)
 {
 	int justification_width;
@@ -51,7 +51,7 @@ char letter_type)
 **	This function receives a long number and prints it in upper or lower case
 */
 
-void	print_hex(long n, int *char_sum, t_case_type case_type)
+void	print_hex(unsigned long n, int *char_sum, t_case_type case_type)
 {
 	char		*hex_characters;
 
@@ -82,7 +82,7 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	else if (pointer == NULL)
 		pointer_length = 3;
 	else
-		pointer_length = 2 + get_hex_digits((long)pointer);
+		pointer_length = 2 + get_hex_digits((unsigned long)pointer);
 	if (modifiers.width > pointer_length)
 	{
 		justification_width = modifiers.width - pointer_length;
@@ -106,7 +106,7 @@ void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 {
 	int pointer_length;
 
-	pointer_length = get_hex_digits((long)pointer);
+	pointer_length = get_hex_digits((unsigned long)pointer);
 	*char_sum += write(1, "0x", 2);
 	if (modifiers.precision != 0)
 	{
@@ -122,7 +122,7 @@ void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 			if (modifiers.precision > 0 && modifiers.precision > pointer_length)
 				*char_sum += print_justification('0',
 				modifiers.precision - pointer_length);
-			print_hex((long)pointer, char_sum, lower_case);
+			print_hex((unsigned long)pointer, char_sum, lower_case);
 		}
 	}
 }
@@ -133,11 +133,11 @@ void	print_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 **	including the minus ("-") sign
 */
 
-int		get_hex_digits(long n)
+int		get_hex_digits(unsigned long n)
 {
 	int	digits;
 
-	digits = (n < 0) ? 1 : 0;
+	digits = 0;
 	while (n != 0)
 	{
 		n /= 16;
