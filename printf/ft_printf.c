@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 01:01:17 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 21:43:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,11 @@ int *char_sum)
 	else if (specifier == 'u')
 		handle_decimal((long int)va_arg(args, long), modifiers, char_sum);
 	else if (specifier == 'x')
-		handle_hex_number(va_arg(args, long), modifiers, char_sum, lower_case);
+		handle_hex_number(va_arg(args, unsigned long), modifiers, char_sum,
+		lower_case);
 	else if (specifier == 'X')
-		handle_hex_number(va_arg(args, long), modifiers, char_sum, upper_case);
+		handle_hex_number(va_arg(args, unsigned long), modifiers, char_sum,
+		upper_case);
 	else if (specifier == 'p')
 		handle_pointer(va_arg(args, void *), modifiers, char_sum);
 	else if (specifier == 'c')
