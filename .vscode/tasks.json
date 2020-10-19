@@ -14,53 +14,30 @@
             "options": {
                 "cwd": "/usr/bin"
             }
-		},
-		{
+        },
+        {
             "type": "shell",
-            "label": "compile get_next_line",
+            "label": "gcc build cub3d",
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-				"${file}",
-				"${fileDirname}/get_next_line_utils.c",
+                "${fileDirname}/*.c",
+                "${fileDirname}/map/*.c",
+                "${fileDirname}/cub3d.a",
                 "-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "/usr/bin"
             }
-		},
-		{
+        },
+        {
             "type": "shell",
-            "label": "compile test 42tester",
-            "command": "/usr/bin/gcc",
+            "label": "make active project",
+            "command": "/usr/bin/make",
             "args": [
-                "-g",
-				//"${file}",
-				"${fileDirname}/42TESTERS-GNL/srcs/gnl_tester.c",
-				"${fileDirname}/get_next_line.c",
-				"${fileDirname}/get_next_line_utils.c",
-				"-I ../",
-                "-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "options": {
-                "cwd": "/usr/bin"
-            }
-		},
-		{
-            "type": "shell",
-            "label": "compile test 42tester_bonus",
-            "command": "/usr/bin/gcc",
-            "args": [
-                "-g",
-				//"${file}",
-				"${fileDirname}/42TESTERS-GNL/srcs/gnl_tester_bonus.c",
-				"${fileDirname}/get_next_line.c",
-				"${fileDirname}/get_next_line_utils.c",
-				"-I ../",
-                "-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
+                "-C",
+                "${fileDirname}"
             ],
             "options": {
                 "cwd": "/usr/bin"

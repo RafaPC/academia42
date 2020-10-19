@@ -6,12 +6,16 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/02/24 15:51:02 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 13:34:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
+
+# ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+# endif
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>

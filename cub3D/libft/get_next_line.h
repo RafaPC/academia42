@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:16:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 13:31:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/17 20:36:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
+#  define BUFFER_SIZE 42
 # endif
 # include <unistd.h>
 # include <stdlib.h>
@@ -27,14 +27,9 @@ typedef struct	s_file
 	struct s_file	*next;
 }				t_file;
 
-void			delete_file_struct(int fd, t_file *files[1]);
-t_file			*get_file_buffer(int fd, t_file **files);
 int				get_next_line(int fd, char **line);
-size_t			ft_strlen(char *s);
-char			*ft_strdup(char *s1);
-char			*ft_strjoin(char *s1, char *s2);
-int				ft_get_index_of(char *string, char c);
-char			*ft_substr(char *s, unsigned int start, size_t len);
-int				last_line(t_file *file_buffer, char **line, t_file *files[1]);
-int				fill_buffer(t_file *file_buffer, int *bytes_read, char *buffer);
+static t_file	*get_file_buffer(int fd, t_file **files);
+static int		fill_buffer(t_file *file_buffer, int *bytes_read, char *buffer);
+static int		last_line(t_file *file_buffer, char **line, t_file *files[1]);
+static void		delete_file_struct(int fd, t_file *files[1]);
 #endif

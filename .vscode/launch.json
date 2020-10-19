@@ -5,19 +5,6 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Debug get_next_line",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${fileDirname}/${fileBasenameNoExtension}",
-			"args": [],
-			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "lldb",
-			"preLaunchTask": "compile get_next_line"
-		},
-		{
 			"name": "gcc build and debug active file",
 			"type": "cppdbg",
 			"request": "launch",
@@ -31,30 +18,30 @@
 			"preLaunchTask": "gcc build active file"
 		},
 		{
-			"name": "gcc build and debug 42tester",
+			"name": "gcc build and debug cub3d",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${fileDirname}/${fileBasenameNoExtension}",
-			"args": [],
+			"args": ["/home/user42/Desktop/map.cub"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb",
-			"preLaunchTask": "compile test 42tester"
+			"preLaunchTask": "gcc build cub3d"
 		},
 		{
-			"name": "gcc build and debug 42tester_bonus",
+			"name": "make and debug active project",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${fileDirname}/${fileBasenameNoExtension}",
+			"program": "${fileDirname}/a.out",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb",
-			"preLaunchTask": "compile test 42tester_bonus"
+			"preLaunchTask": "make active project"
 		}
 	]
 }
