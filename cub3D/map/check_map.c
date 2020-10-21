@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/19 21:30:01 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/21 16:21:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 
 t_bool	check_map(t_error_info *error_info, char *file_path)
 {
-	char	**file_content;
+	t_line	*file_content;
 	int 	fd;
 
+	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
 		return (print_error(error_info));
-	if (!(file_content = save_file_content(error_info, fd)))
+	if (!(file_content = save_file_content(error_info, file_content, fd)))
 		return (print_error(error_info));
+	if (!check_file_content())
 	return (true);
 }
 
@@ -30,26 +32,39 @@ int		check_file_path(t_error_info *error_info, char *file_path)
 	int	fd;
 
 	if ((fd = open(file_path, O_RDONLY)) < 0)
-		error_info->t_error_type = read_file;
+		error_info->error_type = open_file_error;
 	return (fd);
 }
 
-char	**save_file_content(t_error_info *error_info, int fd)
+t_line	*save_file_content(t_error_info *error_info, t_line *file_content, int fd)
 {
-	char	**map;
-	char	*line;
-	int		i;
-	int result;
+	t_line	*actual_line;
+	char	*aux;
+	int 	result;
 
-	i = 0;
-	map = NULL;
-	while(get_next_line(fd, &line) == 1)
-		map[i++] = line;
-	map[i] = NULL;
-	return (map);
+	file_content = (t_line*)malloc(sizeof(t_line));
+	actual_line = file_content;
+	while((result = get_next_line(fd, &aux)) == 1)
+	{
+		actual_line->line = aux;
+		actual_line->next_line = (t_line*)malloc(sizeof(t_line));
+		actual_line = actual_line->next_line;
+	}
+	if (result == -1)
+	{
+		error_info->error_type = read_file_error;
+		//Liberar memoria y poner el mapa a nulo
+	}
+	else
+	{
+		actual_line->line = aux;
+		actual_line->next_line = NULL;
+	}
+	return (file_content);
 }
 
-int		print_error(t_error_info *error_info)
+t_bool		print_error(t_error_info *error_info)
 {
-
+	//Here reads the error type and prints it
+	return (false);
 }
