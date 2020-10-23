@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/21 16:21:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/22 12:56:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 t_bool	check_map(t_error_info *error_info, char *file_path)
 {
-	t_line	*file_content;
+	t_line				*file_content;
+	t_program_params	*program_params;
 	int 	fd;
 
 	file_content = NULL;
@@ -23,7 +24,8 @@ t_bool	check_map(t_error_info *error_info, char *file_path)
 		return (print_error(error_info));
 	if (!(file_content = save_file_content(error_info, file_content, fd)))
 		return (print_error(error_info));
-	if (!check_file_content())
+	if (!check_file_content(error_info, file_content, program_params))
+		return (false);
 	return (true);
 }
 
@@ -67,4 +69,12 @@ t_bool		print_error(t_error_info *error_info)
 {
 	//Here reads the error type and prints it
 	return (false);
+}
+
+t_bool		check_file_content(t_error_info *error_info, t_line *file_content,
+t_program_params *program_params)
+{
+	t_line	*line;
+	if (!check_resolution(error_info, line->line, program_params))
+		return (false);
 }
