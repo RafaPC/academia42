@@ -6,13 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 15:08:51 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 15:11:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/19 00:30:15 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_abs(int n)
+long	ft_abs(long n)
 {
 	if (n < 0)
 		n = -n;
