@@ -23,7 +23,9 @@
                 "-g",
                 "${fileDirname}/*.c",
                 "${fileDirname}/map/*.c",
-                "${fileDirname}/cub3d.a",
+                "${fileDirname}/map/check_file/*.c",
+                "${fileDirname}/libft/*.c",
+                // "${fileDirname}/cub3d.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
