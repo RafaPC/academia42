@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 22:52:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 01:05:59 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/20 23:42:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 **	on the modifiers
 */
 
-void	handle_hex_number(unsigned long n, t_modifiers modifiers, int *char_sum,
+void	handle_hex_number(unsigned int n, t_modifiers modifiers, int *char_sum,
 char letter_type)
 {
 	int justification_width;
 	int number_width;
 	int	hex_digits;
 
-	hex_digits = get_hex_digits(n);
+	hex_digits = get_hex_digits((unsigned long)n);
 	number_width = (modifiers.precision != -2 && modifiers.precision >
 	hex_digits) ? modifiers.precision : hex_digits;
 	justification_width = modifiers.width - number_width;
@@ -38,7 +38,7 @@ char letter_type)
 			*char_sum += print_justification((modifiers.zero_padded)
 			? '0' : ' ', justification_width);
 	}
-	if (modifiers.precision != 2 && modifiers.precision > hex_digits)
+	if (modifiers.precision != -2 && modifiers.precision > hex_digits)
 		*char_sum += print_justification('0',
 		modifiers.precision - hex_digits);
 	if ((n == 0 && modifiers.precision == -2) || n != 0)
@@ -77,7 +77,7 @@ void	handle_pointer(void *pointer, t_modifiers modifiers, int *char_sum)
 	int pointer_length;
 	int justification_width;
 
-	if (modifiers.precision == -1 || modifiers.precision == 0)
+	if (modifiers.precision == -1 && pointer == NULL)
 		pointer_length = 2;
 	else if (pointer == NULL)
 		pointer_length = 3;

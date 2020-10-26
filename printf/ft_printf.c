@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:01:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 21:43:20 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/21 17:35:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int			ft_printf(const char *format_string, ...)
 		{
 			modifiers = ft_initialize_struct();
 			format_string = read_modifiers(args,
-			(char *)++format_string, &modifiers, &char_sum);
+			(char *)++format_string, &modifiers);
 			format(args, *format_string, modifiers, &char_sum);
 		}
 		else
 			char_sum += write(1, format_string, 1);
-		format_string++;
+		if (*format_string)
+			format_string++;
 	}
 	va_end(args);
 	return (char_sum);
@@ -45,9 +46,9 @@ int			ft_printf(const char *format_string, ...)
 */
 
 char		*read_modifiers(va_list args, char *format_string,
-t_modifiers *modifiers, int *char_sum)
+t_modifiers *modifiers)
 {
-	while (!is_specifier(*format_string))
+	while (is_flag(*format_string))
 	{
 		if (*format_string == '-')
 			modifiers->left_justified = true;
@@ -55,8 +56,6 @@ t_modifiers *modifiers, int *char_sum)
 			modifiers->zero_padded = true;
 		else if (*(format_string) == '.')
 			format_string = get_precision(args, format_string, modifiers);
-		else if (*(format_string) == ' ')
-			*char_sum += write(1, " ", 1);
 		else if (*format_string == '*')
 		{
 			modifiers->width = va_arg(args, int);
@@ -66,7 +65,7 @@ t_modifiers *modifiers, int *char_sum)
 				modifiers->left_justified = true;
 			}
 		}
-		else
+		else if (ft_isdigit(*format_string))
 			format_string = get_width(format_string, modifiers);
 		format_string++;
 	}
@@ -84,14 +83,14 @@ int *char_sum)
 	if (specifier == 'i')
 		handle_number(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 'd')
-		handle_decimal(va_arg(args, int), modifiers, char_sum);
+		handle_number(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 'u')
-		handle_decimal((long int)va_arg(args, long), modifiers, char_sum);
+		handle_number(va_arg(args, unsigned int), modifiers, char_sum);
 	else if (specifier == 'x')
-		handle_hex_number(va_arg(args, unsigned long), modifiers, char_sum,
+		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum,
 		lower_case);
 	else if (specifier == 'X')
-		handle_hex_number(va_arg(args, unsigned long), modifiers, char_sum,
+		handle_hex_number(va_arg(args, unsigned int), modifiers, char_sum,
 		upper_case);
 	else if (specifier == 'p')
 		handle_pointer(va_arg(args, void *), modifiers, char_sum);
@@ -99,7 +98,7 @@ int *char_sum)
 		print_char(va_arg(args, int), modifiers, char_sum);
 	else if (specifier == 's')
 		handle_string(va_arg(args, char*), modifiers, char_sum);
-	else
+	else if (specifier == '%')
 		print_symbol(modifiers, char_sum);
 }
 
@@ -120,11 +119,10 @@ t_modifiers	ft_initialize_struct(void)
 
 /*
 **	This functions recieves a char and returns true or false
-**	wether it's a specifier or not
+**	wether it's a flag or not
 */
 
-t_bool		is_specifier(char c)
+t_bool		is_flag(char c)
 {
-	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
-	c == 'u' || c == 'x' || c == 'X' || c == '%') ? true : false;
+	return (c == '-' || ft_isdigit(c) || c == '.' || c == '*') ? true : false;
 }

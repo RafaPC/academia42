@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:00:56 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 01:04:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/21 17:46:01 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ typedef	struct	s_modifiers
 */
 int				ft_printf(const char *format_string, ...);
 char			*read_modifiers(va_list args, char *format_string,
-t_modifiers	*modifiers, int *char_sum);
+t_modifiers	*modifiers);
 void			format(va_list args, char specifier,
 t_modifiers modifiers, int *char_sum);
 t_modifiers		ft_initialize_struct(void);
-t_bool			is_specifier(char c);
+t_bool			is_flag(char c);
 /*
 **				FT_PRINTF_UTILS.C
 */
@@ -44,7 +44,7 @@ char			*get_precision(va_list args, char *format_string,
 t_modifiers *modifiers);
 char			*get_width(char *format_string, t_modifiers *modifiers);
 int				print_justification(char c, int times);
-unsigned		get_digits(int n);
+t_bool			is_specifier(char c);
 /*
 **				FT_STRINGS.H
 */
@@ -63,11 +63,10 @@ int *char_sum);
 void			handle_number_prec_width(long n, t_modifiers modifiers,
 int *char_sum);
 void			print_number(long n, int *char_sum);
-void			handle_decimal(long n, t_modifiers modifiers, int *char_sum);
 /*
 **				FT_HEX.C
 */
-void			handle_hex_number(unsigned long n, t_modifiers modifiers,
+void			handle_hex_number(unsigned int n, t_modifiers modifiers,
 int *char_sum, char letter_type);
 void			print_hex(unsigned long n, int *char_sum,
 t_case_type case_type);

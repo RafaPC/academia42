@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:14:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/20 15:23:12 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	print_string(char *string, t_modifiers modifiers, int *char_sum)
 		write(1, string++, 1);
 		i++;
 	}
-	if (modifiers.left_justified && modifiers.width > len &&
-	modifiers.width > modifiers.precision)
+	if (modifiers.left_justified && modifiers.width > len)
 		print_justification(' ', modifiers.width - len);
 }
 
@@ -88,7 +87,7 @@ void	print_char(char c, t_modifiers modifiers, int *char_sum)
 
 void	print_symbol(t_modifiers modifiers, int *char_sum)
 {
-	if (modifiers.width > 0)
+	if (modifiers.width > 1)
 	{
 		*char_sum += modifiers.width;
 		if (modifiers.left_justified)

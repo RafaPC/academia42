@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/11 16:48:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 17:19:13 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/19 16:42:23 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,26 @@ void	handle_number(long n, t_modifiers modifiers, int *char_sum)
 {
 	if (n == 0 && (modifiers.precision == 0 || modifiers.precision == -1))
 		*char_sum += ft_printf("%*s", modifiers.width, "");
+	else if (modifiers.precision != -2 && modifiers.width)
+		handle_number_prec_width(n, modifiers, char_sum);
 	else
 	{
-		if (modifiers.precision != -2 && modifiers.width)
-			handle_number_prec_width(n, modifiers, char_sum);
-		else
+		if (n < 0 && modifiers.zero_padded && !modifiers.left_justified &&
+		modifiers.width)
+			modifiers.width--;
+		else if (modifiers.precision != -2 && modifiers.width == 0)
 		{
-			if (modifiers.zero_padded && n < 0 && !modifiers.left_justified)
-				modifiers.width--;
-			if (n < 0 && ((modifiers.zero_padded && modifiers.width) ||
-			(modifiers.precision != -2)) && !modifiers.left_justified)
-			{
-				*char_sum += write(1, "-", 1);
-				n = -n;
-			}
-			if (modifiers.precision != -2 && modifiers.width == 0)
-			{
-				modifiers.width = modifiers.precision;
-				modifiers.zero_padded = true;
-			}
-			handle_number_no_prec(n, modifiers, char_sum);
+			modifiers.width = modifiers.precision;
+			modifiers.zero_padded = true;
+			modifiers.left_justified = false;
 		}
+		if (n < 0 && ((modifiers.zero_padded && modifiers.width) ||
+		(modifiers.precision != -2)) && !modifiers.left_justified)
+		{
+			*char_sum += write(1, "-", 1);
+			n = -n;
+		}
+		handle_number_no_prec(n, modifiers, char_sum);
 	}
 }
 
@@ -97,35 +96,6 @@ int *char_sum)
 	print_number(ft_abs(n), char_sum);
 	if (modifiers.left_justified && justification_width > 0)
 		*char_sum += print_justification(' ', justification_width);
-}
-
-/*
-**	This function changes some values of the modifiers
-**	depending on other modifiers values
-**	Then call other functions to print the result
-*/
-
-void	handle_decimal(long n, t_modifiers modifiers, int *char_sum)
-{
-	if (modifiers.precision != 0 && modifiers.precision != -1)
-	{
-		if (modifiers.precision != -2)
-		{
-			if (modifiers.width == 0)
-			{
-				modifiers.zero_padded = true;
-				modifiers.width = modifiers.precision;
-				modifiers.precision = -2;
-				if (n < 0)
-					modifiers.width++;
-			}
-		}
-		handle_number(n, modifiers, char_sum);
-	}
-	else if (modifiers.width != 0 && modifiers.precision == 0)
-		*char_sum += ft_printf("%*s", modifiers.width, "");
-	else if (modifiers.precision == -1 && modifiers.width > 0)
-		*char_sum += print_justification(' ', modifiers.width);
 }
 
 /*

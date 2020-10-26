@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 15:36:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 16:37:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/21 17:45:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,18 @@ t_modifiers *modifiers)
 	if (*(format_string + 1) == '*')
 	{
 		modifiers->precision = va_arg(args, int);
+		if (modifiers->precision <= -1)
+			modifiers->precision = -2;
 		format_string++;
 	}
 	else if (is_specifier(*(format_string + 1)))
 		modifiers->precision = -1;
 	else
+	{
 		modifiers->precision = ft_atoi(format_string + 1);
+		if (modifiers->precision <= -1)
+			modifiers->precision = -2;
+	}
 	while (!is_specifier(*(format_string + 1)))
 	{
 		format_string++;
@@ -76,4 +82,15 @@ int			print_justification(char c, int times)
 		times--;
 	}
 	return (times_copy);
+}
+
+/*
+**	This functions recieves a char and returns true or false
+**	wether it's a specifier or not
+*/
+
+t_bool		is_specifier(char c)
+{
+	return (c == 'c' || c == 's' || c == 'p' || c == 'd' || c == 'i' ||
+	c == 'u' || c == 'x' || c == 'X' || c == '%') ? true : false;
 }
