@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/19 19:55:46 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/28 20:43:14 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,11 @@ NAME = cub3d.a
 CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft
-CC = gcc -c 
-SRCS = main.c map/check_map.c
+CC = gcc
+SRCS = main.c map/check_map.c map/check_file/check_file_utils.c
 //OBJS = ${SRCS:.c=.o}
+FLAGS = -Wall -Wextra
 OBJS = ./*.o
-
-CFLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}
 
@@ -28,11 +27,9 @@ ${NAME}: ${OBJS}
 				make -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${NAME}
-				ar rc ${NAME} ${OBJS}
-				ranlib ${NAME}
-				
+				${CC} ${SRCS} ${LIB_DIR}/${LIBFT_A} -lmlx -lXext -lX11 -lm
 ${OBJS}: ${SRCS}
-				${CC} ${SRCS}
+				${CC} -c ${SRCS} -O3
 
 test: ${SRCS} ${NAME}
 				gcc ${SRCS} main.c ${NAME}

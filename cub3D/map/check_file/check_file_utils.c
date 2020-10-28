@@ -6,11 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/26 20:31:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/27 12:07:24 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
+// #include "../../libft/include/libft.h"
 
 t_bool	read_resolution(t_error_info *error_info, char *line,
 t_program_params *program_params)
@@ -58,5 +59,5 @@ t_bool	read_path(t_error_info *error_info, char *line, char **path_to_texture)
 
 t_bool	read_color(t_error_info *error_info, char *line, int *color)
 {
-	
+	return (false);
 }

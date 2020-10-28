@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/26 20:34:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:19:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ t_program_params *program_params)
 			if ((info_id = search_identifier(line->line)) != -1)
 			{
 				if (info_id_list[info_id] == true)
-					return (error_info->error_type = duplicated_info_error);
+				{
+					error_info->error_type = duplicated_info_error;
+					return (print_error(error_info));
+				}
 				info_id_list[info_id] = true;
 			}
 			else
@@ -109,6 +112,7 @@ t_program_params *program_params)
 		}
 		line = line->next_line;
 	}
+	return (true);
 
 }
 

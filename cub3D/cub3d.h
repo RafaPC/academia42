@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/26 20:30:50 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/28 18:07:23 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,14 @@ typedef struct	s_program_params
 	int			*floor_color;
 	int			*ceilling_color;
 }				t_program_params;
-// typedef struct	s_file_check_list
-// {
-// 	t_bool		
-// }				t_file_check_list;
+
+typedef struct  s_data {
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_data;
 
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
@@ -78,4 +82,5 @@ t_bool		read_resolution(t_error_info *error_info, char *line,
 t_program_params *program_params);
 t_bool		read_path(t_error_info *error_info, char *line, char **path_to_texture);
 t_bool		read_color(t_error_info *error_info, char *line, int *color);
+void		initialice_program_params(t_program_params *program_params);
 #endif
