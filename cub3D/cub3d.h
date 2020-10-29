@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/28 18:07:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/29 12:44:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,17 @@ t_program_params *program_params);
 t_bool		read_path(t_error_info *error_info, char *line, char **path_to_texture);
 t_bool		read_color(t_error_info *error_info, char *line, int *color);
 void		initialice_program_params(t_program_params *program_params);
+/*
+**			RENDER THINGS
+*/
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+/*
+**			RENDER COLOR
+*/
+int		create_trgb(int t, int r, int g, int b);
+int		get_t(int trgb);
+int		get_r(int trgb);
+int		get_g(int trgb);
+int		get_b(int trgb);
+int		add_shade(double distance, int color);
 #endif
