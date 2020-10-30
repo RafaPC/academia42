@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/10/29 13:08:59 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/10/30 18:54:49 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft
 CC = gcc
-SRCS = main.c map/check_map.c map/check_file/check_file_utils.c render/render_color.c tests.c
+SRCS = main.c map/check_map.c map/check_file/check_file_utils.c render/render_color.c render/render.c render/hooks.c
 //OBJS = ${SRCS:.c=.o}
 FLAGS = -Wall -Wextra
 OBJS = ./*.o

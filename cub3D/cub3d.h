@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/29 18:20:17 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/30 20:36:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,14 @@ typedef struct s_keys
 	t_bool		d;
 }				t_keys;
 
+typedef struct  s_vars {
+    void        *mlx;
+    void        *win;
+	t_data		*img;
+	float		px, py;
+	int			map[8][8];
+}               t_vars;
+
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
 t_line		*save_file_content(t_error_info *error_info, t_line *file_content, int fd);
@@ -104,4 +112,16 @@ int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
+/*
+**			RENDER
+*/
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		render_screen(t_vars *vars);
+void	display_player(t_vars *vars);
+void	draw_map(t_vars *vars);
+void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars);
+/*
+**			HOOKS
+*/
+int		on_key_pressed(int keycode,t_vars *vars);
 #endif
