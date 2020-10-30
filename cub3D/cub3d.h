@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/29 12:44:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/29 18:20:17 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ typedef struct  s_data {
     int         line_length;
     int         endian;
 }               t_data;
+
+typedef struct s_keys
+{
+	t_bool		w;
+	t_bool		a;
+	t_bool		s;
+	t_bool		d;
+}				t_keys;
 
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
