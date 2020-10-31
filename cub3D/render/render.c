@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/30 20:40:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/10/31 11:31:14 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	draw_map(t_vars *vars)
 	int x, y;
 	x = 0;
 	y = 0;
-	int wall_color = create_trgb(0, 0, 255, 255);
+	int wall_color = create_trgb(0, 255, 255, 255);
+	int space_color = create_trgb(0, 50, 50, 50);
 	int	map[8][8] =
 	{
 		{1,1,1,1,1,1,1,1},
@@ -78,17 +79,14 @@ void	draw_map(t_vars *vars)
 		{1,1,1,1,1,1,1,1}
 	};
 	// vars->map = map;
-	// ft_printf("llega");
-	static int cosa = 0;
-	if (!cosa++)
-		ft_printf("%i", map[0][0]);
-	// ft_printf("%i", map[0][0]);
 	while (y < 8)
 	{
 		while (x < 8)
 		{
 			if (map[y][x] == 1)
-				draw_square(40, 40, x * 40, y * 40, wall_color, vars);
+				draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, wall_color, vars);
+			else if (map[y][x] == 0)
+				draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, space_color, vars);			
 			x++;
 		}
 		y++;
