@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 21:01:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 23:46:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,21 @@ void	drawRays3D(t_vars *vars)
 		{1,1,1,1,1,1,1,1}
 	};
 	tang = tan(vars->pangle);
-	if (vars->pangle == 0)
+	if (vars->pangle == 0 || vars->pangle == 180)
 		tang = 0.1;
-	else if (vars->pangle == 90)
-		tang = 1;
+	else if (vars->pangle == 90 || vars->pangle == 270)
+		tang = 10;
 
 	completed = false;
 	set_tile_step(&tile_step_x, &tile_step_y, vars->pangle);
 	// x_step = (tile_step_x == 1) ? tang : -tang;
 	// y_step = (tile_step_y == 1) ? 1/tang : -1/tang;
 	y_step = (tile_step_y == 1) ? tang : -tang;
+	//tangente negativa en cuadrante superior izquierdo e inferior derecho
+	if (vars->pangle <= 2 * PI && vars->pangle >= PI + PI/2)
+		y_step = -y_step;
+	else if (vars->pangle >= 90 && vars->pangle <= 180)
+		y_step = -y_step;
 	x_step = (tile_step_x == 1) ? 1/tang : -1/tang;
 	x_intercept = vars->px + (-(vars->py - floor(vars->py))/tang);
 	y_intercept = vars->py + ((vars->px - floor(vars->px))/tang);
@@ -55,22 +60,22 @@ void	drawRays3D(t_vars *vars)
 	y = floor(vars->py);
 	// printf("%f\n", vars->px - floor(vars->px));
 	printf("VARIABLES\nangulo: %f\ntangent: %f\ntile_step_x: %i tile_step_y: %i\n", vars->pangle * 180/PI ,tang, tile_step_x, tile_step_y);
+	printf("COORDENADAS: X->%f  Y->%f\n", vars->px, vars->py);
 	printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
 	static int print = 0;
 	while (!completed)
 	{
 		// ft_printf("primer while\n");
 		// while (!completed && compare(y_intercept, y, (tile_step_y == 1) ? greater_than : less_than))
-		while (!completed)
+		while (!completed && ((int)floor(y_intercept) >= 0 && (int)floor(y_intercept) <= 8))
 		{
-			// if (print == 0)
 			printf("map[%i][%i] = %i\n", (int)x, (int)floor(y_intercept), map[(int)x][(int)floor(y_intercept)]);
-			draw_square(40, 40, x * 40, floor(y_intercept) * 40, create_trgb(0, 0, 0, 200), vars);
-			draw_line(vars, x * 40, y_intercept * 40, create_trgb(0, 0, 200, 0));
+			// draw_square(40, 40, x * 40, floor(y_intercept) * 40, create_trgb(0, 0, 0, 200), vars);
 			// if (map[(int)x][(int)floor(y_intercept)] == 1 || (int)floor(y_intercept) < 0 || (int)floor(y_intercept) > 8)
-			if (map[(int)x][(int)floor(y_intercept)] == 1 )
+			if (map[(int)x][(int)floor(y_intercept)] == 1)
 			{
-				printf("map[%i][%i]\n", (int)x, (int)floor(y_intercept));
+				// draw_line(vars, x * 40, y_intercept * 40, create_trgb(0, 0, 200, 0));
+				// printf("map[%i][%i]\n", (int)x, (int)floor(y_intercept));
 				int color = create_trgb(0, 255, 0, 0);
 				draw_square(40, 40, x * 40, floor(y_intercept) * 40, color, vars);
 				print++;
@@ -79,6 +84,9 @@ void	drawRays3D(t_vars *vars)
 			x += tile_step_x;
 			y_intercept += y_step;
 		}
+		if (!completed)
+			printf("WALL NOT FOUND\n");
+		completed = true;
 	}
 }
 
