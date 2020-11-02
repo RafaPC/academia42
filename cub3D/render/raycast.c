@@ -6,13 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 18:20:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 21:01:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
-#include "../cub3d.h"
 #include <stdio.h>
+#include "../cub3d.h"
+#include "../../printf/ft_printf.h"
 
 void	drawRays3D(t_vars *vars)
 {
@@ -20,8 +21,9 @@ void	drawRays3D(t_vars *vars)
 	int tile_step_x, tile_step_y;
 	float x_step;
 	float y_step;
-	int x_intercept;
-	int y_intercept;
+	float x_intercept;
+	float y_intercept;
+	float tang;
 	t_bool completed;
 	int	map[8][8] =
 	{
@@ -34,24 +36,44 @@ void	drawRays3D(t_vars *vars)
 		{1,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1}
 	};
-	
+	tang = tan(vars->pangle);
+	if (vars->pangle == 0)
+		tang = 0.1;
+	else if (vars->pangle == 90)
+		tang = 1;
+
 	completed = false;
 	set_tile_step(&tile_step_x, &tile_step_y, vars->pangle);
-	x_step = tan(vars->pangle);
-	y_step = 1/tan(vars->pangle);
-	x_intercept = vars->px + (-(vars->py - floor(vars->py))/tan(vars->pangle));
-	y_intercept = vars->py + ((vars->px - floor(vars->px))/tan(vars->pangle));
-	
-	int x, y;
+	// x_step = (tile_step_x == 1) ? tang : -tang;
+	// y_step = (tile_step_y == 1) ? 1/tang : -1/tang;
+	y_step = (tile_step_y == 1) ? tang : -tang;
+	x_step = (tile_step_x == 1) ? 1/tang : -1/tang;
+	x_intercept = vars->px + (-(vars->py - floor(vars->py))/tang);
+	y_intercept = vars->py + ((vars->px - floor(vars->px))/tang);
+	float x, y;
 	x = floor(vars->px);
 	y = floor(vars->py);
+	// printf("%f\n", vars->px - floor(vars->px));
+	printf("VARIABLES\nangulo: %f\ntangent: %f\ntile_step_x: %i tile_step_y: %i\n", vars->pangle * 180/PI ,tang, tile_step_x, tile_step_y);
+	printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
+	static int print = 0;
 	while (!completed)
 	{
-		while (!completed && compare(y_intercept, y, (tile_step_y == 1) ? greater_than : less_than))
+		// ft_printf("primer while\n");
+		// while (!completed && compare(y_intercept, y, (tile_step_y == 1) ? greater_than : less_than))
+		while (!completed)
 		{
-			if (map[x][y_intercept>>16] == 1)
+			// if (print == 0)
+			printf("map[%i][%i] = %i\n", (int)x, (int)floor(y_intercept), map[(int)x][(int)floor(y_intercept)]);
+			draw_square(40, 40, x * 40, floor(y_intercept) * 40, create_trgb(0, 0, 0, 200), vars);
+			draw_line(vars, x * 40, y_intercept * 40, create_trgb(0, 0, 200, 0));
+			// if (map[(int)x][(int)floor(y_intercept)] == 1 || (int)floor(y_intercept) < 0 || (int)floor(y_intercept) > 8)
+			if (map[(int)x][(int)floor(y_intercept)] == 1 )
 			{
-				printf("map[%i][%i]\n", x, y_intercept>>16);
+				printf("map[%i][%i]\n", (int)x, (int)floor(y_intercept));
+				int color = create_trgb(0, 255, 0, 0);
+				draw_square(40, 40, x * 40, floor(y_intercept) * 40, color, vars);
+				print++;
 				completed = true;
 			}
 			x += tile_step_x;

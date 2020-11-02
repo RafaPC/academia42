@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 18:58:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 20:36:28 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		render_screen(t_vars *vars)
 	mlx_destroy_image(vars->mlx, vars->img->img);
 	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
 	draw_map(vars);
-	// draw_line(vars, (vars->px * 40) + vars->pdx, (vars->py * 40) + vars->pdy, blue);
-	draw_fov(vars, green);
+	draw_line(vars, (vars->px * 40) + vars->pdx * 5, (vars->py * 40) + vars->pdy * 5, blue);
+	// draw_fov(vars, green);
 	display_player(vars);
 	drawRays3D(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);

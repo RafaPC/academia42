@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 18:56:35 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 19:28:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,5 @@ int		on_key_pressed(int keycode,t_vars *vars)
 		vars->px -= vars->pdx * 0.2;
 		vars->py += vars->pdy * 0.2;
 	}
-	// if (keycode == 'a' || keycode == 'd')
-	// 	printf("Angulo: %f", vars->pangle * (180 / PI));
 	return (0);
 }
