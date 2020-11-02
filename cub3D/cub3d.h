@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/30 20:36:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 18:25:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <fcntl.h>
 # include "libft/libft.h"
+// # define PI 3.1415926535
+# define PI 3.141592
 typedef enum	e_error_type
 {	
 	missing_argument_error,
@@ -46,7 +48,7 @@ typedef struct	s_line
 {
 	char			*line;
 	struct s_line	*next_line;
-}				t_line;
+}			t_line;
 typedef struct	s_program_params
 {
 	int			resolution_x;
@@ -81,9 +83,15 @@ typedef struct  s_vars {
     void        *win;
 	t_data		*img;
 	float		px, py;
+	float		pdx, pdy, pangle;
 	int			map[8][8];
 }               t_vars;
 
+typedef enum	e_compare_flag
+{	
+	less_than,
+	greater_than
+}				t_compare_flag;
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
 t_line		*save_file_content(t_error_info *error_info, t_line *file_content, int fd);
@@ -115,11 +123,19 @@ int		add_shade(double distance, int color);
 /*
 **			RENDER
 */
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		render_screen(t_vars *vars);
 void	display_player(t_vars *vars);
 void	draw_map(t_vars *vars);
 void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars);
+void	draw_line(t_vars *vars, float xend, float yend, int color);
+void	draw_fov(t_vars *vars, int color);
+void	display_vars(t_vars *vars);
+/*
+**			RAYCASTING
+*/
+void	drawRays3D(t_vars *vars);
+void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
+t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 /*
 **			HOOKS
 */

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 12:58:14 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/29 12:58:38 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 13:49:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,39 @@ void	 tests(void *img)
 		for (int j = 0; j < 60; j++)
 			my_mlx_pixel_put(&img, j, 200 + i, create_trgb(255, 150, 60 + i * 2, 20));
 	}
+
+
+// void	drawRays3D(t_vars *vars)
+// {
+// 	int r, mx, my, mp, dof;
+// 	float rx, ry, ra, xo, yo;
+
+// 	ra = vars->pangle;
+// 	for (r = 0; r < 1; r++)
+// 	{
+// 		dof = 0;
+// 		float aTan = -1/tan(ra);
+// 		if (ra > PI)
+// 		{
+// 			ry = (((int)vars->py>>6)<<6) - 0.0001;
+// 			rx = (vars->py - ry) * aTan + vars->px;
+// 			yo = -64;
+// 			xo = -yo * aTan;
+// 		}
+// 		else if (ra < PI)
+// 		{
+// 			ry = (((int)vars->py>>6)<<6) + 64;
+// 			rx = (vars->py - ry) * aTan + vars->px;
+// 			yo = 64;
+// 			xo = -yo * aTan;
+// 		}
+// 		else if (ra == 0 || ra == PI)
+// 		{
+// 			rx = vars->px;
+// 			ry = vars->py;
+// 			dof = 8;
+// 		}
+
+// 	}
+// }
 }

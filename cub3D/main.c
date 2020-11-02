@@ -6,13 +6,15 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/30 20:38:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 18:36:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <mlx.h>
 #include "../printf/ft_printf.h"
+#include <math.h>
+#include <stdio.h>
 
 void	init(t_vars *vars)
 {
@@ -22,8 +24,12 @@ void	init(t_vars *vars)
 	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
-	vars->px = 300;
-	vars->py = 300;
+	vars->px = 5.3;
+	vars->py = 4.3;
+	vars->pangle = PI/4;
+	vars->pdx = cos(vars->pangle);
+	vars->pdy = sin(vars->pangle);
+	// display_vars(vars);
 }
 
 int		main(int argc, char const *argv[])
