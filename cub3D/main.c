@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 18:36:57 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/02 23:57:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	init(t_vars *vars)
 {
 	vars->img = (t_data*)malloc(sizeof(t_data));
 	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, 800, 800, "Hello world");
-	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
+	vars->win = mlx_new_window(vars->mlx, 500, 500, "Hello world");
+	vars->img->img = mlx_new_image(vars->mlx, 500, 500);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
-	vars->px = 5.3;
+	vars->px = 6.3;
 	vars->py = 4.3;
 	vars->pangle = PI/4;
 	vars->pdx = cos(vars->pangle);
@@ -50,7 +50,8 @@ int		main(int argc, char const *argv[])
 	// 	[1,1,1,1,1,1,1,1]
 	// ];
 	mlx_hook(vars.win, 2, 1L<<0, on_key_pressed, &vars);
-	mlx_loop_hook(vars.mlx, render_screen, &vars);
+	render_screen(&vars);
+	// mlx_loop_hook(vars.mlx, render_screen, &vars);
 	mlx_loop(vars.mlx);
 	
 	// save_img = false;

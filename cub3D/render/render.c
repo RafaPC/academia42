@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 20:36:28 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 12:53:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 int		render_screen(t_vars *vars)
 {
 	int green = create_trgb(0, 0, 255, 0);
-	int blue = create_trgb(0, 0, 0, 255);
+	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
-	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
+	vars->img->img = mlx_new_image(vars->mlx, 500, 500);
 	draw_map(vars);
-	draw_line(vars, (vars->px * 40) + vars->pdx * 5, (vars->py * 40) + vars->pdy * 5, blue);
+	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	// draw_fov(vars, green);
 	display_player(vars);
-	drawRays3D(vars);
+	raycast(vars);
+	// drawRays3D(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	return (0);
 }
