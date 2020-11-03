@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 23:57:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 17:08:54 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	init(t_vars *vars)
 {
 	vars->img = (t_data*)malloc(sizeof(t_data));
 	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, 500, 500, "Hello world");
-	vars->img->img = mlx_new_image(vars->mlx, 500, 500);
+	vars->win = mlx_new_window(vars->mlx, 1600, 800, "Hello world");
+	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	vars->px = 6.3;

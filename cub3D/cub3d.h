@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 12:15:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 17:26:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,12 @@ void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *v
 void	draw_line(t_vars *vars, float xend, float yend, int color);
 void	draw_fov(t_vars *vars, int color);
 void	display_vars(t_vars *vars);
+void	render_column(t_vars *vars, float distance);
 /*
 **			RAYCASTING
 */
 void	raycast(t_vars *vars);
-void	drawRays3D(t_vars *vars);
+float	drawRays3D(t_vars *vars);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 /*

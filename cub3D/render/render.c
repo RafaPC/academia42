@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 12:53:43 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 18:53:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <mlx.h>
 #include <math.h>
 #include "../../printf/ft_printf.h"
-
+int offset_column = 0;
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char    *dst;
@@ -25,16 +25,17 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 int		render_screen(t_vars *vars)
 {
+	offset_column = 0;
 	int green = create_trgb(0, 0, 255, 0);
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
-	vars->img->img = mlx_new_image(vars->mlx, 500, 500);
+	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
 	draw_map(vars);
 	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	// draw_fov(vars, green);
 	display_player(vars);
 	raycast(vars);
-	// drawRays3D(vars);
+	// render_column(vars, drawRays3D(vars));
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	return (0);
 }
@@ -140,4 +141,22 @@ void	draw_map(t_vars *vars)
 		y++;
 		x = 0;
 	}
+}
+
+void	render_column(t_vars *vars, float distance)
+{
+	int screen_height;
+	int column_height;
+
+	// screen_height = 500; //starts at 300
+	column_height = (8 * 100)/distance;
+	printf("%s", "RENDER_COLUMN:\n");
+	printf("Distancia: %f\n", distance);
+	printf("Columna: %i\n", column_height);
+	if (column_height > 800)
+		column_height = 799;
+	else if (column_height < 30)
+		column_height = 30;
+	draw_square(8, column_height, 500 + offset_column, 400-(column_height/2), create_trgb(0, 0, 0, 255), vars);
+	offset_column += 8;
 }

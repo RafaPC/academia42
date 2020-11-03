@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 12:55:32 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 18:55:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,22 +102,26 @@
 
 void	raycast(t_vars *vars)
 {
-	int start_angle = vars->pangle - (PI/4);
-	int end_angle   = vars->pangle + (PI/4);
-	if (start_angle < 0)
-		start_angle += 2 * PI;
-	if (end_angle > 2 * PI)
-		end_angle -= 2 * PI;
-	
-	for ()
+	float original_angle = vars->pangle;
+	vars->pangle += PI/4;
+	if (vars->pangle > 2 * PI)
+		vars->pangle -= 2 * PI;
+	for (int i = 0; i < 90; i++)
+	{
+		vars->pangle -= (PI/2)/90;
+		if (vars->pangle < 0)
+			vars->pangle += 2 * PI;
+		render_column(vars, drawRays3D(vars));
+	}
+	vars->pangle = original_angle;
 }
 
-void	drawRays3D(t_vars *vars)
+float	drawRays3D(t_vars *vars)
 {
 	//depending on the ray axis
 	int tile_step_x, tile_step_y;
-	float y_step;
-	float y_intercept;
+	float x_step, y_step;
+	float x_intercept, y_intercept;
 	float tang;
 	t_bool completed;
 	int	map[8][8] =
@@ -131,6 +135,7 @@ void	drawRays3D(t_vars *vars)
 		{1,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1}
 	};
+	//Esto podría agruparse en función de get_tangent
 	if (vars->pangle == 0 || vars->pangle == 180)
 		tang = 0.1;
 	else if (vars->pangle == 90 || vars->pangle == 270)
@@ -142,22 +147,41 @@ void	drawRays3D(t_vars *vars)
 
 	completed = false;
 	set_tile_step(&tile_step_x, &tile_step_y, vars->pangle);
+	//Set x_step and y_step
 	y_step = (tile_step_y == 1) ? tang : -tang;
-	y_intercept = (ceil(vars->px) - vars->px) * tang;
-	if (tile_step_y == -1) //facing upwards
-		y_intercept = vars->py - (tang * (ceil(vars->px) - vars->px));
+	x_step = (tile_step_x == 1) ? 1/tang : -1/tang;
+
+	//Calculate x_intercept
+	if (tile_step_y == 1)	//Facing downwards
+		x_intercept = (ceil(vars->py) - vars->py) / tang;
 	else
-		y_intercept = vars->py + (tang * (ceil(vars->px) - vars->px));
+		x_intercept = (vars->py - floor(vars->py)) / tang;
+	if (tile_step_x == 1)		//facing right
+		x_intercept = vars->px + x_intercept;
+	else						//facing left
+		x_intercept = vars->px - x_intercept;
+	//Calculate y_intercept
+	if (tile_step_x == 1)
+		y_intercept = (ceil(vars->px) - vars->px) * tang;
+	else
+		y_intercept = (vars->px - floor(vars->px)) * tang;
+	if (tile_step_y == -1) //facing upwards
+		y_intercept = vars->py - y_intercept;
+	else
+		y_intercept = vars->py + y_intercept;
+
 	float x, y;
 	x = floor(vars->px);
 	y = floor(vars->py);
 	printf("VARIABLES\nangulo: %f\ntangent: %f\ntile_step_x: %i tile_step_y: %i\n", vars->pangle * 180/PI ,tang, tile_step_x, tile_step_y);
 	printf("COORDENADAS: X->%f  Y->%f\n", vars->px, vars->py);
-	printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
-	while (!completed)
-	{
+	// printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
+	printf("x_intercept: %f  x_step: %f\n", x_intercept, x_step);
+	
+	float distance = 999;
+		printf("VERTICAL COLLISIONS\n");
 		while (!completed && compare(y_intercept, (tile_step_y == 1) ? 8 : 0, (tile_step_y == 1) ? less_than : greater_than)
-		&& (x < 8 && x > 0))
+		&& ( x > 0 && x < 8))
 		{
 			x += tile_step_x;
 			printf("map[%i][%i] = %i\n", (int)floor(y_intercept), (int)x, map[(int)floor(y_intercept)][(int)x]);
@@ -166,14 +190,48 @@ void	drawRays3D(t_vars *vars)
 			{
 				int color = create_trgb(0, 255, 0, 0);
 				draw_square(40, 40, x * 40, floor(y_intercept) * 40, color, vars);
+				if (tile_step_x == 1)
+					x = x - vars->px;
+				else
+					x = vars->px - x;
+				if (tile_step_y == 1)
+					y_intercept =  y_intercept - vars->py;
+				else
+					y_intercept = vars->py - y_intercept;
+				distance = sqrt(y_intercept*y_intercept + x*x);
 				completed = true;
 			}
 			y_intercept += y_step;
 		}
+		completed = false;
+		printf("---------------------\nHORIZONTAL COLLISIONS\n");
+		while (!completed && compare(x_intercept, (tile_step_x == 1) ? 8 : 0, (tile_step_x == 1) ? less_than : greater_than)
+		&& (y > 0 && y < 8))
+		{
+			y += tile_step_y;
+			printf("map[%i][%i] = %i\n", (int)y, (int)floor(x_intercept), map[(int)y][(int)floor(x_intercept)]);
+			if (map[(int)y][(int)floor(x_intercept)] == 1)
+			{
+				int color = create_trgb(0, 255, 0, 0);
+				draw_square(40, 40, floor(x_intercept) * 40, y * 40, color, vars);
+				if (tile_step_x == 1)
+					x_intercept = x_intercept - vars->px;
+				else
+					x_intercept = vars->px - x_intercept;
+				if (tile_step_y == 1)
+					y =  y - vars->py;
+				else
+					y = vars->py - y;
+				int distance2 = sqrt(x_intercept*x_intercept + y*y);
+				if (distance2 < distance)
+					distance = distance2;
+				completed = true;
+			}
+			x_intercept += x_step;
+		}
 		if (!completed) //Comprobar rayo con paredes horizontales
 			printf("WALL NOT FOUND\n");
-		completed = true;
-	}
+	return (distance);
 }
 
 t_bool	compare(float n1, float n2, t_compare_flag compare_flag)
