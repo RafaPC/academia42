@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 18:55:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 23:57:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ void	raycast(t_vars *vars)
 	vars->pangle += PI/4;
 	if (vars->pangle > 2 * PI)
 		vars->pangle -= 2 * PI;
-	for (int i = 0; i < 90; i++)
+	for (int i = 0; i < 156; i++)
 	{
-		vars->pangle -= (PI/2)/90;
+		vars->pangle -= (PI/2)/156;
 		if (vars->pangle < 0)
 			vars->pangle += 2 * PI;
 		render_column(vars, drawRays3D(vars));
@@ -177,19 +177,19 @@ float	drawRays3D(t_vars *vars)
 	printf("COORDENADAS: X->%f  Y->%f\n", vars->px, vars->py);
 	// printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
 	printf("x_intercept: %f  x_step: %f\n", x_intercept, x_step);
-	
+	printf("y_intercept: %f  y_step: %f\n", y_intercept, y_step);
 	float distance = 999;
 		printf("VERTICAL COLLISIONS\n");
 		while (!completed && compare(y_intercept, (tile_step_y == 1) ? 8 : 0, (tile_step_y == 1) ? less_than : greater_than)
 		&& ( x > 0 && x < 8))
 		{
 			x += tile_step_x;
-			printf("map[%i][%i] = %i\n", (int)floor(y_intercept), (int)x, map[(int)floor(y_intercept)][(int)x]);
-			
+			// printf("map[%i][%i] = %i\n", (int)floor(y_intercept), (int)x, map[(int)floor(y_intercept)][(int)x]);
+			// printf("Corte: y_intercept: %f  x: %f\n", y_intercept, x);
 			if (map[(int)floor(y_intercept)][(int)x] == 1)
 			{
-				int color = create_trgb(0, 255, 0, 0);
-				draw_square(40, 40, x * 40, floor(y_intercept) * 40, color, vars);
+				// int color = create_trgb(0, 255, 0, 0);
+				// draw_square(40, 40, x * 40, floor(y_intercept) * 40, color, vars);
 				if (tile_step_x == 1)
 					x = x - vars->px;
 				else
@@ -199,6 +199,7 @@ float	drawRays3D(t_vars *vars)
 				else
 					y_intercept = vars->py - y_intercept;
 				distance = sqrt(y_intercept*y_intercept + x*x);
+				printf("Distance: %f\n", distance);
 				completed = true;
 			}
 			y_intercept += y_step;
@@ -209,11 +210,12 @@ float	drawRays3D(t_vars *vars)
 		&& (y > 0 && y < 8))
 		{
 			y += tile_step_y;
-			printf("map[%i][%i] = %i\n", (int)y, (int)floor(x_intercept), map[(int)y][(int)floor(x_intercept)]);
+			// printf("map[%i][%i] = %i\n", (int)y, (int)floor(x_intercept), map[(int)y][(int)floor(x_intercept)]);
+			// printf("Corte: x_intercept: %f  y: %f\n", x_intercept, y);
 			if (map[(int)y][(int)floor(x_intercept)] == 1)
 			{
-				int color = create_trgb(0, 255, 0, 0);
-				draw_square(40, 40, floor(x_intercept) * 40, y * 40, color, vars);
+				// int color = create_trgb(0, 255, 0, 0);
+				// draw_square(40, 40, floor(x_intercept) * 40, y * 40, color, vars);
 				if (tile_step_x == 1)
 					x_intercept = x_intercept - vars->px;
 				else
@@ -222,9 +224,12 @@ float	drawRays3D(t_vars *vars)
 					y =  y - vars->py;
 				else
 					y = vars->py - y;
-				int distance2 = sqrt(x_intercept*x_intercept + y*y);
+				float distance2 = sqrt(x_intercept*x_intercept + y*y);
 				if (distance2 < distance)
+				{
 					distance = distance2;
+					// printf("Distance nueva: %f\n", distance);
+				}
 				completed = true;
 			}
 			x_intercept += x_step;
@@ -254,3 +259,6 @@ void set_tile_step(int *tile_step_x, int *tile_step_y, float angle)
 	else										//looking right
 		*tile_step_x = 1;
 }
+
+//EL PROBLEMA ES QUE IMPACTA EN DISTANCIA -1, DEBERÍA IMPACTAR EN MÁS Y QUEDARSE CON LA MENOR
+//O SEA LA PRIMERA

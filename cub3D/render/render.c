@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 18:53:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/03 22:57:31 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	display_player(t_vars *vars)
 	i = 0;
 	j = 0;
 	color = create_trgb(0, 255, 0, 0);
-	draw_square(10, 10, vars->px * 40, vars->py * 40, color, vars);
+	draw_square(5, 5, vars->px * 40, vars->py * 40, color, vars);
 }
 
 void	display_vars(t_vars *vars)
@@ -145,18 +145,18 @@ void	draw_map(t_vars *vars)
 
 void	render_column(t_vars *vars, float distance)
 {
-	int screen_height;
 	int column_height;
 
-	// screen_height = 500; //starts at 300
-	column_height = (8 * 100)/distance;
+	column_height = (8 * 90)/distance;
 	printf("%s", "RENDER_COLUMN:\n");
 	printf("Distancia: %f\n", distance);
 	printf("Columna: %i\n", column_height);
-	if (column_height > 800)
+	if (column_height > 800 || column_height < 0)
 		column_height = 799;
 	else if (column_height < 30)
 		column_height = 30;
-	draw_square(8, column_height, 500 + offset_column, 400-(column_height/2), create_trgb(0, 0, 0, 255), vars);
+	int color = create_trgb(0, 0, 0, 255);
+	// color = add_shade(distance, color);
+	draw_square(8, column_height, 348 + offset_column, 400 -(column_height/2), color, vars);
 	offset_column += 8;
 }
