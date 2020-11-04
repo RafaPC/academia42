@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:43:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:54:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ void	init(t_vars *vars)
 	vars->pdx = cos(vars->pangle);
 	vars->pdy = sin(vars->pangle);
 	vars->wall_face = 1;
+	vars->keys_pressed.w = false;
+	vars->keys_pressed.a = false;
+	vars->keys_pressed.s = false;
+	vars->keys_pressed.d = false;
 	// display_vars(vars);
 }
 
@@ -51,8 +55,8 @@ int		main(int argc, char const *argv[])
 	// 	[1,1,1,1,1,1,1,1]
 	// ];
 	mlx_hook(vars.win, 2, 1L<<0, on_key_pressed, &vars);
-	render_screen(&vars);
-	// mlx_loop_hook(vars.mlx, render_screen, &vars);
+	mlx_hook(vars.win, 3, 1L<<1, on_key_released, &vars);
+	mlx_loop_hook(vars.mlx, render_screen, &vars);
 	mlx_loop(vars.mlx);
 	
 	// save_img = false;

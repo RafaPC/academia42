@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:43:29 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:47:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <mlx.h>
 #include <math.h>
 #include "../../printf/ft_printf.h"
+
 int offset_column = 0;
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -30,6 +31,7 @@ int		render_screen(t_vars *vars)
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
 	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
+	check_movement(vars);
 	// draw_fov(vars, green);
 	raycast(vars);
 	draw_map(vars);

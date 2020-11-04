@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:21:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:55:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,58 +103,18 @@
 void	raycast(t_vars *vars)
 {
 	float angle;
-	int res_x = 1600;
-	int i = 0;
-	float res_x_2 = res_x / 2; 
-	float aux;
-	while (i < res_x / 2)
+	float screen_width = 1600;
+	float sixty_dg = 1.0472;
+	float ninety_dg = 1.57079;
+	for (float col = 0; col < screen_width; col++)
 	{
-		aux = (res_x_2 - (float)i) / res_x_2;
-		angle = acos(aux); //*POV/180
-		// printf("%f; %f, res_x_2 = %f, I = %i\n", rad_to_degrees(angle), aux, res_x_2, i);
-		i++;
+		angle = vars->pangle - atan(tan(sixty_dg / 2.0) * (2.0 * col / screen_width - 1.0));
+		if (angle < 0)
+			angle += 2 * PI;
+		if (angle > 2 * PI)
+			angle -= 2 * PI;
 		render_column(vars, drawRays3D(vars, angle));
 	}
-	//Si la resolución es impar, lanzar angle a 90(*POV/180);
-	while (i <= res_x)
-	{
-		aux = (res_x_2 - (float)i) / res_x_2;
-		angle = acos(aux);
-		// printf("%f; %f, res_x_2 = %f, I = %i\n", rad_to_degrees(angle), aux, res_x_2, i);
-		i++;
-		render_column(vars, drawRays3D(vars, angle));
-	}
-
-
-
-	////////////
-	// angle = vars->pangle;
-	// angle += PI/4;
-	// if (angle > 2 * PI)
-	// 	angle -= 2 * PI;
-	// float next_ray = (PI/2)/1600;
-	// //156 sale de la división del ancho de la pantalla entre 8
-	// //8 es el ancho (en pixeles) de cada columna
-	// for (int i = 0; i < 1600; i++)
-	// {
-	// 	angle -= next_ray;
-	// 	if (angle < 0)
-	// 		angle += 2 * PI;
-	// 	render_column(vars, drawRays3D(vars, angle));
-	// }
-
-	// float screen_width = 1600;
-	// float sixty_dg = 1.0472;
-	// float ninety_dg = 1.57079;
-	// for (float col = 0; col < screen_width; col++)
-	// {
-	// 	angle = vars->pangle - atan(tan(ninety_dg / 2.0) * (2.0 * col / screen_width - 1.0));
-	// 	if (angle < 0)
-	// 		angle += 2 * PI;
-	// 	if (angle > 2 * PI)
-	// 		angle -= 2 * PI;
-	// 	render_column(vars, drawRays3D(vars, angle));
-	// }
 }
 
 float	drawRays3D_debug(t_vars *vars, float angle)

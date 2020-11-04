@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:43:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:53:26 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct  s_vars {
 	float		pdx, pdy, pangle;
 	int			map[8][8];
 	int			wall_face;
+	t_keys		keys_pressed;
 }               t_vars;
 
 typedef enum	e_compare_flag
@@ -144,4 +145,6 @@ t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 **			HOOKS
 */
 int		on_key_pressed(int keycode,t_vars *vars);
+void	check_movement(t_vars *vars);
+int		on_key_released(int keycode, t_vars *vars);
 #endif
