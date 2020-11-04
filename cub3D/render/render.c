@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 22:57:31 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 01:33:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,15 +148,12 @@ void	render_column(t_vars *vars, float distance)
 	int column_height;
 
 	column_height = (8 * 90)/distance;
-	printf("%s", "RENDER_COLUMN:\n");
-	printf("Distancia: %f\n", distance);
-	printf("Columna: %i\n", column_height);
 	if (column_height > 800 || column_height < 0)
 		column_height = 799;
 	else if (column_height < 30)
 		column_height = 30;
-	int color = create_trgb(0, 0, 0, 255);
-	// color = add_shade(distance, color);
+	int color = create_trgb(0, 100, 200, 255);
+	color = add_shade(distance / 8, color);
 	draw_square(8, column_height, 348 + offset_column, 400 -(column_height/2), color, vars);
 	offset_column += 8;
 }
