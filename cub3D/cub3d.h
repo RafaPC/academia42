@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 01:35:01 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:43:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct  s_vars {
 	float		px, py;
 	float		pdx, pdy, pangle;
 	int			map[8][8];
+	int			wall_face;
 }               t_vars;
 
 typedef enum	e_compare_flag
@@ -136,7 +137,7 @@ void	render_column(t_vars *vars, float distance);
 */
 void	raycast(t_vars *vars);
 float	drawRays3D(t_vars *vars, float angle);
-float	drawRays3D_debug(t_vars *vars);
+float	drawRays3D_debug(t_vars *vars, float angle);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 /*

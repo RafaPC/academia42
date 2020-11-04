@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 01:33:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:43:29 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int		render_screen(t_vars *vars)
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
 	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
+	// draw_fov(vars, green);
+	raycast(vars);
 	draw_map(vars);
 	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
-	// draw_fov(vars, green);
 	display_player(vars);
-	raycast(vars);
 	// render_column(vars, drawRays3D(vars));
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	return (0);
@@ -42,11 +42,8 @@ int		render_screen(t_vars *vars)
 
 void	display_player(t_vars *vars)
 {
-	int i, j;
 	int color;
 
-	i = 0;
-	j = 0;
 	color = create_trgb(0, 255, 0, 0);
 	draw_square(5, 5, vars->px * 40, vars->py * 40, color, vars);
 }
@@ -152,8 +149,8 @@ void	render_column(t_vars *vars, float distance)
 		column_height = 799;
 	else if (column_height < 30)
 		column_height = 30;
-	int color = create_trgb(0, 100, 200, 255);
-	color = add_shade(distance / 8, color);
-	draw_square(8, column_height, 348 + offset_column, 400 -(column_height/2), color, vars);
-	offset_column += 8;
+	int color = create_trgb(0, 100, 200, (vars->wall_face == 1) ? 255 : 80);
+	color = add_shade(distance / 9, color);
+	draw_square(1, column_height, offset_column, 400 -(column_height/2), color, vars);
+	offset_column += 1;
 }

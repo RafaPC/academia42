@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/03 17:08:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:43:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ void	init(t_vars *vars)
 	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
-	vars->px = 6.3;
-	vars->py = 4.3;
+	vars->px = 5.73;
+	vars->py = 4.86;
 	vars->pangle = PI/4;
 	vars->pdx = cos(vars->pangle);
 	vars->pdy = sin(vars->pangle);
+	vars->wall_face = 1;
 	// display_vars(vars);
 }
 

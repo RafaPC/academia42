@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/02 23:56:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/04 20:43:01 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 int		on_key_pressed(int keycode,t_vars *vars)
 {
-	ft_printf("key %i\n", keycode);
 	if (keycode == 'a')
 	{
 		vars->pangle += 0.2;
