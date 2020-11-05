@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/05 17:59:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/05 20:43:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ typedef enum	e_compare_flag
 
 typedef struct	s_ray
 {
-	int		x;
-	int		y;
+	float	tang;
+	float	x;
+	float	y;
 	int		tile_step_x;
 	int		tile_step_y;
 	float	x_intercept;
@@ -162,6 +163,7 @@ t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 void	check_angle_overflow(float *angle);
 float	get_x_intercept_length(t_ray ray, t_vars vars);
 float	get_y_intercept_length(t_ray ray, t_vars vars);
+t_ray	init_ray_values(t_vars vars, float angle);
 /*
 **			HOOKS
 */
