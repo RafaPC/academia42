@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:53:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/05 17:59:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <fcntl.h>
 # include "libft/libft.h"
-// # define PI 3.1415926535
 # define PI 3.141592
 typedef enum	e_error_type
 {	
@@ -94,6 +93,23 @@ typedef enum	e_compare_flag
 	less_than,
 	greater_than
 }				t_compare_flag;
+
+typedef struct	s_ray
+{
+	int		x;
+	int		y;
+	int		tile_step_x;
+	int		tile_step_y;
+	float	x_intercept;
+	float	y_intercept;
+	float	x_step;
+	float	y_step;
+}				t_ray;
+
+
+/**
+**			CHECK FILE THINGS
+*/
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
 t_line		*save_file_content(t_error_info *error_info, t_line *file_content, int fd);
@@ -138,9 +154,14 @@ void	render_column(t_vars *vars, float distance);
 */
 void	raycast(t_vars *vars);
 float	drawRays3D(t_vars *vars, float angle);
+float	drawRays3D_test(t_vars *vars, float angle);
 float	drawRays3D_debug(t_vars *vars, float angle);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
+float	get_tangent(float angle);
 t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
+void	check_angle_overflow(float *angle);
+float	get_x_intercept_length(t_ray ray, t_vars vars);
+float	get_y_intercept_length(t_ray ray, t_vars vars);
 /*
 **			HOOKS
 */
