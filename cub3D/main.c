@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/04 20:54:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 00:52:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ void	init(t_vars *vars)
 {
 	vars->img = (t_data*)malloc(sizeof(t_data));
 	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, 1600, 800, "Hello world");
-	vars->img->img = mlx_new_image(vars->mlx, 1600, 800);
+	vars->win = mlx_new_window(vars->mlx, 1300, 600, "Hello world");
+	vars->img->img = mlx_new_image(vars->mlx, 1300, 600);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	vars->px = 5.73;
 	vars->py = 4.86;
-	vars->pangle = PI/4;
+	// vars->pangle = PI/4;
+	// vars->pangle = 72.333911 * 180/PI;
+	// vars->pangle = 1.26 + (PI/2)/3;
+	vars->pangle = 1.26;
 	vars->pdx = cos(vars->pangle);
 	vars->pdy = sin(vars->pangle);
 	vars->wall_face = 1;
@@ -56,7 +59,8 @@ int		main(int argc, char const *argv[])
 	// ];
 	mlx_hook(vars.win, 2, 1L<<0, on_key_pressed, &vars);
 	mlx_hook(vars.win, 3, 1L<<1, on_key_released, &vars);
-	mlx_loop_hook(vars.mlx, render_screen, &vars);
+	// mlx_loop_hook(vars.mlx, render_screen, &vars);
+	render_screen(&vars);
 	mlx_loop(vars.mlx);
 	
 	// save_img = false;

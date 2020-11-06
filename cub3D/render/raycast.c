@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/05 21:12:52 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 01:01:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,21 @@
 #include "../cub3d.h"
 #include "../../printf/ft_printf.h"
 
+int debug = 1;
 void	raycast(t_vars *vars)
 {
+	debug = 1;
 	float angle;
-	float screen_width = 1600;
+	float screen_width = 1300;
 	float sixty_dg = 1.0472;
 	float ninety_dg = 1.57079;
-	for (float col = 0; col < screen_width; col++)
-	{
-		angle = vars->pangle - atan(tan(sixty_dg / 2.0) * (2.0 * col / screen_width - 1.0));
-		check_angle_overflow(&angle);
-		render_column(vars, drawRays3D_test(vars, angle));
-	}
+	// for (float col = 0; col < screen_width; col++)
+	// {
+	// 	angle = vars->pangle - atan(tan(sixty_dg / 2.0) * (2.0 * col / screen_width - 1.0));
+	// 	check_angle_overflow(&angle);
+	// 	render_column(vars, drawRays3D_test(vars, angle));
+	// }
+	render_column(vars, drawRays3D_test(vars, vars->pangle));
 }
 
 float	drawRays3D_debug(t_vars *vars, float angle)
@@ -256,12 +259,24 @@ float	drawRays3D_test(t_vars *vars, float angle)
 	float angle_beta = angle - vars->pangle;
 	check_angle_overflow(&angle_beta);
 	ray = init_ray_values(*vars, angle);
-	// ray.x += ray.tile_step_x;
-	// ray.y += ray.tile_step_y;
+	ray.x += ray.tile_step_x;
+	ray.y += ray.tile_step_y;
+	if (debug)
+	{
+		printf("--------------------------------------------------\n");
+		printf("RAY INFO:\nX:%f  Y:%f\nTile_step_x:%i  Tile_step_y:%i\nX_intercept:%f  Y_intercept%f\n", ray.x, ray.y, ray.tile_step_x, ray.tile_step_y, ray.x_intercept, ray.y_intercept);
+		printf("ÁNGULO: %fº\n", angle * 180/PI);
+	}
 	while (!completed)
 	{
 		distance_hor = get_x_intercept_length(ray, *vars);
 		distance_ver = get_y_intercept_length(ray, *vars);
+		if (debug)
+		{
+			printf("Distancia a corte horizontal: %f\nDistancia a corte vertical: %f\n", distance_hor, distance_ver);
+		}
+		printf("Choque con pared horizontal en map[%.1f][%.1f]=%i\n", ray.y, ray.x_intercept, map[(int)ray.y][(int)floorf(ray.x_intercept)]);
+		printf("Choque con pared vertical en map[%.1f][%.1f]=%i\n", ray.y_intercept, ray.x, map[(int)floor(ray.y_intercept)][(int)ray.x]);
 		if (map[(int)floorf(ray.y_intercept)][(int)ray.x] == 1 ||
 		map[(int)ray.y][(int)floorf(ray.x_intercept)] == 1)
 		{
@@ -273,15 +288,21 @@ float	drawRays3D_test(t_vars *vars, float angle)
 		}
 		if (distance_hor < distance_ver)
 		{
+			if (debug)
+				printf("Corte Horizontal Menor\n");
 			ray.x_intercept += ray.x_step;
 			ray.y += ray.tile_step_y;
 		}
 		else
 		{
+			if (debug)
+				printf("Corte Vertical Menor\n");
 			ray.y_intercept += ray.y_step;
 			ray.x += ray.tile_step_x;
 		}
-	}	
+	}
+	if (debug)
+		debug = 0;
 	return (1);
 }
 
