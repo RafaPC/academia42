@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/05 20:43:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 13:53:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,23 @@ typedef struct s_keys
 	t_bool		s;
 	t_bool		d;
 }				t_keys;
-
+//RAYCASTING
+typedef enum	e_wall_face
+{
+	north_face,
+	south_face,
+	east_face,
+	west_face
+}				t_wall_face;
 typedef struct  s_vars {
-    void        *mlx;
-    void        *win;
-	t_data		*img;
-	float		px, py;
-	float		pdx, pdy, pangle;
-	int			map[8][8];
-	int			wall_face;
-	t_keys		keys_pressed;
+    void        	*mlx;
+    void        	*win;
+	t_data			*img;
+	float			px, py;
+	float			pdx, pdy, pangle;
+	int				map[8][8];
+	t_wall_face		wall_face;
+	t_keys			keys_pressed;
 }               t_vars;
 
 typedef enum	e_compare_flag
@@ -94,11 +101,14 @@ typedef enum	e_compare_flag
 	greater_than
 }				t_compare_flag;
 
+/*
+**	RAYCASTING
+*/
 typedef struct	s_ray
 {
 	float	tang;
-	float	x;
-	float	y;
+	int		x;
+	int		y;
 	int		tile_step_x;
 	int		tile_step_y;
 	float	x_intercept;
@@ -106,6 +116,7 @@ typedef struct	s_ray
 	float	x_step;
 	float	y_step;
 }				t_ray;
+
 
 
 /**

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/05 23:51:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 12:59:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		on_key_pressed(int keycode, t_vars *vars)
 		vars->keys_pressed.w = true;
 	if (keycode == 's')
 		vars->keys_pressed.s = true;
-	render_screen(vars);
 	return (0);
 }
 
