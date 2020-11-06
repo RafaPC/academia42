@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 13:53:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:55:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,13 @@ typedef enum	e_wall_face
 	east_face,
 	west_face
 }				t_wall_face;
+typedef struct	s_texture
+{
+	int		width;
+	int		height;
+	void	*data;
+}				t_texture;
+
 typedef struct  s_vars {
     void        	*mlx;
     void        	*win;
@@ -93,6 +100,7 @@ typedef struct  s_vars {
 	int				map[8][8];
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
+	t_texture		texture;
 }               t_vars;
 
 typedef enum	e_compare_flag
@@ -106,16 +114,17 @@ typedef enum	e_compare_flag
 */
 typedef struct	s_ray
 {
-	float	tang;
-	int		x;
-	int		y;
-	int		tile_step_x;
-	int		tile_step_y;
-	float	x_intercept;
-	float	y_intercept;
-	float	x_step;
-	float	y_step;
+	float		tang;
+	float		x;
+	float		y;
+	int			tile_step_x;
+	int			tile_step_y;
+	float		x_intercept;
+	float		y_intercept;
+	float		x_step;
+	float		y_step;
 }				t_ray;
+
 
 
 
@@ -166,11 +175,8 @@ void	render_column(t_vars *vars, float distance);
 */
 void	raycast(t_vars *vars);
 float	drawRays3D(t_vars *vars, float angle);
-float	drawRays3D_test(t_vars *vars, float angle);
-float	drawRays3D_debug(t_vars *vars, float angle);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 float	get_tangent(float angle);
-t_bool	compare(float n1, float n2, t_compare_flag compare_flag);
 void	check_angle_overflow(float *angle);
 float	get_x_intercept_length(t_ray ray, t_vars vars);
 float	get_y_intercept_length(t_ray ray, t_vars vars);

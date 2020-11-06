@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 12:59:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 19:31:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		on_key_pressed(int keycode, t_vars *vars)
 		vars->keys_pressed.w = true;
 	if (keycode == 's')
 		vars->keys_pressed.s = true;
+	//TODO: comprobar el escape
 	return (0);
 }
 
@@ -71,3 +72,5 @@ void	check_movement(t_vars *vars)
 		vars->py += vars->pdy * 0.1;
 	}
 }
+
+//TODO: funcion que se trigeree cuando se cambie de tamaño la ventana

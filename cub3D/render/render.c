@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 13:52:32 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:15:22 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int		render_screen(t_vars *vars)
 	int green = create_trgb(0, 0, 255, 0);
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
-	vars->img->img = mlx_new_image(vars->mlx, 1300, 600);
+	vars->img->img = mlx_new_image(vars->mlx, 1920, 1080);
 	check_movement(vars);
-	// draw_fov(vars, green);
 	raycast(vars);
 	draw_map(vars);
+	draw_fov(vars, green);
 	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	display_player(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
@@ -145,17 +145,38 @@ void	render_column(t_vars *vars, float distance)
 {
 	int column_height;
 	int color;
+	int ceil_color;
+	int floor_color;
+	int screen_width;
+	int screen_height;
 
+	screen_width = 1920;
+	screen_height = 1080;
+	ceil_color = create_trgb(0, 255, 0, 0);
+	floor_color = create_trgb(0, 0, 255, 0);
+	//Calculate column height based on the distance to the wall
 	column_height = (8 * 90)/distance;
-	if (column_height > 600 || column_height < 0)
-		column_height = 599;
+	//Check column limits
+	if (column_height > screen_height || column_height < 0)
+		column_height = screen_height;
 	else if (column_height < 30)
 		column_height = 30;
+	//Checkea que pared va a visualizar
 	if (vars->wall_face == north_face || vars->wall_face == south_face)
 		color = create_trgb(0, 100, 200, (vars->wall_face == north_face) ? 255 : 80);
 	else if (vars->wall_face == west_face || vars->wall_face == east_face)
 		color = create_trgb(0, 200, (vars->wall_face == east_face) ? 255 : 80, 100);
+	//Añade sombreado
 	color = add_shade(distance / 9, color);
-	draw_square(1, column_height, offset_column, 300 -(column_height/2), color, vars);
+	//Dibuja techo y suelo
+	if (column_height < screen_height)
+	{
+		draw_square(1, (screen_height - column_height)/2, offset_column, 0, ceil_color, vars);
+		draw_square(1, (screen_height - column_height)/2, offset_column, (screen_height / 2) + (column_height / 2), floor_color, vars);
+		//Esto era para poner el suelo más "arriba" más oscuro
+		// for (int i = 300 + (column_height / 2); i < 600; i++)
+		// 	my_mlx_pixel_put(vars->img, offset_column, i, add_shade((float)(600 - i/700), floor_color));
+	}
+	draw_square(1, column_height, offset_column, (screen_height/2) - (column_height/2), color, vars);
 	offset_column += 1;
 }
