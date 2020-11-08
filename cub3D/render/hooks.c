@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 19:31:38 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/08 12:12:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,25 @@ void	check_movement(t_vars *vars)
 		vars->pdy = sin(vars->pangle);
 	}
 	if (vars->keys_pressed.w)
-	{
-		vars->px += vars->pdx * 0.1;
-		vars->py -= vars->pdy * 0.1;
+	{	
+		if (drawRays3D(vars, vars->pangle) > 0.5)
+		{
+			vars->px += vars->pdx * 0.1;
+			vars->py -= vars->pdy * 0.1;
+		}
 	}
 	if (vars->keys_pressed.s)
 	{
-		vars->px -= vars->pdx * 0.1;
-		vars->py += vars->pdy * 0.1;
+		float opposite_angle = vars->pangle + PI - (vars->pangle > PI) ? 2 * PI : 0;
+		float temp_angle = vars->pangle;
+		vars->pangle = opposite_angle;
+		float distance = drawRays3D(vars, opposite_angle);
+		vars->pangle = temp_angle;
+		if (distance > 0.2)
+		{
+			vars->px -= vars->pdx * 0.1;
+			vars->py += vars->pdy * 0.1;
+		}
 	}
 }
 
