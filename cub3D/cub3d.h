@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 18:55:46 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/07 23:08:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct	s_texture
 {
 	int		width;
 	int		height;
-	void	*data;
+	t_data	*data;
 }				t_texture;
 
 typedef struct  s_vars {
@@ -100,7 +100,8 @@ typedef struct  s_vars {
 	int				map[8][8];
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
-	t_texture		texture;
+	t_texture		*texture;
+	float			texture_x;
 }               t_vars;
 
 typedef enum	e_compare_flag
@@ -170,6 +171,7 @@ void	draw_line(t_vars *vars, float xend, float yend, int color);
 void	draw_fov(t_vars *vars, int color);
 void	display_vars(t_vars *vars);
 void	render_column(t_vars *vars, float distance);
+unsigned int    get_pixel(t_data *image, int x, int y);
 /*
 **			RAYCASTING
 */

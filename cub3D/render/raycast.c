@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 19:43:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/06 21:02:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@
 int debug = 1;
 void	raycast(t_vars *vars)
 {
+	debug = 1;
 	float angle;
-	
+	// angle = vars->pangle;
+	// render_column(vars, drawRays3D(vars, angle));
 	float screen_width = 1920;
 	float sixty_dg = 1.0472;
 	float ninety_dg = 1.57079;
-
 	for (float col = 0; col < screen_width; col++)
 	{
 		angle = vars->pangle - atan(tan(sixty_dg / 2.0) * (2.0 * col / screen_width - 1.0));
 		check_angle_overflow(&angle);
 		render_column(vars, drawRays3D(vars, angle));
+		debug = 0;
 	}
 }
 
@@ -37,7 +39,6 @@ float	drawRays3D(t_vars *vars, float angle)
 {
 	//depending on the ray axis
 	t_ray ray;
-	float tang;
 	float distance_hor;
 	float distance_ver;
 	int	map[8][8] =
@@ -58,17 +59,23 @@ float	drawRays3D(t_vars *vars, float angle)
 	ray = init_ray_values(*vars, angle);
 	distance_hor = get_x_intercept_length(ray, *vars);
 	distance_ver = get_y_intercept_length(ray, *vars);
-	while (false)
+	while (true)
 	{
 		//Solo comprobar si el menor choca con pared
 		if (distance_hor < distance_ver && map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)] == 1)
 		{
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
+			vars->texture_x = ray.x_intercept - ray.x;
+			// if (debug)
+			// 	printf("Distancia de choque con la pared horizontal %f", vars->texture_x);
 			return (distance_hor * cosf(angle_beta));
 		}	
 		else if (distance_ver < distance_hor && map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x] == 1)
 		{
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
+			vars->texture_x = ray.y_intercept - ray.y;
+			// if (debug)
+			// 	printf("Distancia de choque con la pared vertical %f", vars->texture_x);
 			return (distance_ver * cosf(angle_beta));
 		}
 		if (distance_hor < distance_ver)

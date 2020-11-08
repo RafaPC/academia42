@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 18:15:22 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/08 11:17:03 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 int		render_screen(t_vars *vars)
 {
 	offset_column = 0;
-	int green = create_trgb(0, 0, 255, 0);
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
 	vars->img->img = mlx_new_image(vars->mlx, 1920, 1080);
 	check_movement(vars);
 	raycast(vars);
 	draw_map(vars);
-	draw_fov(vars, green);
 	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	display_player(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
@@ -152,8 +150,8 @@ void	render_column(t_vars *vars, float distance)
 
 	screen_width = 1920;
 	screen_height = 1080;
-	ceil_color = create_trgb(0, 255, 0, 0);
-	floor_color = create_trgb(0, 0, 255, 0);
+	ceil_color = create_trgb(0, 102, 217, 255);
+	floor_color = create_trgb(0, 51, 153, 51);
 	//Calculate column height based on the distance to the wall
 	column_height = (8 * 90)/distance;
 	//Check column limits
@@ -177,6 +175,33 @@ void	render_column(t_vars *vars, float distance)
 		// for (int i = 300 + (column_height / 2); i < 600; i++)
 		// 	my_mlx_pixel_put(vars->img, offset_column, i, add_shade((float)(600 - i/700), floor_color));
 	}
-	draw_square(1, column_height, offset_column, (screen_height/2) - (column_height/2), color, vars);
+	// if (vars->wall_face == south_face)
+	// {
+	// 	//CALCULAR LO DE LA TEXTURA
+	// 	int texture_x = (int)(vars->texture_x * vars->texture->width);
+	// 	float step = 1.0 * vars->texture->height / column_height;
+	// 	int drawStart = screen_height - column_height / 2;
+	// 	int drawEnd = screen_height - column_height / 2;
+	// 	float textPos = (drawStart - screen_height / 2 + column_height / 2) * step;
+	// 	for (int y = drawStart; y < drawEnd; y++)
+	// 	{
+	// 		int textY = (int)textPos & (vars->texture->height - 1);
+	// 		textPos += step;
+	// 		// int color =  0xFFFFFFFF & ((int)vars->texture->data.addr >> ((vars->texture->height * vars->texture->width * 32) - 32));
+	// 		int color = get_pixel(vars->texture->data, 0, 0);
+	// 		// int color = (int)src;
+	// 		my_mlx_pixel_put(vars->img, offset_column, y, color);
+	// 	}
+	// }
+	// else
+		draw_square(1, column_height, offset_column, (screen_height/2) - (column_height/2), color, vars);
 	offset_column += 1;
+}
+
+unsigned int    get_pixel(t_data *image, int x, int y)
+{
+    char    *dst;
+
+    dst = image->addr + (y * image->line_length + x * (image->bits_per_pixel / 8));
+    return (((unsigned int)dst));
 }
