@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 12:42:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/08 17:11:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/09 12:52:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int		main(int argc, char const *argv[])
 	{
 		//--save argument
 		if (argc == 3)
-			if (ft_strncmp(argv[1], "--save", 6))
+		{
+			if (!ft_strncmp(argv[2], "--save", 6))
 				save_img = true;
 			else
 				error_info.error_type = second_arg_error;
+		}
 		//file argument
 		char	*file = (char*)argv[1];
 		printf("%s", file);

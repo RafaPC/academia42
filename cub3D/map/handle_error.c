@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 15:30:32 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/08 16:38:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/09 12:50:26 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ t_bool		print_error(t_error_info *error_info)
 {
 	//Here reads the error type and prints it
 	printf("Error!");
+	if (error_info->error_type == missing_argument_error)
+		printf("Falta argumento");
+	else if (error_info->error_type == second_arg_error)
+		printf("Segundo argumento mal escrito");
 	return (false);
 }
 
