@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/07 23:08:43 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/08 16:42:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # define PI 3.141592
 typedef enum	e_error_type
 {	
-	missing_argument_error,
+	missing_argument_error = 1,
+	second_arg_error,
 	open_file_error,
 	read_file_error,
 	forbdiden_character_error,
@@ -135,7 +136,6 @@ typedef struct	s_ray
 t_bool		check_map(t_error_info *error_info, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
 t_line		*save_file_content(t_error_info *error_info, t_line *file_content, int fd);
-t_bool		print_error(t_error_info *error_info);
 t_bool		check_file_content(t_error_info *error_info, t_line *file_content,
 t_program_params *t_program_params);
 t_bool		check_info_ids(t_bool info_id[8]);
@@ -147,6 +147,12 @@ t_program_params *program_params);
 t_bool		read_path(t_error_info *error_info, char *line, char **path_to_texture);
 t_bool		read_color(t_error_info *error_info, char *line, int *color);
 void		initialice_program_params(t_program_params *program_params);
+/*
+**			ERROR HANDLING
+*/
+void		init_error_struct(t_error_info *error_info);
+t_bool		print_error(t_error_info *error_info);
+
 /*
 **			RENDER THINGS
 */

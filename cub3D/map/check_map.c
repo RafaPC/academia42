@@ -6,12 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/28 20:19:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/08 16:21:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 #include "../libft/libft.h"
+
 //TODO: Cambiar nombre a la función
 t_bool	check_map(t_error_info *error_info, char *file_path)
 {
@@ -64,12 +65,6 @@ t_line	*save_file_content(t_error_info *error_info, t_line *file_content, int fd
 		actual_line->next_line = NULL;
 	}
 	return (file_content);
-}
-
-t_bool		print_error(t_error_info *error_info)
-{
-	//Here reads the error type and prints it
-	return (false);
 }
 
 void	initialice_info_ids(t_bool info_id[8])
