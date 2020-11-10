@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/08 16:21:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 12:44:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ t_bool	check_map(t_error_info *error_info, char *file_path)
 	initialice_program_params(program_params);
 	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
-		return (print_error(error_info));
-	if (!(file_content = save_file_content(error_info, file_content, fd)))
-		return (print_error(error_info));
-	if (!check_file_content(error_info, file_content, program_params))
+		return (raise_error(error_info));
+	else if (!(file_content = save_file_content(error_info, file_content, fd)))
+		return (raise_error(error_info));
+	else if (!check_file_content(error_info, file_content, program_params))
 		return (false);
 	return (true);
 }

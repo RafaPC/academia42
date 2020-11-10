@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 15:30:32 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/09 12:50:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 13:02:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,8 @@ t_bool		print_error(t_error_info *error_info)
 	return (false);
 }
 
+void *	raise_error(t_error_info *error_info, t_error_type error_id)
+{
+	error_info->error_type = error_id;
+	return (NULL);
+}

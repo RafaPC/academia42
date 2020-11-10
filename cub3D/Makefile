@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/11/08 16:11:51 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/11/10 13:01:43 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft
 CC = gcc
-SRCS = main.c map/check_map.c map/check_file/check_file_utils.c render/render_color.c render/render.c render/hooks.c render/raycast.c
-SRCSTEST = main_file_utils.c map/check_map.c map/check_file/check_file_utils.c map/handle_error.c render/render_color.c render/render.c render/hooks.c render/raycast.c
+SRCS = main.c checks/check_map.c checks/check_file/check_file_utils.c render/render_color.c render/render.c render/hooks.c render/raycast.c
+SRCSTEST = main_file_utils.c checks/check_map.c checks/check_file/check_file_utils.c checks/handle_error.c render/render_color.c render/render.c render/hooks.c render/raycast.c
 //OBJS = ${SRCS:.c=.o}
 FLAGS = -Wall -Wextra
 OBJS = ./*.o
@@ -30,7 +30,7 @@ ${NAME}:
 				make -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} ${SRCS} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o ${NAME}
+				${CC} ${FLAGS} ${SRCS} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o ${NAME}
 ${OBJS}: ${SRCS}
 				${CC} ${FLAGS} -c ${SRCS} -O3
 
@@ -40,7 +40,7 @@ test:	fclean
 				make -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				gcc -I. -Ilibft ${SRCSTEST} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o main.out
+				gcc -I. -Ilibft ${SRCSTEST} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o main.out
 clean:
 		rm -f ${OBJS}
 		make -C $(LIB_DIR) clean
