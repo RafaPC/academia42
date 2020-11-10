@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/08 16:42:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 17:33:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 typedef enum	e_error_type
 {	
 	missing_argument_error = 1,
+	too_many_args_error,
 	second_arg_error,
+	wrong_filename_error,
+	wrong_extension_error,
 	open_file_error,
 	read_file_error,
 	forbdiden_character_error,
@@ -58,8 +61,9 @@ typedef struct	s_program_params
 	char		*path_WE_texture;
 	char		*path_EA_texture;
 	char		*path_sprite_texture;
-	int			*floor_color;
-	int			*ceilling_color;
+	int			floor_color;
+	int			ceilling_color;
+	char		**map;
 }				t_program_params;
 
 typedef struct  s_data {

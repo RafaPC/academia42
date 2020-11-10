@@ -6,14 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/08 11:17:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:10:12 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+#include "cub3d.h"
 #include <mlx.h>
 #include <math.h>
-#include "../../printf/ft_printf.h"
 
 int offset_column = 0;
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)

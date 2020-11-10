@@ -6,12 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 12:44:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:09:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
-#include "../libft/libft.h"
+#include "cub3d.h"
+#include "libft.h"
 
 //TODO: Cambiar nombre a la función
 t_bool	check_map(t_error_info *error_info, char *file_path)

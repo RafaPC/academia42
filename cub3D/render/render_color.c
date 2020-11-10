@@ -6,12 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 16:56:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:10:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../../printf/ft_printf.h"
+#include "libft.h"
 
 int		create_trgb(int t, int r, int g, int b)
 {

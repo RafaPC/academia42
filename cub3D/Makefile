@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/11/10 13:01:43 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/11/10 18:09:13 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ ${NAME}:
 				make -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} ${SRCS} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o ${NAME}
+				${CC} ${FLAGS} -I. -Ilibft ${SRCS} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o ${NAME}
 ${OBJS}: ${SRCS}
 				${CC} ${FLAGS} -c ${SRCS} -O3
 

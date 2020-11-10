@@ -6,13 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/07 00:18:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:10:29 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <mlx.h>
-#include "../printf/ft_printf.h"
 #include <math.h>
 #include <stdio.h>
 

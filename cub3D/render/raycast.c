@@ -6,15 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/06 21:02:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/10 18:10:01 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
-#include "../cub3d.h"
+#include "cub3d.h"
 #include <time.h>
-#include "../../printf/ft_printf.h"
 
 int debug = 1;
 void	raycast(t_vars *vars)
