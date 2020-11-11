@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 18:09:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/11 11:26:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		on_key_pressed(int keycode, t_vars *vars)
 	if (keycode == 's')
 		vars->keys_pressed.s = true;
 	//TODO: comprobar el escape
+	// render_screen(vars);
 	return (0);
 }
 

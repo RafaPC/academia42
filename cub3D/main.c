@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 18:10:29 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/11 11:25:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init(t_vars *vars)
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
 	vars->keys_pressed.d = false;
-	vars->texture->data->img = mlx_xpm_file_to_image(vars->mlx, "./grass_texture.xpm", &vars->texture->width, &vars->texture->height);
+	vars->texture->data->img = mlx_xpm_file_to_image(vars->mlx, "./sand.XPM", &vars->texture->width, &vars->texture->height);
 	vars->texture->data->addr = mlx_get_data_addr(vars->texture->data->img, &vars->texture->data->bits_per_pixel, &vars->texture->data->line_length, &vars->texture->data->endian);
 	if (vars->texture->data->img == NULL || vars->texture->data->addr == NULL)
 		vars->pangle = 0;
@@ -69,8 +69,8 @@ int		main(int argc, char const *argv[])
 	mlx_hook(vars.win, 2, 1L<<0, on_key_pressed, &vars);
 	mlx_hook(vars.win, 3, 1L<<1, on_key_released, &vars);
 	mlx_loop_hook(vars.mlx, render_screen, &vars);
-	mlx_loop(vars.mlx);
 	// render_screen(&vars);
+	mlx_loop(vars.mlx);
 
 	// save_img = false;
 	// // if (argc == 3)

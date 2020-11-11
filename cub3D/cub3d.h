@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 17:33:43 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/11 10:48:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ void		initialice_program_params(t_program_params *program_params);
 */
 void		init_error_struct(t_error_info *error_info);
 t_bool		print_error(t_error_info *error_info);
+t_bool		raise_error(t_error_info *error_info, t_error_type error_id);
 
 /*
 **			RENDER THINGS
@@ -170,6 +171,8 @@ int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
+unsigned int	get_image_colour(t_vars *vars, int column_size, int y);
+unsigned int 	get_image_colour_MIO(t_vars *vars, int column_size, float y);
 /*
 **			RENDER
 */
