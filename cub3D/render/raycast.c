@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/11 13:49:45 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/12 10:59:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ void	raycast(t_vars *vars)
 	float screen_width = 1920;
 	float sixty_dg = 1.0472;
 	float ninety_dg = 1.57079;
+	float hundred_dg = 1.74532;
 	for (float col = 0; col < screen_width; col++)
 	{
-		angle = vars->pangle - atan(tan(ninety_dg / 2.0) * (2.0 * col / screen_width - 1.0));
+		angle = vars->pangle - atan(tan(hundred_dg / 2.0) * (2.0 * col / screen_width - 1.0));
 		check_angle_overflow(&angle);
 		render_column(vars, drawRays3D(vars, angle));
 		debug = 0;

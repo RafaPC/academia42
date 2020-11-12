@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/11 10:48:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/12 12:49:42 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ typedef struct  s_vars {
 	int				map[8][8];
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
-	t_texture		*texture;
+	t_texture		*textureN;
+	t_texture		*textureS;
+	t_texture		*textureE;
+	t_texture		*textureW;
 	float			texture_x;
 }               t_vars;
 
@@ -172,7 +175,7 @@ int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
 unsigned int	get_image_colour(t_vars *vars, int column_size, int y);
-unsigned int 	get_image_colour_MIO(t_vars *vars, int column_size, float y);
+unsigned int 	get_image_colour_MIO(t_vars *vars, int column_size, float y, int y_offset);
 /*
 **			RENDER
 */
