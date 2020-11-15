@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 12:44:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/15 13:56:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,7 @@ int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
-unsigned int	get_image_colour(t_vars *vars, int column_size, float y, int y_offset);
-unsigned int 	get_image_colour_MIO(t_vars *vars, float y);
+unsigned int	get_image_colour(t_vars *vars, float y);
 /*
 **			RENDER
 */
@@ -187,7 +186,6 @@ void	draw_line(t_vars *vars, float xend, float yend, int color);
 void	draw_fov(t_vars *vars, int color);
 void	display_vars(t_vars *vars);
 void	render_column(t_vars *vars, float distance);
-void	render_column_MIO(t_vars *vars, float distance);
 unsigned int    get_pixel(t_data *image, int x, int y);
 /*
 **			RAYCASTING

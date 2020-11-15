@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 13:16:04 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/15 13:56:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	raycast(t_vars *vars)
 	{
 		angle = vars->pangle - atan(tan(hundred_dg / 2.0) * (2.0 * col / screen_width - 1.0));
 		check_angle_overflow(&angle);
-		render_column_MIO(vars, drawRays3D(vars, angle));
+		render_column(vars, drawRays3D(vars, angle));
 		debug = 0;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 13:18:02 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/11/15 13:56:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,7 @@ int		add_shade(double distance, int color)
 	return (create_trgb(get_t(color), r, g, b));
 }
 
-unsigned int get_image_colour(t_vars *vars, int diferencia, float y, int y_offset)
-{
-	t_texture texture;
-	int x_texture;
-	int y_texture;
-
-	if (vars->wall_face == south_face)
-		texture = *vars->textureS;
-	else if (vars->wall_face == north_face)
-		texture = *vars->textureN;
-	else if (vars->wall_face == east_face)
-		texture = *vars->textureE;
-	else if (vars->wall_face == west_face)
-		texture = *vars->textureW;
-	//X and Y position of the texture
-	x_texture = (int)(texture.width * vars->texture_x);
-	y_texture = (int)(texture.height * (0.5 + 0.5 * (y / y_offset)));
-	// if (y_texture > texture.height)
-	// 	y_texture = texture.height;
-	// else if (y_texture < 0)
-	// 	y_texture = 0;
-	return (get_pixel(texture.data, x_texture, y_texture));
-}
-
-unsigned int get_image_colour_MIO(t_vars *vars, float y)
+unsigned int get_image_colour(t_vars *vars, float y)
 {
 	t_texture texture;
 	int x_texture;
