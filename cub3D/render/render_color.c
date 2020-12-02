@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 13:56:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:39:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,20 @@ int		add_shade(double distance, int color)
 	return (create_trgb(get_t(color), r, g, b));
 }
 
-unsigned int get_image_colour(t_vars *vars, float y)
+unsigned int get_image_color(t_texture texture, float x, float y)
 {
-	t_texture texture;
 	int x_texture;
 	int y_texture;
+
+	//X and Y position of the texture
+	x_texture = (int)(texture.width * x);
+	y_texture = (int)(texture.height * y);
+	return (get_pixel(texture.data, x_texture, y_texture));
+}
+
+unsigned int get_wall_color(t_vars *vars, float x, float y)
+{
+	t_texture texture;
 
 	if (vars->wall_face == south_face)
 		texture = *vars->textureS;
@@ -68,8 +77,5 @@ unsigned int get_image_colour(t_vars *vars, float y)
 		texture = *vars->textureE;
 	else if (vars->wall_face == west_face)
 		texture = *vars->textureW;
-	//X and Y position of the texture
-	x_texture = (int)(texture.width * vars->texture_x);
-	y_texture = (int)(texture.height * y);
-	return (get_pixel(texture.data, x_texture, y_texture));
+	return (get_image_color(texture, x, y));
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/12 12:14:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:24:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,34 @@ void	init_textures(t_vars *vars)
 	vars->textureS = (t_texture*)malloc(sizeof(t_texture));
 	vars->textureE = (t_texture*)malloc(sizeof(t_texture));
 	vars->textureW = (t_texture*)malloc(sizeof(t_texture));
-	init_texture(vars->mlx, vars->textureN, "./sand.XPM");
-	init_texture(vars->mlx, vars->textureS, "./stone_brick.XPM");
-	init_texture(vars->mlx, vars->textureE, "./wood.XPM");
-	init_texture(vars->mlx, vars->textureW, "./brick.XPM");
+	vars->textureSprite = (t_texture*)malloc(sizeof(t_texture));
+
+	init_texture(vars->mlx, vars->textureN, "./textures/sand.XPM");
+	init_texture(vars->mlx, vars->textureS, "./textures/stone_brick.XPM");
+	init_texture(vars->mlx, vars->textureE, "./textures/wood.XPM");
+	init_texture(vars->mlx, vars->textureW, "./textures/brick.XPM");
+	init_texture(vars->mlx, vars->textureW, "./textures/brick.XPM");
+	init_texture(vars->mlx, vars->textureSprite, "./textures/barrel.xpm");
 }
 
 void	init(t_vars *vars)
 {
 
 	vars->mlx = mlx_init();
-	vars->win = mlx_new_window(vars->mlx, 1920, 1080, "Hello world");
+	vars->win = mlx_new_window(vars->mlx, 800, 800, "Hello world");
 	//IMAGE
 	vars->img = (t_data*)malloc(sizeof(t_data));
-	vars->img->img = mlx_new_image(vars->mlx, 1920, 1080);
+	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
 	vars->img->addr = mlx_get_data_addr(vars->img->img, &vars->img->bits_per_pixel, &vars->img->line_length, &vars->img->endian);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	//POSITION
-	vars->px = 1.5;
+	vars->px = 6.5;
 	vars->py = 6.5;
 	// vars->pangle = PI/4;
 	// vars->pangle = 72.333911 * 180/PI;
 	// vars->pangle = 1.26 + (PI/2)/3;
 	// vars->pangle = 90 * 180/PI;
-	vars->pangle = 1.26;
+	vars->pangle = PI/2;
 	vars->pdx = cos(vars->pangle);
 	vars->pdy = sin(vars->pangle);
 	vars->wall_face = 1;
@@ -59,25 +63,13 @@ void	init(t_vars *vars)
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
 	vars->keys_pressed.d = false;
-
 	init_textures(vars);
-	// vars->textureN = (t_texture*)malloc(sizeof(t_texture));
-	// t_texture *text = vars->textureN;
-	// text->data = (t_data*)malloc(sizeof(t_data));
-	// // text = (t_texture*)malloc(sizeof(t_texture));
-	// // text->data = (t_data*)malloc(sizeof(t_data));
-	// text->data->img = mlx_xpm_file_to_image(vars->mlx, "./sand.XPM", &text->width, &text->height);
-	// text->data->addr = mlx_get_data_addr(text->data->img, &text->data->bits_per_pixel, &text->data->line_length, &text->data->endian);
 
-	// if (vars->textureN->data->img == NULL || vars->textureN->data->addr == NULL)
-	// 	vars->pangle = 0;
-	// mlx_put_image_to_window(vars->mlx, vars->win, vars->textureS.data, 30, 30);
-	// display_vars(vars);
+	vars->sprite = NULL;
 }
 
-int		main(int argc, char const *argv[])
+int		main(void)
 {
-	t_error_info	*error_info; 
 	t_vars			vars;
 	//Floor
 	init(&vars);

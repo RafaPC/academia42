@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 13:56:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:39:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # define PI 3.141592
+// #define FOV 1.74532
+#define FOV 0.785398
 typedef enum	e_error_type
 {	
 	missing_argument_error = 1,
@@ -96,6 +98,18 @@ typedef struct	s_texture
 	t_data	*data;
 }				t_texture;
 
+typedef struct s_sprite
+{
+	float			x;
+	float			y;
+	float			angle;
+	float			distance;
+	int				size_half;
+	int				center_x;
+	int				center_y;
+	struct s_sprite *next_sprite;
+}				t_sprite;
+
 typedef struct  s_vars {
     void        	*mlx;
     void        	*win;
@@ -109,14 +123,11 @@ typedef struct  s_vars {
 	t_texture		*textureS;
 	t_texture		*textureE;
 	t_texture		*textureW;
+	t_texture		*textureSprite;
 	float			texture_x;
+	t_list			*sprite;
+	float			distances[800];
 }               t_vars;
-
-typedef enum	e_compare_flag
-{	
-	less_than,
-	greater_than
-}				t_compare_flag;
 
 /*
 **	RAYCASTING
@@ -174,10 +185,12 @@ int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
-unsigned int	get_image_colour(t_vars *vars, float y);
+unsigned	get_image_color(t_texture texture, float x, float y);
+unsigned	get_wall_color(t_vars *vars, float x, float y);
 /*
 **			RENDER
 */
+void	render_sprites(t_vars *vars);
 int		render_screen(t_vars *vars);
 void	display_player(t_vars *vars);
 void	draw_map(t_vars *vars);
@@ -187,6 +200,7 @@ void	draw_fov(t_vars *vars, int color);
 void	display_vars(t_vars *vars);
 void	render_column(t_vars *vars, float distance);
 unsigned int    get_pixel(t_data *image, int x, int y);
+void	draw_sprite(t_vars *vars, t_sprite sprite);
 /*
 **			RAYCASTING
 */
@@ -204,4 +218,10 @@ t_ray	init_ray_values(t_vars vars, float angle);
 int		on_key_pressed(int keycode,t_vars *vars);
 void	check_movement(t_vars *vars);
 int		on_key_released(int keycode, t_vars *vars);
+
+/*
+**			SPRITE UTILS
+*/
+void	add_sprite_coords(float x, float y, t_vars *vars);
+void    order_sprites(t_list *sprite_list);
 #endif

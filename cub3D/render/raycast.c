@@ -6,33 +6,36 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/15 13:56:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/02 15:39:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
 #include "cub3d.h"
-#include <time.h>
 
 int debug = 1;
+int offset_column2 = 0;
+int	sprite_angle = 0;
 void	raycast(t_vars *vars)
 {
 	debug = 1;
 	float angle;
-	// angle = vars->pangle;
-	// render_column(vars, drawRays3D(vars, angle));
-	float screen_width = 1920;
-	float sixty_dg = 1.0472;
-	float ninety_dg = 1.57079;
-	float hundred_dg = 1.74532;
-	for (float col = 0; col < screen_width; col++)
+	float screen_width = 800;
+	float fov = 1.74532;
+	fov = 0.785398;
+	float distance;
+	for (int col = 0; col < screen_width; col++)
 	{
-		angle = vars->pangle - atan(tan(hundred_dg / 2.0) * (2.0 * col / screen_width - 1.0));
+		angle = vars->pangle - atanf(tanf(fov / 2.0) * (2.0 * col / screen_width - 1.0));
 		check_angle_overflow(&angle);
-		render_column(vars, drawRays3D(vars, angle));
+		distance = drawRays3D(vars, angle);
+		vars->distances[offset_column2] = distance;
+		render_column(vars, distance);
 		debug = 0;
 	}
+	offset_column2 = 0;
+	sprite_angle = 0;
 }
 
 float	drawRays3D(t_vars *vars, float angle)
@@ -45,10 +48,10 @@ float	drawRays3D(t_vars *vars, float angle)
 	{
 		{1,1,1,1,1,1,1,1},
 		{1,0,1,0,0,0,0,1},
-		{1,0,1,0,0,0,0,1},
-		{1,0,1,0,0,0,0,1},
+		{1,0,1,0,0,2,0,1},
+		{1,0,1,0,0,2,0,1},
 		{1,0,0,0,0,0,0,1},
-		{1,0,0,0,0,1,0,1},
+		{1,0,0,2,0,1,0,1},
 		{1,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1}
 	};
@@ -59,25 +62,42 @@ float	drawRays3D(t_vars *vars, float angle)
 	ray = init_ray_values(*vars, angle);
 	distance_hor = get_x_intercept_length(ray, *vars);
 	distance_ver = get_y_intercept_length(ray, *vars);
+	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
+	//con una pared entonces calcular la relativa a donde mira el jugador
+		
+	int tile_crossed = 0;
+	int ray_direction = 0; //0 vertical 1 horizontal
 	while (true)
 	{
+		ray_direction = (distance_hor < distance_ver) ? 0 : 1;
 		//Solo comprobar si el menor choca con pared
-		if (distance_hor < distance_ver && map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)] == 1)
+		if (distance_hor < distance_ver)
+			tile_crossed = map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)];
+		else
+			tile_crossed = map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x];
+		
+		if (tile_crossed == 2 && ray_direction == 0)
+			add_sprite_coords((int)floorf(ray.x_intercept), (int)ray.y + ray.tile_step_y, vars);
+		else if (tile_crossed == 2 && ray_direction == 1)
+			add_sprite_coords((int)ray.x + ray.tile_step_x, (int)floorf(ray.y_intercept), vars);
+		
+		if (tile_crossed == 1 && ray_direction == 0)
 		{
+			//Guardar la distancia
+			vars->distances[offset_column2++] = distance_hor;
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
 			vars->texture_x = ray.x_intercept - ray.x;
-			// if (debug)
-			// 	printf("Distancia de choque con la pared horizontal %f", vars->texture_x);
 			return (distance_hor * cosf(angle_beta));
-		}	
-		else if (distance_ver < distance_hor && map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x] == 1)
+		}
+		else if (tile_crossed == 1 && ray_direction == 1)
 		{
+			//Guardar la distancia
+			vars->distances[offset_column2++] = distance_ver;
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
 			vars->texture_x = ray.y_intercept - ray.y;
-			// if (debug)
-			// 	printf("Distancia de choque con la pared vertical %f", vars->texture_x);
 			return (distance_ver * cosf(angle_beta));
 		}
+		
 		if (distance_hor < distance_ver)
 		{
 			ray.x_intercept += ray.x_step;
@@ -141,6 +161,7 @@ void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle)
 		*tile_step_x = 1;
 }
 
+//FIXME: Calcular esto sin el cuadrado, con senos y cosenos
 float	get_x_intercept_length(t_ray ray, t_vars vars)
 {
 	float distance;
@@ -160,6 +181,7 @@ float	get_x_intercept_length(t_ray ray, t_vars vars)
 	return (distance);
 }
 
+//FIXME: Calcular esto sin el cuadrado, con senos y cosenos
 float	get_y_intercept_length(t_ray ray, t_vars vars)
 {
 	float distance;
