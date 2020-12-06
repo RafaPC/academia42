@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/02 19:38:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/06 23:12:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	add_sprite_coords(float x, float y, t_vars *vars)
 	sprite->distance = sqrtf(x * x + y * y) * fabsf(cosf(sprite->angle));
 	ft_lstadd_front(&vars->sprite, ft_lstnew(sprite));
 }
+
 void	ft_lstmove_backwards(t_list *list)
 {
 	void *aux;
@@ -54,36 +55,6 @@ void	ft_lstmove_backwards(t_list *list)
 		list->next->content = aux;
 	}
 }
-
-// void    order_sprites(t_list *sprite_list)
-// {
-//     t_list		*sprite_elem;
-// 	t_sprite	next_sprite_content;
-//     t_bool		changed;
-
-//     changed = true;
-//     while (changed)
-//     {
-//         changed = false;
-//         sprite_elem = sprite_list;
-//         while (sprite_elem)
-//         {
-//             if (sprite_elem->next)
-//             {
-// 				next_sprite_content = *(t_sprite*)sprite_elem->next->content;
-// 				if (next_sprite_content.distance > ((t_sprite *)sprite_elem->content)->distance)
-// 				{
-// 					// ft_lstmove_backwards(sprite_elem);
-// 					// ft_lstadd_front(&sprite_list, sprite_elem->next);
-// 					// ft_lstdelone(sprite_elem->next, free);
-// 					ft_lstmove_backwards(sprite_elem);
-// 					changed = true;
-// 				}
-//             }
-//             sprite_elem = sprite_elem->next;
-//         }
-//     }  
-// }  
 
 void    order_sprites(t_list *sprite)
 {

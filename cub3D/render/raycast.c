@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/02 15:39:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/03 19:46:48 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,16 @@
 
 int debug = 1;
 int offset_column2 = 0;
-int	sprite_angle = 0;
+
 void	raycast(t_vars *vars)
 {
-	debug = 1;
+	debug = 0;
 	float angle;
-	float screen_width = 800;
-	float fov = 1.74532;
-	fov = 0.785398;
+	int screen_width = 800;
 	float distance;
 	for (int col = 0; col < screen_width; col++)
 	{
-		angle = vars->pangle - atanf(tanf(fov / 2.0) * (2.0 * col / screen_width - 1.0));
+		angle = vars->pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / screen_width - 1.0));
 		check_angle_overflow(&angle);
 		distance = drawRays3D(vars, angle);
 		vars->distances[offset_column2] = distance;
@@ -35,7 +33,6 @@ void	raycast(t_vars *vars)
 		debug = 0;
 	}
 	offset_column2 = 0;
-	sprite_angle = 0;
 }
 
 float	drawRays3D(t_vars *vars, float angle)
@@ -64,7 +61,7 @@ float	drawRays3D(t_vars *vars, float angle)
 	distance_ver = get_y_intercept_length(ray, *vars);
 	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
 	//con una pared entonces calcular la relativa a donde mira el jugador
-		
+
 	int tile_crossed = 0;
 	int ray_direction = 0; //0 vertical 1 horizontal
 	while (true)

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/11 11:26:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/03 19:41:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int		on_key_pressed(int keycode, t_vars *vars)
 	if (keycode == 's')
 		vars->keys_pressed.s = true;
 	//TODO: comprobar el escape
-	// render_screen(vars);
 	return (0);
 }
 
@@ -71,12 +70,13 @@ void	check_movement(t_vars *vars)
 	}
 	if (vars->keys_pressed.s)
 	{
-		float opposite_angle = vars->pangle + PI - (vars->pangle > PI) ? 2 * PI : 0;
-		float temp_angle = vars->pangle;
-		vars->pangle = opposite_angle;
-		float distance = drawRays3D(vars, opposite_angle);
-		vars->pangle = temp_angle;
-		if (distance > 0.2)
+		// float opposite_angle = vars->pangle + PI - (vars->pangle > PI) ? 2 * PI : 0;
+		// float temp_angle = vars->pangle;
+		// vars->pangle = opposite_angle;
+		// float distance = drawRays3D(vars, opposite_angle);
+		// vars->pangle = temp_angle;
+		// if (distance > 0.2)
+		if (true)
 		{
 			vars->px -= vars->pdx * 0.1;
 			vars->py += vars->pdy * 0.1;

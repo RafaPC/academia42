@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/02 20:31:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/06 23:08:35 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <mlx.h>
 #include <math.h>
 #include "libft.h"
+#include <stdio.h>
 
 int offset_column = 0;
 static int debug = 0;
@@ -268,10 +269,9 @@ void	draw_sprite(t_vars *vars, t_sprite sprite)
 {
 	int screen_width = 800;
 	int column_position;
-	
+
 	column_position = sprite.center_x - sprite.size_half > 0 ? sprite.center_x - sprite.size_half : 0;
-	sprite.size_half = sprite.size_half;
-	// draw_square(40, 40, column_position, sprite_y, 0x00FF0000, vars);
+	
 	while (column_position < sprite.center_x  + sprite.size_half && column_position < screen_width)
 	{
 		if (vars->distances[column_position] > sprite.distance)
