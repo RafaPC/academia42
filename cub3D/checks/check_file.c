@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/07 01:32:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/07 12:53:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_line	*save_file_content(t_error_info *error_info, int fd)
 	return (file_content);
 }
 
+//Sets all info id's to false
 void	initialice_info_ids(t_bool info_id[8])
 {
 	int i;
@@ -93,15 +94,12 @@ t_program_params *program_params)
 		{
 			if ((info_id = search_identifier(line->line)) != -1)
 			{
-				if (info_id_list[info_id] == true)
-				{
-					error_info->error_type = duplicated_info_error;
-					return (print_error(error_info));
-				}
+				if (info_id_list[info_id] == true) //Si ya se ha leído ese identificador, ERROR está duplicado
+					return (raise_error(error_info, duplicated_info_error));
 				info_id_list[info_id] = true;
 			}
 			else
-				return (print_error(error_info)); //TODO: primero meter el error
+				return (raise_error(error_info, wrong_identifier_error));
 			if (!get_info(info_id, error_info, line->line, program_params))
 				return (print_error(error_info));
 		}
