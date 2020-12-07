@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 18:24:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/07 01:32:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 #include "libft.h"
 
 //TODO: Cambiar nombre a la función
-t_bool	check_map(t_error_info *error_info, char *file_path)
+t_bool	check_file(t_error_info *error_info, t_program_params *program_params, char *file_path)
 {
 	t_line				*file_content;
-	t_program_params	*program_params;
 	int 	fd;
 
 	initialice_program_params(program_params);
 	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
 		return (raise_error(error_info, open_file_error));
-	else if (!(file_content = save_file_content(error_info, file_content, fd)))
+	else if (!(file_content = save_file_content(error_info, fd)))
 		return (raise_error(error_info, read_file_error));
 	else if (!check_file_content(error_info, file_content, program_params))
 		return (false);
@@ -40,8 +39,9 @@ int		check_file_path(t_error_info *error_info, char *file_path)
 	return (fd);
 }
 
-t_line	*save_file_content(t_error_info *error_info, t_line *file_content, int fd)
+t_line	*save_file_content(t_error_info *error_info, int fd)
 {
+	t_line	*file_content;
 	t_line	*actual_line;
 	char	*aux;
 	int 	result;

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/02 19:39:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/07 01:22:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,10 @@ typedef struct	s_ray
 /**
 **			CHECK FILE THINGS
 */
-t_bool		check_map(t_error_info *error_info, char *file_path);
+t_bool		check_arguments(t_error_info *error_info, t_bool *save_img, int argc, char **argv);
+t_bool		check_file(t_error_info *error_info, t_program_params *program_params, char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
-t_line		*save_file_content(t_error_info *error_info, t_line *file_content, int fd);
+t_line		*save_file_content(t_error_info *error_info, int fd);
 t_bool		check_file_content(t_error_info *error_info, t_line *file_content,
 t_program_params *t_program_params);
 t_bool		check_info_ids(t_bool info_id[8]);
