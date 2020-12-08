@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/07 12:53:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/08 01:52:02 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ typedef enum	e_error_type
 	read_file_error,
 	forbdiden_character_error,
 	duplicated_info_error,
-	wrong_identifier_error
+	wrong_identifier_error,
+	color_wrong_character,
+	color_wrong_value
 }				t_error_type;
 	
 typedef enum	e_info_id

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/07 12:53:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/08 00:47:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_bool	check_file(t_error_info *error_info, t_program_params *program_params, ch
 	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
 		return (raise_error(error_info, open_file_error));
-	else if (!(file_content = save_file_content(error_info, fd)))
+	else if ((file_content = save_file_content(error_info, fd)) == NULL)
 		return (raise_error(error_info, read_file_error));
 	else if (!check_file_content(error_info, file_content, program_params))
 		return (false);
@@ -58,6 +58,7 @@ t_line	*save_file_content(t_error_info *error_info, int fd)
 	{
 		error_info->error_type = read_file_error;
 		//TODO: Liberar memoria y poner el mapa a nulo
+		return (NULL);
 	}
 	else
 	{
@@ -127,21 +128,22 @@ t_bool	check_info_ids(t_bool info_id[8])
 t_bool		get_info(t_info_id info_id, t_error_info *error_info, char *line, t_program_params *params)
 {
 	if (info_id == id_resolution)
-		return (read_resolution(error_info + 1, line, params));
+		return (read_resolution(error_info, line + 2, params));
 	else if (info_id == id_path_north)
-		return (read_path(error_info, line + 1, &(params->path_NO_texture)));
+		return (read_path(error_info, line + 3, &(params->path_NO_texture)));
 	else if (info_id == id_path_south)
-		return (read_path(error_info, line + 1, &(params->path_SO_texture)));
+		return (read_path(error_info, line + 3, &(params->path_SO_texture)));
 	else if (info_id == id_path_west)
-		return (read_path(error_info, line + 1, &(params->path_WE_texture)));
+		return (read_path(error_info, line + 3, &(params->path_WE_texture)));
 	else if (info_id == id_path_east)
-		return (read_path(error_info, line + 1, &(params->path_EA_texture)));
+		return (read_path(error_info, line + 3, &(params->path_EA_texture)));
 	else if (info_id == id_path_sprite)
-		return (read_path(error_info, line, &(params->path_sprite_texture)));
+		return (read_path(error_info, line + 2, &(params->path_sprite_texture)));
 	else if (info_id == id_color_floor)
-		return (read_color(error_info, line + 1, params->floor_color));
+		return (read_color(error_info, line + 2, params->floor_color));
 	else if (info_id == id_color_ceilling)
-		return (read_color(error_info, line + 1, params->ceilling_color));
+		return (read_color(error_info, line + 2, params->ceilling_color));
+	//TODO:Maybe añadir un código de error aunque nunca debería llegar a este return
 	return (false);
 }
 
