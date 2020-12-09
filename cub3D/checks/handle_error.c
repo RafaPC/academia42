@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 15:30:32 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/11/10 18:25:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 11:02:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void		init_error_struct(t_error_info *error_info)
 	error_info->error_column = 0;
 }
 
+// FIXME: utilizar ft_printf
 t_bool		print_error(t_error_info *error_info)
 {
 	//Here reads the error type and prints it

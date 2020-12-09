@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/08 01:52:02 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 18:48:39 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ typedef enum	e_error_type
 	duplicated_info_error,
 	wrong_identifier_error,
 	color_wrong_character,
-	color_wrong_value
+	color_wrong_value,
+	missing_information_error,
+	wrong_map_character
 }				t_error_type;
 	
 typedef enum	e_info_id
@@ -68,6 +70,9 @@ typedef struct	s_program_params
 	char		*path_sprite_texture;
 	int			floor_color;
 	int			ceilling_color;
+	int			player_x;
+	int			player_y;
+	float		player_angle;
 	char		**map;
 }				t_program_params;
 
@@ -155,7 +160,7 @@ typedef struct	s_ray
 **			CHECK FILE THINGS
 */
 t_bool		check_arguments(t_error_info *error_info, t_bool *save_img, int argc, char **argv);
-t_bool		check_file(t_error_info *error_info, t_program_params *program_params, char *file_path);
+t_bool		check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path);
 int			check_file_path(t_error_info *error_info, char *file_path);
 t_line		*save_file_content(t_error_info *error_info, int fd);
 t_bool		check_file_content(t_error_info *error_info, t_line *file_content,
@@ -169,6 +174,7 @@ t_program_params *program_params);
 t_bool		read_path(t_error_info *error_info, char *line, char **path_to_texture);
 t_bool		read_color(t_error_info *error_info, char *line, int *color);
 void		initialice_program_params(t_program_params *program_params);
+t_bool		read_map(t_error_info *error_info, t_line *line, t_program_params *program_params);
 /*
 **			ERROR HANDLING
 */

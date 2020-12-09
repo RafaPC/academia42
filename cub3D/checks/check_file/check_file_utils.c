@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/08 02:07:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 11:50:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,43 +54,35 @@ t_bool	read_path(t_error_info *error_info, char *line, char **path_to_texture)
 	return (correct);
 }
 
-//TODO: checkear la funcion en sí
-t_bool	read_color(t_error_info *error_info, char *line, int *color)
-{
-	int		colors[3];
-
-	while (*line == ' ')
-		line++;
-	if (!check_color_characters(line))
-		return (raise_error(error_info, color_wrong_character));
-	colors[0] = ft_atoi(line);
-	while (ft_isdigit(*line))
-		line++;
-	line++;
-	colors[1] = ft_atoi(line);
-	while (ft_isdigit(*line))
-		line++;
-	line++;
-	colors[2] = ft_atoi(line);
-	while (ft_isdigit(*line))
-		line++;
-	if (*line != '\0')
-		raise_error(error_info, color_wrong_character);
-	if (!check_colors_min_max(colors))
-		raise_error(error_info, color_wrong_value);
-	color = create_trgb(0, colors[0], colors[1], colors[2]);
-	return (true);
-}
 
 //Checkea los cáracteres de la línea donde se define un color, solo puede haber números, espacios y comas
 t_bool check_color_characters(char *line)
 {
-	while (*line)
-	{
-		if (*line != ' ' && *line != ',' && !ft_isdigit(*line))
-			return (false);
-		line++;
-	}
+	int i;
+
+	i = 0;
+	while (ft_isdigit(*line++))
+		i++;
+	if (i == 0 || i > 3)
+		return (false);
+	line--;
+	if (*line++ != ',')
+		return (false);
+	i = 0;
+	while (ft_isdigit(*line++))
+		i++;
+	if (i == 0 || i > 3)
+		return (false);
+	line--;
+	if (*line++ != ',')
+		return (false);
+	i = 0;
+	while (ft_isdigit(*line++))
+		i++;
+	if (i == 0 || i > 3)
+		return (false);
+	if (*line != '\0')
+		return (false);
 	return (true);
 }
 
@@ -105,3 +97,52 @@ t_bool check_colors_min_max(int colors[3])
 	}
 		return (true);
 }
+
+//TODO: checkear la funcion en sí
+t_bool	read_color(t_error_info *error_info, char *line, int *color)
+{
+	int		colors[3];
+
+	while (*line == ' ')
+		line++;
+	if (!check_color_characters(line))
+		return (raise_error(error_info, color_wrong_character));
+	colors[0] = ft_atoi(line);
+	while (ft_isdigit(*line))
+		line++;
+	colors[1] = ft_atoi(++line);
+	while (ft_isdigit(*line))
+		line++;
+	colors[2] = ft_atoi(++line);
+	if (!check_colors_min_max(colors))
+		raise_error(error_info, color_wrong_value);
+	*color = create_trgb(0, colors[0], colors[1], colors[2]);
+	return (true);
+}
+
+// t_bool check_color_characters2(char *line)
+// {
+// 	int i[3];
+
+// 	while (*line)
+// 	{
+// 		while (ft_isdigit(*line++))
+// 			i[0]++;
+// 		if (i[0] == 0 || i[0] > 3)
+// 			return (false);
+// 		if (*line++ != ',')
+// 			return (false);
+// 		while (ft_isdigit(*line++))
+// 			i[1]++;
+// 		if (i[1] == 0 || i[1] > 3)
+// 			return (false);
+// 		if (*line++ != ',')
+// 			return (false);
+// 		while (ft_isdigit(*line++))
+// 			i[2]++;
+// 		if (i[2] == 0 || i[2 ] > 3)
+// 			return (false);
+// 		line++;
+// 	}
+// 	return (true);
+// }

@@ -1,0 +1,121 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
+/*   Updated: 2020/12/09 19:18:50 by rprieto-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include "cub3d.h"
+
+t_bool		check_map_characters(t_line *line_elem)
+{
+	char	*line;
+	t_bool	player_pos;
+
+	player_pos = false;
+	while (line_elem)
+	{
+		line = line_elem->line;
+		while (*line)
+		{
+			if (*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W')
+			{
+				if (player_pos) //FIXME:
+					return (false);
+				player_pos = true;
+			}
+			else if (*line != '0' && *line != '1' && *line != '2' && *line != ' ')
+				return (false);
+			line++;
+		}
+		line_elem = line_elem->next_line;
+	}
+	if (!player_pos) //No se ha encontrado con N, S, E o W
+		return (false);
+	return (true);
+}
+
+int			get_map_height(t_line *line)
+{
+	int i;
+
+	i = 0;
+	while (line)
+	{
+		i++;
+		line = line->next_line;
+	}
+	return (i);
+}
+
+static void	set_player_angle(char c, float *angle)
+{
+	if (c == 'N')
+		*angle = PI/2;
+	else if (c == 'S')
+		*angle = (3*PI)/2;
+	else if (c == 'E')
+		*angle = 0;
+	else
+		*angle = PI;
+}
+
+static void	set_player_parameters(char **map, t_program_params *program_params)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while(map[y][x])
+		{
+			if (map[y][x] == 'N' || map[y][x] == 'S' || 
+			map[y][x] == 'E' || map[y][x] == 'W')
+			{
+				program_params->player_y = y;
+				program_params->player_x = x;
+				set_player_angle(map[y][x], &program_params->player_angle);
+				map[y][x] = '0';
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void		save_map(t_line *line_elem, char **map)
+{
+	char *line;
+	char *map_line;
+
+	// map_line = *map;
+	while (line_elem)
+	{
+		*map = ft_strdup(line_elem->line);
+		// map_line = ft_strdup(line_elem->line);
+		// map_line++;
+		(map)++;
+		line_elem = line_elem->next_line;
+	}
+	map_line = NULL;
+	*map = NULL;
+}
+
+t_bool		read_map(t_error_info *error_info, t_line *line, t_program_params *program_params)
+{
+	program_params->map = (char**)malloc((get_map_height(line) + 1) * sizeof(char*));
+	save_map(line, program_params->map);
+	if (!check_map_characters(line))
+		return (raise_error(error_info, wrong_map_character));
+	set_player_parameters(program_params->map, program_params);
+	return (true);
+}

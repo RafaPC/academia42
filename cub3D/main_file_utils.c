@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 12:42:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/07 00:57:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 18:48:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_bool		check_arguments(t_error_info *error_info, t_bool *save_img, int argc, ch
 		if (argc == 3)
 		{
 			if (ft_strlen(argv[2]) == 6 && !ft_strncmp(argv[2], "--save", 6))
-				save_img = true;
+				*save_img = true;
 			else
 				return (raise_error(error_info, second_arg_error));
 		}

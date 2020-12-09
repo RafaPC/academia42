@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/08 00:47:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 18:48:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 
 //TODO: Cambiar nombre a la función
-t_bool	check_file(t_error_info *error_info, t_program_params *program_params, char *file_path)
+t_bool	check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path)
 {
 	t_line				*file_content;
 	int 	fd;
@@ -104,10 +104,13 @@ t_program_params *program_params)
 			if (!get_info(info_id, error_info, line->line, program_params))
 				return (print_error(error_info));
 		}
+		else
+			return (raise_error(error_info, missing_information_error)); //Si entra aquí ha acabado el archivo y no ha encontrado toda la información
 		line = line->next_line;
 	}
+	if (!read_map(error_info, line, program_params))
+		return (false);
 	return (true);
-
 }
 
 t_bool	check_info_ids(t_bool info_id[8])
@@ -140,13 +143,14 @@ t_bool		get_info(t_info_id info_id, t_error_info *error_info, char *line, t_prog
 	else if (info_id == id_path_sprite)
 		return (read_path(error_info, line + 2, &(params->path_sprite_texture)));
 	else if (info_id == id_color_floor)
-		return (read_color(error_info, line + 2, params->floor_color));
+		return (read_color(error_info, line + 2, &params->floor_color));
 	else if (info_id == id_color_ceilling)
-		return (read_color(error_info, line + 2, params->ceilling_color));
+		return (read_color(error_info, line + 2, &params->ceilling_color));
 	//TODO:Maybe añadir un código de error aunque nunca debería llegar a este return
 	return (false);
 }
 
+//Si dejo lo de las ids ni necesito esto
 void	initialice_program_params(t_program_params *program_params)
 {
 	program_params->resolution_x = -1;
@@ -156,8 +160,9 @@ void	initialice_program_params(t_program_params *program_params)
 	program_params->path_WE_texture = NULL;
 	program_params->path_EA_texture = NULL;
 	program_params->path_sprite_texture = NULL;
-	program_params->floor_color = NULL;
-	program_params->ceilling_color = NULL;
+	program_params->floor_color = -1;
+	program_params->ceilling_color = -1;
+	program_params->map = NULL;
 }
 
 t_info_id	search_identifier(char *line)
