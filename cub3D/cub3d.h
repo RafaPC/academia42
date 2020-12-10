@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 21:12:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 12:00:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ typedef enum	e_error_type
 	color_wrong_character,
 	color_wrong_value,
 	missing_information_error,
-	wrong_map_character
+	wrong_map_character,
+	map_not_closed_error
 }				t_error_type;
 	
 typedef enum	e_info_id

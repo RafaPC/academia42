@@ -6,12 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 19:18:50 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 12:10:45 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "cub3d.h"
+
+//TODO: mirar si junto funcionas de checkear carácteres del mapa
 
 t_bool		check_map_characters(t_line *line_elem)
 {
@@ -26,7 +28,7 @@ t_bool		check_map_characters(t_line *line_elem)
 		{
 			if (*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W')
 			{
-				if (player_pos) //FIXME:
+				if (player_pos)
 					return (false);
 				player_pos = true;
 			}
@@ -92,7 +94,7 @@ static void	set_player_parameters(char **map, t_program_params *program_params)
 	}
 }
 
-void		save_map(t_line *line_elem, char **map)
+static void	save_map(t_line *line_elem, char **map)
 {
 	char *line;
 	char *map_line;
@@ -110,12 +112,41 @@ void		save_map(t_line *line_elem, char **map)
 	*map = NULL;
 }
 
+static t_bool		map_is_closed(char **map)
+{
+	int y;
+	int x;
+
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == '0')
+			{
+				if (y == 0 || map[y + 1] == NULL ||
+				x == 0 || map[y][x + 1] == '\0')
+					return (false);
+				else if (map[y-1][x] == ' ' || map[y+1][x] == ' ' ||
+				map[y][x-1] == ' ' || map[y][x+1] == ' ')
+					return (false);
+			}
+			x++;	
+		}
+		y++;
+	}
+	return (true);
+}
+
 t_bool		read_map(t_error_info *error_info, t_line *line, t_program_params *program_params)
 {
 	program_params->map = (char**)malloc((get_map_height(line) + 1) * sizeof(char*));
 	save_map(line, program_params->map);
 	if (!check_map_characters(line))
 		return (raise_error(error_info, wrong_map_character));
+	if (!map_is_closed(program_params->map)) //TODO: pasarle error_info y que guarde fila y columna
+		return (raise_error(error_info, map_not_closed_error));
 	set_player_parameters(program_params->map, program_params);
 	return (true);
 }

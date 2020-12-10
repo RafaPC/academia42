@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 15:30:32 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 11:02:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 12:05:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void		init_error_struct(t_error_info *error_info)
 }
 
 // FIXME: utilizar ft_printf
+// FIXME: sustituir todos los raise_error por print_error
 t_bool		print_error(t_error_info *error_info)
 {
 	//Here reads the error type and prints it
@@ -35,6 +36,8 @@ t_bool		print_error(t_error_info *error_info)
 		printf("El nombre del archivo dado por argumento no es correcto");
 	else if (error_info->error_type == wrong_extension_error)
 		printf("El archivo dado por argumento tiene la extensión errónea");
+	else if (error_info->error_type == map_not_closed_error)
+		printf("El mapa no está rodeado de paredes");
 	else
 		printf("Error indefinido");
 	return (false);
