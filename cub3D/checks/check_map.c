@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 15:53:49 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 17:42:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ static void	set_player_parameters(char **map, t_program_params *program_params)
 
 static void	save_map(t_list *line_elem, char **map)
 {
-	char *line;
-
 	while (line_elem)
 	{
 		*map = ft_strdup(line_elem->content);

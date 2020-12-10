@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 16:52:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 17:54:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef enum	e_error_type
 	
 typedef enum	e_info_id
 {	
-	id_resolution,
+	id_resolution = 1,
 	id_path_north,
 	id_path_south,
 	id_path_west,
@@ -119,10 +119,13 @@ typedef struct s_sprite
 	struct s_sprite *next_sprite;
 }				t_sprite;
 
-typedef struct  s_vars {
-    void        	*mlx;
+typedef struct s_mlx {
+	void        	*mlx;
     void        	*win;
 	t_data			*img;
+}				t_mlx;
+typedef struct  s_vars {
+    t_mlx			mlx;
 	float			px, py;
 	float			pdx, pdy, pangle;
 	char			**map;
@@ -164,7 +167,7 @@ typedef struct	s_ray
 */
 t_bool		check_arguments(t_error_info *error_info, t_bool *save_img, int argc, char **argv);
 t_bool		check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path);
-int			check_file_path(t_error_info *error_info, char *file_path);
+int			check_file_path(t_error_info *error_info, const char *file_path);
 t_list		*save_file_content(t_error_info *error_info, int fd);
 t_bool		check_file_content(t_error_info *error_info, t_list *file_content,
 t_program_params *t_program_params);

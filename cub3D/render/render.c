@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 21:19:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 17:36:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,17 @@ int		render_screen(t_vars *vars)
 {
 	debug = 0;
 	offset_column = 0;
-	int blue = create_trgb(0, 200, 150, 200);
-	mlx_destroy_image(vars->mlx, vars->img->img);
-	vars->img->img = mlx_new_image(vars->mlx, vars->screen_width, vars->screen_height);
+	mlx_destroy_image(vars->mlx.mlx, vars->mlx.img->img);
+	vars->mlx.img->img = mlx_new_image(vars->mlx.mlx, vars->screen_width, vars->screen_height);
 	check_movement(vars);
 	raycast(vars);
 	draw_map(vars);
-	// draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	display_player(vars);
 	display_vars(vars);
 	
 	render_sprites(vars);
 
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
 	return (0);
 }
 
@@ -60,7 +58,7 @@ void	display_vars(t_vars *vars)
 	int color;
 	
 	color = create_trgb(0, 0, 255, 0);
-	mlx_string_put(vars->mlx, vars->win, vars->screen_width - 100, 50, color, "hola");
+	mlx_string_put(vars->mlx.mlx, vars->mlx.win, vars->screen_width - 100, 50, color, "hola");
 }
 
 void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars)
@@ -72,7 +70,7 @@ void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *v
 	{
 		while (y < height)
 		{
-			my_mlx_pixel_put(vars->img, xpos + x, ypos + y, color);
+			my_mlx_pixel_put(vars->mlx.img, xpos + x, ypos + y, color);
 			y++;
 		}
 		x++;
@@ -91,7 +89,7 @@ void	draw_line(t_vars *vars, float xend, float yend, int color)
 	yincrement = (yend - (vars->py * 40)) / 30;
 	while (i < length)
 	{
-		my_mlx_pixel_put(vars->img, (vars->px * 40) + (xincrement * i), (vars->py * 40) + (yincrement * i), color);
+		my_mlx_pixel_put(vars->mlx.img, (vars->px * 40) + (xincrement * i), (vars->py * 40) + (yincrement * i), color);
 		i++;
 	}
 }
@@ -172,15 +170,15 @@ void	render_column(t_vars *vars, float distance)
 	int color_text;
 	//El pixel en la mitad de la pantalla en el eje Y
 	color_text = get_wall_color(vars, vars->texture_x, 0.5);
-	my_mlx_pixel_put(vars->img, offset_column, drawStart, color_text);
+	my_mlx_pixel_put(vars->mlx.img, offset_column, drawStart, color_text);
 	for (float i = 1; (int)i <= column_height/2; i++)
 	{
 		//Mitad superior
 		color_text = get_wall_color(vars, vars->texture_x, (real_column_height/2 - i)/real_column_height);
-		my_mlx_pixel_put(vars->img, offset_column, (int)(drawStart - i), color_text);
+		my_mlx_pixel_put(vars->mlx.img, offset_column, (int)(drawStart - i), color_text);
 		//Mitad inferior
 		color_text = get_wall_color(vars, vars->texture_x, (real_column_height/2 + i)/real_column_height);
-		my_mlx_pixel_put(vars->img, offset_column, (int)(drawStart + i), color_text);
+		my_mlx_pixel_put(vars->mlx.img, offset_column, (int)(drawStart + i), color_text);
 	}
 	debug = 1;
 	offset_column += 1;
@@ -245,7 +243,7 @@ void	draw_sprite_column(int drawing_position, t_sprite sprite, t_vars *vars)
         pixel = get_sprite_colour(vars, drawing_position, y_position, sprite);
         // pixel = create_trgb(0, 255, 0, 0);
 		if (pixel != -16777216)
-            my_mlx_pixel_put(vars->img, drawing_position, y_draw_coord, pixel);
+            my_mlx_pixel_put(vars->mlx.img, drawing_position, y_draw_coord, pixel);
         y_position++;
         y_draw_coord++;
     }

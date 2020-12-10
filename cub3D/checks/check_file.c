@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 16:52:28 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 17:54:34 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_bool	check_file(t_error_info *error_info, t_program_params *program_params, co
 	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
 		return (raise_error(error_info, open_file_error));
-	else if ((file_content = save_file_content2(error_info, fd)) == NULL)
+	else if ((file_content = save_file_content(error_info, fd)) == NULL)
 		return (raise_error(error_info, read_file_error));
 	else if (!check_file_content(error_info, file_content, program_params))
 	{
@@ -34,7 +34,7 @@ t_bool	check_file(t_error_info *error_info, t_program_params *program_params, co
 	return (true);
 }
 
-int		check_file_path(t_error_info *error_info, char *file_path)
+int		check_file_path(t_error_info *error_info, const char *file_path)
 {
 	int	fd;
 
@@ -61,7 +61,7 @@ t_list	*save_file_content(t_error_info *error_info, int fd)
 	if (result == -1)
 	{
 		error_info->error_type = read_file_error;
-		ft_lstclear(file_content, free);
+		ft_lstclear(&file_content, free);
 		return (NULL);
 	}
 	else
@@ -94,11 +94,11 @@ t_program_params *program_params)
 	{
 		if (*((char*)line->content))
 		{
-			if ((info_id = search_identifier(line->content)) != -1)
+			if ((info_id = search_identifier(line->content)))
 			{
-				if (info_id_list[info_id] == true) //Si ya se ha leído ese identificador, ERROR está duplicado
+				if (info_id_list[info_id - 1] == true) //Si ya se ha leído ese identificador, ERROR está duplicado
 					return (raise_error(error_info, duplicated_info_error));
-				info_id_list[info_id] = true;
+				info_id_list[info_id - 1] = true;
 			}
 			else
 				return (raise_error(error_info, wrong_identifier_error));
@@ -170,7 +170,7 @@ t_info_id	search_identifier(char *line)
 {
 	t_info_id id;
 
-	id = -1;
+	id = 0;
 	if (ft_strncmp(line, "R ", 2) == 0)
 		id = id_resolution;
 	else if (ft_strncmp(line, "NO ", 3) == 0)
