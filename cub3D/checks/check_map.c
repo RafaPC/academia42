@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 12:10:45 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 15:53:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 #include "cub3d.h"
 
 //TODO: mirar si junto funcionas de checkear carácteres del mapa
+//también mirar el ir pasando líneas vacías al acabar de leer todos los parámetros
+//para no leer líneas vacías en el mapa
 
-t_bool		check_map_characters(t_line *line_elem)
+t_bool		check_map_characters(t_list *line_elem)
 {
 	char	*line;
 	t_bool	player_pos;
@@ -23,7 +25,7 @@ t_bool		check_map_characters(t_line *line_elem)
 	player_pos = false;
 	while (line_elem)
 	{
-		line = line_elem->line;
+		line = line_elem->content;
 		while (*line)
 		{
 			if (*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W')
@@ -36,14 +38,14 @@ t_bool		check_map_characters(t_line *line_elem)
 				return (false);
 			line++;
 		}
-		line_elem = line_elem->next_line;
+		line_elem = line_elem->next;
 	}
 	if (!player_pos) //No se ha encontrado con N, S, E o W
 		return (false);
 	return (true);
 }
 
-int			get_map_height(t_line *line)
+int			get_map_height(t_list *line)
 {
 	int i;
 
@@ -51,7 +53,7 @@ int			get_map_height(t_line *line)
 	while (line)
 	{
 		i++;
-		line = line->next_line;
+		line = line->next;
 	}
 	return (i);
 }
@@ -94,21 +96,16 @@ static void	set_player_parameters(char **map, t_program_params *program_params)
 	}
 }
 
-static void	save_map(t_line *line_elem, char **map)
+static void	save_map(t_list *line_elem, char **map)
 {
 	char *line;
-	char *map_line;
 
-	// map_line = *map;
 	while (line_elem)
 	{
-		*map = ft_strdup(line_elem->line);
-		// map_line = ft_strdup(line_elem->line);
-		// map_line++;
+		*map = ft_strdup(line_elem->content);
 		(map)++;
-		line_elem = line_elem->next_line;
+		line_elem = line_elem->next;
 	}
-	map_line = NULL;
 	*map = NULL;
 }
 
@@ -139,7 +136,7 @@ static t_bool		map_is_closed(char **map)
 	return (true);
 }
 
-t_bool		read_map(t_error_info *error_info, t_line *line, t_program_params *program_params)
+t_bool		read_map(t_error_info *error_info, t_list *line, t_program_params *program_params)
 {
 	program_params->map = (char**)malloc((get_map_height(line) + 1) * sizeof(char*));
 	save_map(line, program_params->map);

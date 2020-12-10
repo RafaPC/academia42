@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 20:10:14 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 16:52:28 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,21 @@
 //TODO: Cambiar nombre a la función
 t_bool	check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path)
 {
-	t_line				*file_content;
+	t_list	*file_content;
 	int 	fd;
 
 	initialice_program_params(program_params);
 	file_content = NULL;
 	if ((fd = check_file_path(error_info, file_path)) < 0)
 		return (raise_error(error_info, open_file_error));
-	else if ((file_content = save_file_content(error_info, fd)) == NULL)
+	else if ((file_content = save_file_content2(error_info, fd)) == NULL)
 		return (raise_error(error_info, read_file_error));
 	else if (!check_file_content(error_info, file_content, program_params))
+	{
+		ft_lstclear(&file_content, free);
 		return (false);
-	//TODO: Liberar la memoria del file content
+	}
+	ft_lstclear(&file_content, free);
 	return (true);
 }
 
@@ -40,32 +43,29 @@ int		check_file_path(t_error_info *error_info, char *file_path)
 	return (fd);
 }
 
-t_line	*save_file_content(t_error_info *error_info, int fd)
+t_list	*save_file_content(t_error_info *error_info, int fd)
 {
-	t_line	*file_content;
-	t_line	*actual_line;
+	t_list	*file_content;
+	t_list	*actual_line;
 	char	*aux;
 	int 	result;
 
-	file_content = (t_line*)malloc(sizeof(t_line));
+	get_next_line(fd, &aux);
+	file_content = ft_lstnew(aux);
 	actual_line = file_content;
 	while((result = get_next_line(fd, &aux)) == 1)
 	{
-		actual_line->line = aux;
-		actual_line->next_line = (t_line*)malloc(sizeof(t_line));
-		actual_line = actual_line->next_line;
+		actual_line->next = ft_lstnew(aux);
+		actual_line = actual_line->next;
 	}
 	if (result == -1)
 	{
 		error_info->error_type = read_file_error;
-		//TODO: Liberar memoria y poner el mapa a nulo
+		ft_lstclear(file_content, free);
 		return (NULL);
 	}
 	else
-	{
-		actual_line->line = aux;
-		actual_line->next_line = NULL;
-	}
+		actual_line->next = ft_lstnew(aux);
 	return (file_content);
 }
 
@@ -80,10 +80,10 @@ void	initialice_info_ids(t_bool info_id[8])
 }
 
 
-t_bool		check_file_content(t_error_info *error_info, t_line *file_content,
+t_bool		check_file_content(t_error_info *error_info, t_list *file_content,
 t_program_params *program_params)
 {
-	t_line	*line;
+	t_list	*line;
 	t_bool	info_id_list[8];
 	t_info_id info_id;
 
@@ -92,9 +92,9 @@ t_program_params *program_params)
 	initialice_info_ids(info_id_list);
 	while (!check_info_ids(info_id_list))
 	{
-		if (*(line->line))
+		if (*((char*)line->content))
 		{
-			if ((info_id = search_identifier(line->line)) != -1)
+			if ((info_id = search_identifier(line->content)) != -1)
 			{
 				if (info_id_list[info_id] == true) //Si ya se ha leído ese identificador, ERROR está duplicado
 					return (raise_error(error_info, duplicated_info_error));
@@ -102,12 +102,12 @@ t_program_params *program_params)
 			}
 			else
 				return (raise_error(error_info, wrong_identifier_error));
-			if (!get_info(info_id, error_info, line->line, program_params))
+			if (!get_info(info_id, error_info, line->content, program_params))
 				return (print_error(error_info));
 		}
 		else
 			return (raise_error(error_info, missing_information_error)); //Si entra aquí ha acabado el archivo y no ha encontrado toda la información
-		line = line->next_line;
+		line = line->next;
 	}
 	if (!read_map(error_info, line, program_params))
 		return (false);
