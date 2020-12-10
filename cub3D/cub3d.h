@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 18:48:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 21:12:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct  s_vars {
 	t_data			*img;
 	float			px, py;
 	float			pdx, pdy, pangle;
-	int				map[8][8];
+	char			**map;
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
 	t_texture		*textureN;
@@ -134,6 +134,8 @@ typedef struct  s_vars {
 	t_texture		*textureSprite;
 	float			texture_x;
 	t_list			*sprite;
+	int				screen_width;
+	int				screen_height;
 	float			distances[800];
 }               t_vars;
 
@@ -214,6 +216,7 @@ void	draw_sprite(t_vars *vars, t_sprite sprite);
 /*
 **			RAYCASTING
 */
+void	main_raycast(t_program_params program_params);
 void	raycast(t_vars *vars);
 float	drawRays3D(t_vars *vars, float angle);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);

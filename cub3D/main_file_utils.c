@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 12:42:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 18:48:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 01:00:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		main(int argc, char const *argv[])
 	
 	if (check_arguments(&error_info, &save_img, argc, argv) && check_file(&error_info, &program_params, argv[1]))
 	{
-		//Empieza el raycasting y eso
+		main_raycast(program_params);
 	}
 	else
 	{

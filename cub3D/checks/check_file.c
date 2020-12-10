@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 18:48:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 20:10:14 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_bool	check_file(t_error_info *error_info, t_program_params *program_params, co
 		return (raise_error(error_info, read_file_error));
 	else if (!check_file_content(error_info, file_content, program_params))
 		return (false);
+	//TODO: Liberar la memoria del file content
 	return (true);
 }
 

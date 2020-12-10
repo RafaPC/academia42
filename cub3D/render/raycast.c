@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/03 19:46:48 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 21:16:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ void	raycast(t_vars *vars)
 {
 	debug = 0;
 	float angle;
-	int screen_width = 800;
 	float distance;
-	for (int col = 0; col < screen_width; col++)
+	for (int col = 0; col < vars->screen_width; col++)
 	{
-		angle = vars->pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / screen_width - 1.0));
+		angle = vars->pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / vars->screen_width - 1.0));
 		check_angle_overflow(&angle);
 		distance = drawRays3D(vars, angle);
 		vars->distances[offset_column2] = distance;
@@ -41,17 +40,7 @@ float	drawRays3D(t_vars *vars, float angle)
 	t_ray ray;
 	float distance_hor;
 	float distance_ver;
-	int	map[8][8] =
-	{
-		{1,1,1,1,1,1,1,1},
-		{1,0,1,0,0,0,0,1},
-		{1,0,1,0,0,2,0,1},
-		{1,0,1,0,0,2,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,0,0,2,0,1,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1}
-	};
+	char **map = vars->map;
 	//Fix fisheye effect
 	float angle_beta = angle - vars->pangle;
 	check_angle_overflow(&angle_beta);
@@ -62,7 +51,7 @@ float	drawRays3D(t_vars *vars, float angle)
 	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
 	//con una pared entonces calcular la relativa a donde mira el jugador
 
-	int tile_crossed = 0;
+	char tile_crossed = '0';
 	int ray_direction = 0; //0 vertical 1 horizontal
 	while (true)
 	{
@@ -73,12 +62,12 @@ float	drawRays3D(t_vars *vars, float angle)
 		else
 			tile_crossed = map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x];
 		
-		if (tile_crossed == 2 && ray_direction == 0)
+		if (tile_crossed == '2' && ray_direction == 0)
 			add_sprite_coords((int)floorf(ray.x_intercept), (int)ray.y + ray.tile_step_y, vars);
-		else if (tile_crossed == 2 && ray_direction == 1)
+		else if (tile_crossed == '2' && ray_direction == 1)
 			add_sprite_coords((int)ray.x + ray.tile_step_x, (int)floorf(ray.y_intercept), vars);
 		
-		if (tile_crossed == 1 && ray_direction == 0)
+		if (tile_crossed == '1' && ray_direction == 0)
 		{
 			//Guardar la distancia
 			vars->distances[offset_column2++] = distance_hor;
@@ -86,7 +75,7 @@ float	drawRays3D(t_vars *vars, float angle)
 			vars->texture_x = ray.x_intercept - ray.x;
 			return (distance_hor * cosf(angle_beta));
 		}
-		else if (tile_crossed == 1 && ray_direction == 1)
+		else if (tile_crossed == '1' && ray_direction == 1)
 		{
 			//Guardar la distancia
 			vars->distances[offset_column2++] = distance_ver;

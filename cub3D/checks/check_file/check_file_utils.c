@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 11:50:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/10 01:00:28 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ t_program_params *program_params)
 	t_bool	correct;
 
 	correct = true;
-	line++;
 	while (*line == ' ')
 		line++;
 	program_params->resolution_x = ft_atoi(line);

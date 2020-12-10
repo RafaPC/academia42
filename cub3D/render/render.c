@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/06 23:08:35 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/09 21:19:03 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int		render_screen(t_vars *vars)
 	offset_column = 0;
 	int blue = create_trgb(0, 200, 150, 200);
 	mlx_destroy_image(vars->mlx, vars->img->img);
-	vars->img->img = mlx_new_image(vars->mlx, 800, 800);
+	vars->img->img = mlx_new_image(vars->mlx, vars->screen_width, vars->screen_height);
 	check_movement(vars);
 	raycast(vars);
 	draw_map(vars);
-	draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
+	// draw_line(vars, (vars->px * 40) + vars->pdx * 40, (vars->py * 40) - vars->pdy * 20, blue);
 	display_player(vars);
 	display_vars(vars);
 	
@@ -52,7 +52,7 @@ void	display_player(t_vars *vars)
 	int color;
 
 	color = create_trgb(0, 255, 0, 0);
-	draw_square(5, 5, vars->px * 40, vars->py * 40, color, vars);
+	draw_square(5, 5, vars->px * 10, vars->py * 10, color, vars);
 }
 
 void	display_vars(t_vars *vars)
@@ -60,7 +60,7 @@ void	display_vars(t_vars *vars)
 	int color;
 	
 	color = create_trgb(0, 0, 255, 0);
-	mlx_string_put(vars->mlx, vars->win, 1800, 50, color, "hola");
+	mlx_string_put(vars->mlx, vars->win, vars->screen_width - 100, 50, color, "hola");
 }
 
 void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars)
@@ -113,75 +113,62 @@ void	draw_fov(t_vars *vars, int color)
 void	draw_map(t_vars *vars)
 {
 	int x, y;
-	x = 0;
+	
 	y = 0;
 	int wall_color = create_trgb(0, 255, 255, 255);
 	int space_color = create_trgb(0, 50, 50, 50);
-	int sprite_color = create_trgb(0, 50, 50, 100);
+	int sprite_color = create_trgb(0, 220, 50, 100);
 	int color = space_color;
-	int	map[8][8] =
+	while (vars->map[y])
 	{
-		{1,1,1,1,1,1,1,1},
-		{1,0,1,0,0,0,0,1},
-		{1,0,1,0,0,0,0,1},
-		{1,0,1,0,0,2,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,0,0,0,0,1,0,1},
-		{1,0,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1}
-	};
-	while (y < 8)
-	{
-		while (x < 8)
+		x = 0;
+		while (vars->map[y][x])
 		{
 			// if (map[y][x] == 1)
 			// 	draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, wall_color, vars);
 			// else if (map[y][x] == 0)
 			// 	draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, space_color, vars);
-			if (map[y][x] == 2)
+			if (vars->map[y][x] == '2')
 				color = sprite_color;
-			else if (map[y][x] == 1)
+			else if (vars->map[y][x] == '1')
 				color = wall_color;
-			else if (map[y][x] == 0)
+			else if (vars->map[y][x] == '0')
 				color = space_color;
-			draw_square(40, 40, (x * 40), (y * 40), color, vars);	
+			if (vars->map[y][x] != ' ')
+				draw_square(10, 10, (x * 10), (y * 10), color, vars);	
 			x++;
 		}
 		y++;
-		x = 0;
 	}
 }
-
 
 void	render_column(t_vars *vars, float distance)
 {
 	int column_height;
 	int ceil_color;
 	int floor_color;
-	int screen_height;
 
-	screen_height = 800;
 	ceil_color = create_trgb(0, 102, 217, 255);
 	floor_color = create_trgb(0, 51, 153, 51);
 	//Calculate column height based on the distance to the wall
 	column_height = (8 * 90)/distance;
 	int real_column_height = column_height;
 	//Check column limits
-	if (column_height > screen_height)
-		column_height = screen_height;
+	if (column_height > vars->screen_height)
+		column_height = vars->screen_height;
 	else if (column_height < 30)
 		column_height = 30;
 	//Dibuja techo y suelo
-	if (column_height < screen_height)
+	if (column_height < vars->screen_height)
 	{
-		draw_square(1, (screen_height - column_height)/2, offset_column, 0, ceil_color, vars);
-		draw_square(1, (screen_height - column_height)/2, offset_column, (screen_height / 2) + (column_height / 2), floor_color, vars);
+		draw_square(1, (vars->screen_height - column_height)/2, offset_column, 0, ceil_color, vars);
+		draw_square(1, (vars->screen_height - column_height)/2, offset_column, (vars->screen_height / 2) + (column_height / 2), floor_color, vars);
 		//Esto era para poner el suelo más "arriba" más oscuro
 		// for (int i = 300 + (column_height / 2); i < 600; i++)
 		// 	my_mlx_pixel_put(vars->img, offset_column, i, add_shade((float)(600 - i/700), floor_color));
 	}
 	//Forma mía
-	int drawStart = screen_height / 2;
+	int drawStart = vars->screen_height / 2;
 	int color_text;
 	//El pixel en la mitad de la pantalla en el eje Y
 	color_text = get_wall_color(vars, vars->texture_x, 0.5);
@@ -211,16 +198,15 @@ void	render_sprites(t_vars *vars)
 {
 	t_list		*sprite_elem;
 	t_sprite	sprite;
-	int screen_width = 800;
-	int screen_height = 800;
+
 	order_sprites(vars->sprite);
 	sprite_elem = vars->sprite;
 	while (sprite_elem)
 	{
 		sprite = *(t_sprite*)sprite_elem->content;
-		sprite.size_half = (screen_height / 2) / sprite.distance;
-		sprite.center_x = (tanf(sprite.angle) / tanf(FOV / 2) + 1) * screen_width / 2;
-		sprite.center_y = screen_height / 2 + (screen_height / 2) / sprite.distance - sprite.size_half * 0.75;
+		sprite.size_half = (vars->screen_height / 2) / sprite.distance;
+		sprite.center_x = (tanf(sprite.angle) / tanf(FOV / 2) + 1) * vars->screen_width / 2;
+		sprite.center_y = vars->screen_height / 2 + (vars->screen_height / 2) / sprite.distance - sprite.size_half * 0.75;
 		draw_sprite(vars, sprite);
 		sprite_elem = sprite_elem->next;
 	}
@@ -254,7 +240,7 @@ void	draw_sprite_column(int drawing_position, t_sprite sprite, t_vars *vars)
         y_position++;
         y_draw_coord++;
     }
-    while (y_position < size && y_draw_coord < 800)
+    while (y_position < size && y_draw_coord < vars->screen_height)
     {
         pixel = get_sprite_colour(vars, drawing_position, y_position, sprite);
         // pixel = create_trgb(0, 255, 0, 0);
@@ -267,12 +253,11 @@ void	draw_sprite_column(int drawing_position, t_sprite sprite, t_vars *vars)
 
 void	draw_sprite(t_vars *vars, t_sprite sprite)
 {
-	int screen_width = 800;
 	int column_position;
 
 	column_position = sprite.center_x - sprite.size_half > 0 ? sprite.center_x - sprite.size_half : 0;
 	
-	while (column_position < sprite.center_x  + sprite.size_half && column_position < screen_width)
+	while (column_position < sprite.center_x  + sprite.size_half && column_position < vars->screen_width)
 	{
 		if (vars->distances[column_position] > sprite.distance)
 			draw_sprite_column(column_position, sprite, vars);
