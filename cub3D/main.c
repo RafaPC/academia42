@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 17:35:50 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:26:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,18 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->mlx.img->addr = mlx_get_data_addr(vars->mlx.img->img, &vars->mlx.img->bits_per_pixel, &vars->mlx.img->line_length, &vars->mlx.img->endian);
 	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
 	//POSITION
-	vars->px = program_params.player_x + 0.5;
-	vars->py = program_params.player_y + 0.5;
-	vars->pangle = program_params.player_angle;
-	vars->pdx = cos(vars->pangle);
-	vars->pdy = sin(vars->pangle);
+	vars->player_vars.px = program_params.player_x + 0.5;
+	vars->player_vars.py = program_params.player_y + 0.5;
+	vars->player_vars.pangle = program_params.player_angle;
+	vars->player_vars.pdx = cos(vars->player_vars.pangle);
+	vars->player_vars.pdy = sin(vars->player_vars.pangle);
 	vars->wall_face = 1;
 	vars->keys_pressed.w = false;
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
 	vars->keys_pressed.d = false;
 	vars->map = program_params.map;
+	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
 	init_textures(vars, program_params);
 
 	vars->sprite = NULL;

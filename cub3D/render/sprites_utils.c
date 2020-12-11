@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/06 23:12:52 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:07:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "cub3d.h"
 #include "libft.h"
 
+//AQuí podría pasarle player_vars y el puntero al sprite por separado
 void	add_sprite_coords(float x, float y, t_vars *vars)
 {
 	t_list		*sprite_elem;
@@ -37,9 +38,9 @@ void	add_sprite_coords(float x, float y, t_vars *vars)
 	sprite->y = y;
 	// x = fabsf(vars->px - x);
 	// y = fabsf(vars->py - y);
-	x = sprite->x - vars->px;
-	y = -(sprite->y - vars->py);
-	sprite->angle = vars->pangle - atanf(y / x);
+	x = sprite->x - vars->player_vars.px;
+	y = -(sprite->y - vars->player_vars.py);
+	sprite->angle = vars->player_vars.pangle - atanf(y / x);
 	sprite->distance = sqrtf(x * x + y * y) * fabsf(cosf(sprite->angle));
 	ft_lstadd_front(&vars->sprite, ft_lstnew(sprite));
 }

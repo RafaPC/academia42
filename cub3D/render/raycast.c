@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/09 21:16:38 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:05:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	raycast(t_vars *vars)
 	float distance;
 	for (int col = 0; col < vars->screen_width; col++)
 	{
-		angle = vars->pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / vars->screen_width - 1.0));
+		angle = vars->player_vars.pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / vars->screen_width - 1.0));
 		check_angle_overflow(&angle);
 		distance = drawRays3D(vars, angle);
 		vars->distances[offset_column2] = distance;
@@ -42,10 +42,10 @@ float	drawRays3D(t_vars *vars, float angle)
 	float distance_ver;
 	char **map = vars->map;
 	//Fix fisheye effect
-	float angle_beta = angle - vars->pangle;
+	float angle_beta = angle - vars->player_vars.pangle;
 	check_angle_overflow(&angle_beta);
 	//Initialice values
-	ray = init_ray_values(*vars, angle);
+	ray = init_ray_values(vars->player_vars, angle);
 	distance_hor = get_x_intercept_length(ray, *vars);
 	distance_ver = get_y_intercept_length(ray, *vars);
 	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
@@ -100,7 +100,7 @@ float	drawRays3D(t_vars *vars, float angle)
 	return (1);
 }
 
-t_ray	init_ray_values(t_vars vars, float angle)
+t_ray	init_ray_values(t_player_vars vars, float angle)
 {
 	t_ray ray;
 
@@ -155,13 +155,13 @@ float	get_x_intercept_length(t_ray ray, t_vars vars)
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = ray.x_intercept - vars.px;
+		x = ray.x_intercept - vars.player_vars.px;
 	else
-		x = vars.px - ray.x_intercept;
+		x = vars.player_vars.px - ray.x_intercept;
 	if (ray.tile_step_y == 1)
-		y =  (ray.y + 1) - vars.py;
+		y =  (ray.y + 1) - vars.player_vars.py;
 	else
-		y = vars.py - ray.y;	
+		y = vars.player_vars.py - ray.y;	
 	// y = vars.py - ray.y - 1; //Importante el -1
 	distance = sqrtf(x * x + y * y);
 	return (distance);
@@ -175,15 +175,15 @@ float	get_y_intercept_length(t_ray ray, t_vars vars)
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = (ray.x + 1) - vars.px;
+		x = (ray.x + 1) - vars.player_vars.px;
 		// x = ray.x - vars.px;
 	else
-		x = vars.px - ray.x;
+		x = vars.player_vars.px - ray.x;
 		// x = vars.px - ray.x - 1; //Importante el -1
 	if (ray.tile_step_y == 1)
-		y =  ray.y_intercept - vars.py;
+		y =  ray.y_intercept - vars.player_vars.py;
 	else
-		y = vars.py - ray.y_intercept;
+		y = vars.player_vars.py - ray.y_intercept;
 	distance = sqrtf(x * x + y * y);
 	return (distance);
 }

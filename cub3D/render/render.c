@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 17:36:30 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:10:06 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	display_player(t_vars *vars)
 	int color;
 
 	color = create_trgb(0, 255, 0, 0);
-	draw_square(5, 5, vars->px * 10, vars->py * 10, color, vars);
+	draw_square(5, 5, vars->player_vars.px * 10, vars->player_vars.py * 10, color, vars);
 }
 
 void	display_vars(t_vars *vars)
@@ -85,18 +85,19 @@ void	draw_line(t_vars *vars, float xend, float yend, int color)
 	float xincrement;
 	float yincrement;
 
-	xincrement = (xend - (vars->px * 40)) / 30;
-	yincrement = (yend - (vars->py * 40)) / 30;
+	xincrement = (xend - (vars->player_vars.px * 40)) / 30;
+	yincrement = (yend - (vars->player_vars.py * 40)) / 30;
 	while (i < length)
 	{
-		my_mlx_pixel_put(vars->mlx.img, (vars->px * 40) + (xincrement * i), (vars->py * 40) + (yincrement * i), color);
+		my_mlx_pixel_put(vars->mlx.img, (vars->player_vars.px * 40) + (xincrement * i),
+		(vars->player_vars.py * 40) + (yincrement * i), color);
 		i++;
 	}
 }
 
 void	draw_fov(t_vars *vars, int color)
 {
-	float i = vars->pangle - PI/3;
+	float i = vars->player_vars.pangle - PI/3;
 	if (i < 0)
 		i += 2 * PI;
 	for (int j = 0; j < 20; j++)
@@ -104,7 +105,8 @@ void	draw_fov(t_vars *vars, int color)
 		i += 0.1;
 		if (i > 2 * PI)
 			i -= 2 * PI;
-		draw_line(vars, ((vars->px * 40) + cos(i) * 50), ((vars->py * 40) - sin(i) * 50), color);
+		draw_line(vars, ((vars->player_vars.px * 40) + cos(i) * 50),
+		((vars->player_vars.py * 40) - sin(i) * 50), color);
 	}
 }
 
@@ -122,10 +124,6 @@ void	draw_map(t_vars *vars)
 		x = 0;
 		while (vars->map[y][x])
 		{
-			// if (map[y][x] == 1)
-			// 	draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, wall_color, vars);
-			// else if (map[y][x] == 0)
-			// 	draw_square(40, 40, (x * 40) + 2 * x, (y * 40) + 2 * y, space_color, vars);
 			if (vars->map[y][x] == '2')
 				color = sprite_color;
 			else if (vars->map[y][x] == '1')

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/03 19:41:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:45:43 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,31 @@ int		on_key_released(int keycode, t_vars *vars)
 	return (0);
 }
 
+//TODO: Checkear las colisiones
 void	check_movement(t_vars *vars)
 {
 	if (vars->keys_pressed.a)
 	{
-		vars->pangle += 0.1;
-		if (vars->pangle > 2 * PI)
-			vars->pangle -= 2 * PI;
-		vars->pdx = cos(vars->pangle);
-		vars->pdy = sin(vars->pangle);
+		vars->player_vars.pangle += 0.1;
+		if (vars->player_vars.pangle > 2 * PI)
+			vars->player_vars.pangle -= 2 * PI;
+		vars->player_vars.pdx = cos(vars->player_vars.pangle);
+		vars->player_vars.pdy = sin(vars->player_vars.pangle);
 	}
 	if (vars->keys_pressed.d)
 	{
-		vars->pangle -= 0.1;
-		if (vars->pangle < 0)
-			vars->pangle += 2 * PI;
-		vars->pdx = cos(vars->pangle);
-		vars->pdy = sin(vars->pangle);
+		vars->player_vars.pangle -= 0.1;
+		if (vars->player_vars.pangle < 0)
+			vars->player_vars.pangle += 2 * PI;
+		vars->player_vars.pdx = cos(vars->player_vars.pangle);
+		vars->player_vars.pdy = sin(vars->player_vars.pangle);
 	}
 	if (vars->keys_pressed.w)
 	{	
-		if (drawRays3D(vars, vars->pangle) > 0.5)
+		if (drawRays3D(vars, vars->player_vars.pangle) > 0.5)
 		{
-			vars->px += vars->pdx * 0.1;
-			vars->py -= vars->pdy * 0.1;
+			vars->player_vars.px += vars->player_vars.pdx * 0.1;
+			vars->player_vars.py -= vars->player_vars.pdy * 0.1;
 		}
 	}
 	if (vars->keys_pressed.s)
@@ -78,8 +79,8 @@ void	check_movement(t_vars *vars)
 		// if (distance > 0.2)
 		if (true)
 		{
-			vars->px -= vars->pdx * 0.1;
-			vars->py += vars->pdy * 0.1;
+			vars->player_vars.px -= vars->player_vars.pdx * 0.1;
+			vars->player_vars.py += vars->player_vars.pdy * 0.1;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 17:54:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 03:36:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,21 @@ typedef struct s_sprite
 	struct s_sprite *next_sprite;
 }				t_sprite;
 
-typedef struct s_mlx {
+typedef struct	s_mlx {
 	void        	*mlx;
     void        	*win;
 	t_data			*img;
 }				t_mlx;
+typedef struct	s_player_vars {
+	float	px;
+	float	py;
+	float	pdx;
+	float	pdy;
+	float	pangle;
+}				t_player_vars;
 typedef struct  s_vars {
     t_mlx			mlx;
-	float			px, py;
-	float			pdx, pdy, pangle;
+	t_player_vars	player_vars;
 	char			**map;
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
@@ -140,7 +146,7 @@ typedef struct  s_vars {
 	t_list			*sprite;
 	int				screen_width;
 	int				screen_height;
-	float			distances[800];
+	float			*distances;
 }               t_vars;
 
 /*
@@ -158,9 +164,6 @@ typedef struct	s_ray
 	float		x_step;
 	float		y_step;
 }				t_ray;
-
-
-
 
 /**
 **			CHECK FILE THINGS
@@ -228,7 +231,7 @@ float	get_tangent(float angle);
 void	check_angle_overflow(float *angle);
 float	get_x_intercept_length(t_ray ray, t_vars vars);
 float	get_y_intercept_length(t_ray ray, t_vars vars);
-t_ray	init_ray_values(t_vars vars, float angle);
+t_ray	init_ray_values(t_player_vars vars, float angle);
 /*
 **			HOOKS
 */
