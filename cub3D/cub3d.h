@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/11 03:36:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/11 13:47:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_keys
 	t_bool		a;
 	t_bool		s;
 	t_bool		d;
+	t_bool		left_arrow;
+	t_bool		right_arrow;
 }				t_keys;
 //RAYCASTING
 typedef enum	e_wall_face
@@ -235,13 +237,15 @@ t_ray	init_ray_values(t_player_vars vars, float angle);
 /*
 **			HOOKS
 */
-int		on_key_pressed(int keycode,t_vars *vars);
+int		on_key_pressed(int keycode,t_keys *keys_pressed);
 void	check_movement(t_vars *vars);
-int		on_key_released(int keycode, t_vars *vars);
+int		on_key_released(int keycode, t_keys *keys_pressed);
+void	move_left(t_vars *vars);
 
 /*
 **			SPRITE UTILS
 */
 void	add_sprite_coords(float x, float y, t_vars *vars);
 void    order_sprites(t_list *sprite_list);
+void	move_right(t_vars *vars);
 #endif
