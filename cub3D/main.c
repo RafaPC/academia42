@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/11 03:26:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/14 15:52:41 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->mlx.img->img = mlx_new_image(vars->mlx.mlx, vars->screen_width, vars->screen_height);
 	vars->mlx.img->addr = mlx_get_data_addr(vars->mlx.img->img, &vars->mlx.img->bits_per_pixel, &vars->mlx.img->line_length, &vars->mlx.img->endian);
 	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
+	//COLOR
+	vars->ceiling_color = program_params.ceilling_color;
+	vars->floor_color = program_params.floor_color;
 	//POSITION
 	vars->player_vars.px = program_params.player_x + 0.5;
 	vars->player_vars.py = program_params.player_y + 0.5;
@@ -72,8 +75,10 @@ void		main_raycast(t_program_params program_params)
 {
 	t_vars			vars;
 	init(&vars, program_params);
-	mlx_hook(vars.mlx.win, 2, 1L<<0, on_key_pressed, &vars);
-	mlx_hook(vars.mlx.win, 3, 1L<<1, on_key_released, &vars);
+	mlx_hook(vars.mlx.win, 2, 1L<<0, on_key_pressed, &vars.keys_pressed);
+	mlx_hook(vars.mlx.win, 3, 1L<<1, on_key_released, &vars.keys_pressed);
+	mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
+	mlx_hook(vars.mlx.win, 17, 0L, on_window_closed, &vars);
 	mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
 	render_screen(&vars);
 	mlx_loop(vars.mlx.mlx);

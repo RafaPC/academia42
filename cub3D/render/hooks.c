@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/11 13:48:28 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/14 16:22:31 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		on_key_pressed(int keycode, t_keys *keys_pressed)
 		keys_pressed->left_arrow = true;
 	if (keycode == 65363)
 		keys_pressed->right_arrow = true;
-	//TODO: comprobar el escape
 	return (0);
 }
 
@@ -50,38 +49,35 @@ int		on_key_released(int keycode, t_keys *keys_pressed)
 	return (0);
 }
 
-void	check_collision(t_vars *vars)
-{
+void	move(t_vars*vars, float angle, float velocity)
+{	 
 	float	newX;
 	float	newY;
+	float	pdx;
+	float	pdy;
 
-	newX = vars->player_vars.px + vars->player_vars.pdx * 0.3;
-	newY = vars->player_vars.py - vars->player_vars.pdy * 0.3;
-	printf("Position x: %f  y: %f\n", vars->player_vars.px, vars->player_vars.py);
-	printf("map[%i][%i]=%c\n", (int)newY, (int)newX, vars->map[(int)newY][(int)newX]);
-	if (vars->map[(int)newY][(int)newX] == '1')
+	check_angle_overflow(&angle);
+	pdx = cosf(angle);
+	pdy = sinf(angle);
+	newX = vars->player_vars.px + pdx * (0.3 * velocity);
+	newY = vars->player_vars.py - pdy * (0.3 * velocity);
+	if (vars->map[(int)newY][(int)vars->player_vars.px] == '1')
 	{
-		if (vars->map[(int)newY][(int)vars->player_vars.px] != '1')
-			vars->player_vars.py -= vars->player_vars.pdy * 0.1;
-		else if (vars->map[(int)vars->player_vars.py][(int)newX] != '1')
-			vars->player_vars.px += vars->player_vars.pdx * 0.1;
+		if (vars->map[(int)vars->player_vars.py][(int)newX] != '1')
+			vars->player_vars.px += pdx * (0.05 * velocity);
 	}
 	else
+		vars->player_vars.py -= pdy * (0.1 * velocity);
+	
+	if (vars->map[(int)vars->player_vars.py][(int)newX] == '1')
 	{
-		vars->player_vars.py -= vars->player_vars.pdy * 0.1;
-		vars->player_vars.px += vars->player_vars.pdx * 0.1;
+		if (vars->map[(int)newY][(int)vars->player_vars.px] != '1')
+			vars->player_vars.py -= pdy * (0.05 * velocity);
 	}
-	// if (vars->keys_pressed.w)
-	// {	
-	// 	if (88888 > 0.5)
-	// 	{
-	// 		vars->player_vars.px += vars->player_vars.pdx * 0.1;
-	// 		vars->player_vars.py -= vars->player_vars.pdy * 0.1;
-	// 	}
-	// }
+	else
+		vars->player_vars.px += pdx * (0.1 * velocity);
 }
 
-//TODO: Checkear las colisiones
 void	check_movement(t_vars *vars)
 {
 	if (vars->keys_pressed.left_arrow)
@@ -100,30 +96,33 @@ void	check_movement(t_vars *vars)
 		vars->player_vars.pdx = cosf(vars->player_vars.pangle);
 		vars->player_vars.pdy = sinf(vars->player_vars.pangle);
 	}
+	if (vars->keys_pressed.w)
+		move(vars, vars->player_vars.pangle, 1);
 	if (vars->keys_pressed.a)
-		move_left(vars);
+		move(vars, vars->player_vars.pangle + PI/2, 0.3);
+	if (vars->keys_pressed.s)
+		move(vars, vars->player_vars.pangle - PI, 0.5);
 	if (vars->keys_pressed.d)
-		move_right(vars);
-	if (vars->keys_pressed.w || vars->keys_pressed.s)
-		check_collision(vars);
+		move(vars, vars->player_vars.pangle - PI/2, 0.3);
 }
 
-void	move_left(t_vars *vars)
+/*
+** //TODO: funcion que se trigeree cuando se vuelva a entrar a la ventana
+*/
+
+int		on_window_enter(t_vars *vars)
 {
-	float new_angle = vars->player_vars.pangle + PI/2;
-	if (new_angle > 2*PI)
-		new_angle -= 2*PI;
-	vars->player_vars.px += cosf(new_angle) * 0.05;
-	vars->player_vars.py -= sinf(new_angle) * 0.05;
+	// printf("entra\n");
+	return (0);
 }
 
-void	move_right(t_vars *vars)
+int		on_window_closed(t_vars *vars)
 {
-	float new_angle = vars->player_vars.pangle - PI/2;
-	if (new_angle < 0)
-		new_angle += 2*PI;
-	vars->player_vars.px += cosf(new_angle) * 0.05;
-	vars->player_vars.py -= sinf(new_angle) * 0.05;
+
+	return (0);
 }
 
-//TODO: funcion que se trigeree cuando se cambie de tamaño la ventana
+void	close_game(t_vars *vars)
+{
+	
+}

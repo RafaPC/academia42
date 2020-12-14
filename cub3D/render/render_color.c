@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/02 19:39:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/14 19:10:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@
 int		create_trgb(int t, int r, int g, int b)
 {
 	return(t << 24 | r << 16 | g << 8 | b);
-}
-
-int		get_t(int trgb)
-{
-	return ((trgb & (0xFF << 24)) >> 24);
 }
 
 int		get_r(int trgb)
@@ -78,4 +73,20 @@ unsigned int get_wall_color(t_vars *vars, float x, float y)
 	else if (vars->wall_face == west_face)
 		texture = *vars->textureW;
 	return (get_image_color(texture, x, y));
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+    char    *dst;
+
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
+}
+
+unsigned int    get_pixel(t_data *image, int x, int y)
+{
+    unsigned int	*dst;
+
+    dst = (unsigned int*)(image->addr + (y * image->line_length + (x * (image->bits_per_pixel / 8))));
+    return (*(dst));
 }

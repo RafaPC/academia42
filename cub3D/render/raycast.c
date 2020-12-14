@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/11 03:05:00 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/14 20:03:04 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,89 +15,91 @@
 #include "cub3d.h"
 
 int debug = 1;
-int offset_column2 = 0;
 
 void	raycast(t_vars *vars)
 {
-	debug = 0;
-	float angle;
-	float distance;
-	for (int col = 0; col < vars->screen_width; col++)
+	float	angle;
+	float	x_wall;
+	int		x_coord;
+
+	x_coord = 0;
+	while (x_coord < vars->screen_width)
 	{
-		angle = vars->player_vars.pangle - atanf(tanf(FOV / 2.0) * (2.0 * col / vars->screen_width - 1.0));
+		angle = vars->player_vars.pangle - atanf(tanf(FOV / 2.0) *
+		(2.0 * x_coord / vars->screen_width - 1.0));
 		check_angle_overflow(&angle);
-		distance = drawRays3D(vars, angle);
-		vars->distances[offset_column2] = distance;
-		render_column(vars, distance);
-		debug = 0;
+		vars->distances[x_coord] = drawRays3D(vars, angle, x_coord, &x_wall);
+		render_column(vars, vars->distances[x_coord], x_wall, x_coord);
+		x_coord++;
 	}
-	offset_column2 = 0;
 }
 
-float	drawRays3D(t_vars *vars, float angle)
+float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall)
 {
-	//depending on the ray axis
 	t_ray ray;
 	float distance_hor;
 	float distance_ver;
-	char **map = vars->map;
-	//Fix fisheye effect
-	float angle_beta = angle - vars->player_vars.pangle;
+	float angle_beta;
+	int ray_direction;
+	
+	angle_beta = angle - vars->player_vars.pangle;
 	check_angle_overflow(&angle_beta);
-	//Initialice values
 	ray = init_ray_values(vars->player_vars, angle);
 	distance_hor = get_x_intercept_length(ray, *vars);
 	distance_ver = get_y_intercept_length(ray, *vars);
 	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
 	//con una pared entonces calcular la relativa a donde mira el jugador
-
 	char tile_crossed = '0';
-	int ray_direction = 0; //0 vertical 1 horizontal
 	while (true)
 	{
 		ray_direction = (distance_hor < distance_ver) ? 0 : 1;
 		//Solo comprobar si el menor choca con pared
 		if (distance_hor < distance_ver)
-			tile_crossed = map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)];
+			tile_crossed = vars->map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)];
 		else
-			tile_crossed = map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x];
+			tile_crossed = vars->map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x];
 		
 		if (tile_crossed == '2' && ray_direction == 0)
-			add_sprite_coords((int)floorf(ray.x_intercept), (int)ray.y + ray.tile_step_y, vars);
+			add_sprite_coords((int)floorf(ray.x_intercept), (int)ray.y + ray.tile_step_y, vars, x_coord);
 		else if (tile_crossed == '2' && ray_direction == 1)
-			add_sprite_coords((int)ray.x + ray.tile_step_x, (int)floorf(ray.y_intercept), vars);
+			add_sprite_coords((int)ray.x + ray.tile_step_x, (int)floorf(ray.y_intercept), vars, x_coord);
 		
 		if (tile_crossed == '1' && ray_direction == 0)
 		{
-			//Guardar la distancia
-			vars->distances[offset_column2++] = distance_hor;
+			vars->distances[x_coord] = distance_hor;
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
-			vars->texture_x = ray.x_intercept - ray.x;
+			*x_wall = ray.x_intercept - ray.x;
 			return (distance_hor * cosf(angle_beta));
 		}
 		else if (tile_crossed == '1' && ray_direction == 1)
 		{
-			//Guardar la distancia
-			vars->distances[offset_column2++] = distance_ver;
+			vars->distances[x_coord] = distance_ver;
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
-			vars->texture_x = ray.y_intercept - ray.y;
+			*x_wall = ray.y_intercept - ray.y;
 			return (distance_ver * cosf(angle_beta));
 		}
-		
-		if (distance_hor < distance_ver)
-		{
-			ray.x_intercept += ray.x_step;
-			ray.y += ray.tile_step_y;
-			distance_hor = get_x_intercept_length(ray, *vars);
-		}
-		else
-		{
-			ray.y_intercept += ray.y_step;
-			ray.x += ray.tile_step_x;
-			distance_ver = get_y_intercept_length(ray, *vars);
-		}
+		sum_distance(vars, &ray, &distance_hor, &distance_ver);
 	}
 	return (1);
+}
+
+/*
+**	Suma la distancia más corta u know
+*/
+void	sum_distance(t_vars *vars, t_ray *ray, float *distance_hor, float *distance_ver)
+{
+	if (*distance_hor < *distance_ver)
+	{
+		ray->x_intercept += ray->x_step;
+		ray->y += ray->tile_step_y;
+		*distance_hor = get_x_intercept_length(*ray, *vars);
+	}
+	else
+	{
+		ray->y_intercept += ray->y_step;
+		ray->x += ray->tile_step_x;
+		*distance_ver = get_y_intercept_length(*ray, *vars);
+	}
 }
 
 t_ray	init_ray_values(t_player_vars vars, float angle)

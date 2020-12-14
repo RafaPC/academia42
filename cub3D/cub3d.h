@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/11 13:47:27 by rprieto-         ###   ########.fr       */
+ /*   Updated: 2020/12/11 13:47:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,10 @@ typedef struct	s_player_vars {
 	float	pdy;
 	float	pangle;
 }				t_player_vars;
-typedef struct  s_vars {
+typedef struct  s_vars
+{
+	int				ceiling_color;
+	int				floor_color;
     t_mlx			mlx;
 	t_player_vars	player_vars;
 	char			**map;
@@ -144,7 +147,6 @@ typedef struct  s_vars {
 	t_texture		*textureE;
 	t_texture		*textureW;
 	t_texture		*textureSprite;
-	float			texture_x;
 	t_list			*sprite;
 	int				screen_width;
 	int				screen_height;
@@ -201,33 +203,41 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 **			RENDER COLOR
 */
 int		create_trgb(int t, int r, int g, int b);
-int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
 int		add_shade(double distance, int color);
 unsigned	get_image_color(t_texture texture, float x, float y);
 unsigned	get_wall_color(t_vars *vars, float x, float y);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+unsigned int    get_pixel(t_data *image, int x, int y);
+/*
+**			RENDER SPRITES
+*/
+void	render_sprites(t_vars *vars);
+void	draw_sprite(t_vars *vars, t_sprite sprite);
+void	draw_sprite_column(int drawing_position, t_sprite sprite, t_vars *vars);
 /*
 **			RENDER
 */
-void	render_sprites(t_vars *vars);
 int		render_screen(t_vars *vars);
-void	display_player(t_vars *vars);
+void	display_vars(t_vars *vars);
+void	render_column(t_vars *vars, float distance,  float wall_x, int offset_column);
+void	draw_sprite(t_vars *vars, t_sprite sprite);
+/*
+**			DRAW THINGS
+*/
+void	draw_player(t_vars *vars);
 void	draw_map(t_vars *vars);
 void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars);
 void	draw_line(t_vars *vars, float xend, float yend, int color);
 void	draw_fov(t_vars *vars, int color);
-void	display_vars(t_vars *vars);
-void	render_column(t_vars *vars, float distance);
-unsigned int    get_pixel(t_data *image, int x, int y);
-void	draw_sprite(t_vars *vars, t_sprite sprite);
 /*
 **			RAYCASTING
 */
 void	main_raycast(t_program_params program_params);
 void	raycast(t_vars *vars);
-float	drawRays3D(t_vars *vars, float angle);
+float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 float	get_tangent(float angle);
 void	check_angle_overflow(float *angle);
@@ -238,14 +248,16 @@ t_ray	init_ray_values(t_player_vars vars, float angle);
 **			HOOKS
 */
 int		on_key_pressed(int keycode,t_keys *keys_pressed);
-void	check_movement(t_vars *vars);
 int		on_key_released(int keycode, t_keys *keys_pressed);
-void	move_left(t_vars *vars);
+int		on_window_enter(t_vars *vars);
+int		on_window_closed(t_vars *vars);
+void	check_movement(t_vars *vars);
+void	move(t_vars *vars, float angle, float velocity);
+void	close_game(t_vars *vars);
 
 /*
 **			SPRITE UTILS
 */
-void	add_sprite_coords(float x, float y, t_vars *vars);
+void	add_sprite_coords(float x, float y, t_vars *vars, int x_coord);
 void    order_sprites(t_list *sprite_list);
-void	move_right(t_vars *vars);
 #endif
