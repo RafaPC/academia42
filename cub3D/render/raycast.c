@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/15 11:44:14 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/15 13:21:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,46 +35,44 @@ void	raycast(t_vars *vars)
 float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall)
 {
 	t_ray	ray;
-	int		ray_direction;
 	char	tile_crossed;
 
-	init_ray_values(&ray, vars->player_vars, angle, *vars);
+	init_ray_values(&ray, vars->player_vars, angle);
 	while (true)
 	{
-		ray_direction = (ray.distance_hor < ray.distance_ver) ? 0 : 1;
-		get_tile_crossed(ray, vars->map);
-		check_sprite_crossed(ray, tile_crossed, ray_direction, vars, x_coord);
-		if (tile_crossed == '1' && ray_direction == 0)
+		ray.direction = (ray.distance_hor < ray.distance_ver) ? 0 : 1;
+		tile_crossed = get_tile_crossed(ray, vars->map);
+		check_sprite_crossed(ray, tile_crossed, vars);
+		if (tile_crossed == '1' && ray.direction == horizontal)
 		{
 			vars->distances[x_coord] = ray.distance_hor;
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
 			*x_wall = ray.x_intercept - ray.x;
 			return (ray.distance_hor * cosf(ray.angle_beta));
 		}
-		else if (tile_crossed == '1' && ray_direction == 1)
+		else if (tile_crossed == '1' && ray.direction == vertical)
 		{
 			vars->distances[x_coord] = ray.distance_ver;
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
 			*x_wall = ray.y_intercept - ray.y;
 			return (ray.distance_ver * cosf(ray.angle_beta));
 		}
-		sum_distance(vars, &ray);
+		sum_distance(&ray, vars->player_vars);
 	}
 	return (1);
 }
 
-void	check_sprite_crossed(t_ray ray, char tile_crossed, int ray_direction,
-t_vars *vars, int x_coord)
+void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars)
 {
-	if (tile_crossed == '2' && ray_direction == 0)
+	if (tile_crossed == '2' && ray.direction == horizontal)
 		add_sprite_coords((int)floorf(ray.x_intercept),
-		(int)ray.y + ray.tile_step_y, vars, x_coord);
-	else if (tile_crossed == '2' && ray_direction == 1)
+		(int)ray.y + ray.tile_step_y, vars);
+	else if (tile_crossed == '2' && ray.direction == vertical)
 		add_sprite_coords((int)ray.x + ray.tile_step_x,
-		(int)floorf(ray.y_intercept), vars, x_coord);
+		(int)floorf(ray.y_intercept), vars);
 }
 
-char	get_tile_crossed(t_ray ray, const char **map)
+char	get_tile_crossed(t_ray ray, char **map)
 {
 	char	tile_crossed;
 
@@ -90,23 +88,23 @@ char	get_tile_crossed(t_ray ray, const char **map)
 /*
 **	Suma la distancia más corta u know
 */
-void	sum_distance(t_vars *vars, t_ray *ray)
+void	sum_distance(t_ray *ray, t_player_vars player)
 {
 	if (ray->distance_hor < ray->distance_ver)
 	{
 		ray->x_intercept += ray->x_step;
 		ray->y += ray->tile_step_y;
-		ray->distance_hor = get_x_intercept_length(*ray, *vars);
+		ray->distance_hor = get_x_intercept_length(*ray, player);
 	}
 	else
 	{
 		ray->y_intercept += ray->y_step;
 		ray->x += ray->tile_step_x;
-		ray->distance_ver = get_y_intercept_length(*ray, *vars);
+		ray->distance_ver = get_y_intercept_length(*ray, player);
 	}
 }
 
-void	init_ray_values(t_ray *ray, t_player_vars player, float angle, t_vars vars)
+void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 {
 	ray->tang = get_tangent(angle);
 	set_tile_step(&ray->tile_step_x, &ray->tile_step_y, angle);
@@ -132,8 +130,8 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle, t_vars vars)
 	check_angle_overflow(&ray->angle_beta);
 	ray->x = floorf(player.px);
 	ray->y = floorf(player.py);
-	ray->distance_hor = get_x_intercept_length(*ray, vars);
-	ray->distance_ver = get_y_intercept_length(*ray, vars);
+	ray->distance_hor = get_x_intercept_length(*ray, player);
+	ray->distance_ver = get_y_intercept_length(*ray, player);
 }
 
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle)
@@ -149,42 +147,39 @@ void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle)
 }
 
 //FIXME: Calcular esto sin el cuadrado, con senos y cosenos
-float	get_x_intercept_length(t_ray ray, t_vars vars)
+float	get_x_intercept_length(t_ray ray, t_player_vars player)
 {
 	float distance;
 	float x;
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = ray.x_intercept - vars.player_vars.px;
+		x = ray.x_intercept - player.px;
 	else
-		x = vars.player_vars.px - ray.x_intercept;
+		x = player.px - ray.x_intercept;
 	if (ray.tile_step_y == 1)
-		y =  (ray.y + 1) - vars.player_vars.py;
+		y =  (ray.y + 1) - player.py;
 	else
-		y = vars.player_vars.py - ray.y;	
-	// y = vars.py - ray.y - 1; //Importante el -1
+		y = player.py - ray.y;	
 	distance = sqrtf(x * x + y * y);
 	return (distance);
 }
 
 //FIXME: Calcular esto sin el cuadrado, con senos y cosenos
-float	get_y_intercept_length(t_ray ray, t_vars vars)
+float	get_y_intercept_length(t_ray ray, t_player_vars player)
 {
 	float distance;
 	float x;
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = (ray.x + 1) - vars.player_vars.px;
-		// x = ray.x - vars.px;
+		x = (ray.x + 1) - player.px;
 	else
-		x = vars.player_vars.px - ray.x;
-		// x = vars.px - ray.x - 1; //Importante el -1
+		x = player.px - ray.x;
 	if (ray.tile_step_y == 1)
-		y =  ray.y_intercept - vars.player_vars.py;
+		y =  ray.y_intercept - player.py;
 	else
-		y = vars.player_vars.py - ray.y_intercept;
+		y = player.py - ray.y_intercept;
 	distance = sqrtf(x * x + y * y);
 	return (distance);
 }

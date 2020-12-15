@@ -126,6 +126,7 @@ typedef struct	s_mlx {
     void        	*win;
 	t_data			*img;
 }				t_mlx;
+
 typedef struct	s_player_vars {
 	float	px;
 	float	py;
@@ -133,6 +134,7 @@ typedef struct	s_player_vars {
 	float	pdy;
 	float	pangle;
 }				t_player_vars;
+
 typedef struct  s_vars
 {
 	int				ceiling_color;
@@ -153,24 +155,30 @@ typedef struct  s_vars
 	float			*distances;
 }               t_vars;
 
+typedef enum e_ray_direction
+{
+	vertical,
+	horizontal
+}			t_ray_direction;
 /*
 **	RAYCASTING
 */
-typedef struct	s_ray
+typedef struct		s_ray
 {
-	float		tang;
-	float		x;
-	float		y;
-	int			tile_step_x;
-	int			tile_step_y;
-	float		x_intercept;
-	float		y_intercept;
-	float		x_step;
-	float		y_step;
-	float		distance_hor;
-	float		distance_ver;
-	float		angle_beta;
-}				t_ray;
+	float			tang;
+	float			x;
+	float			y;
+	int				tile_step_x;
+	int				tile_step_y;
+	float			x_intercept;
+	float			y_intercept;
+	float			x_step;
+	float			y_step;
+	float			distance_hor;
+	float			distance_ver;
+	float			angle_beta;
+	t_ray_direction	direction;
+}					t_ray;
 
 /**
 **			CHECK FILE THINGS
@@ -244,13 +252,12 @@ float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 float	get_tangent(float angle);
 void	check_angle_overflow(float *angle);
-float	get_x_intercept_length(t_ray ray, t_vars vars);
-float	get_y_intercept_length(t_ray ray, t_vars vars);
-void	init_ray_values(t_ray *ray, t_player_vars player, float angle, t_vars vars);
-void	sum_distance(t_vars *vars, t_ray *ray);
-char	get_tile_crossed(t_ray ray, const char **map);
-void	check_sprite_crossed(t_ray ray, char tile_crossed, int ray_direction,
-t_vars *vars, int x_coord);
+float	get_x_intercept_length(t_ray ray, t_player_vars player);
+float	get_y_intercept_length(t_ray ray, t_player_vars player);
+void	init_ray_values(t_ray *ray, t_player_vars player, float angle);
+void	sum_distance(t_ray *ray, t_player_vars player);
+char	get_tile_crossed(t_ray ray, char **map);
+void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars);
 /*
 **			HOOKS
 */
@@ -265,6 +272,6 @@ void	close_game(t_vars *vars);
 /*
 **			SPRITE UTILS
 */
-void	add_sprite_coords(float x, float y, t_vars *vars, int x_coord);
+void	add_sprite_coords(float x, float y, t_vars *vars);
 void    order_sprites(t_list *sprite_list);
 #endif

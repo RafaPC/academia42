@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/14 19:10:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/15 12:30:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 int		create_trgb(int t, int r, int g, int b)
 {
 	return(t << 24 | r << 16 | g << 8 | b);
+}
+
+int		get_t(int trgb)
+{
+	return ((trgb & (0xFF << 24)) >> 24);
 }
 
 int		get_r(int trgb)

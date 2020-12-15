@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/14 19:12:01 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/15 12:40:04 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** //TODO:Aquí podría pasarle player_vars y el puntero al sprite por separado
 */
 
-void	add_sprite_coords(float x, float y, t_vars *vars, int x_coord)
+void	add_sprite_coords(float x, float y, t_vars *vars)
 {
 	t_list		*sprite_elem;
 	t_sprite	*sprite;

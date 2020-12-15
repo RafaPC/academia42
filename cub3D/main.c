@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/14 15:52:41 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/15 12:50:54 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
 	vars->keys_pressed.d = false;
+	vars->keys_pressed.left_arrow = false;
+	vars->keys_pressed.right_arrow = false;
 	vars->map = program_params.map;
 	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
 	init_textures(vars, program_params);
