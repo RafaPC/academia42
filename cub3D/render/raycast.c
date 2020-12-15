@@ -6,15 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/14 20:03:04 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/15 11:44:14 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
 #include "cub3d.h"
-
-int debug = 1;
 
 void	raycast(t_vars *vars)
 {
@@ -36,105 +34,106 @@ void	raycast(t_vars *vars)
 
 float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall)
 {
-	t_ray ray;
-	float distance_hor;
-	float distance_ver;
-	float angle_beta;
-	int ray_direction;
-	
-	angle_beta = angle - vars->player_vars.pangle;
-	check_angle_overflow(&angle_beta);
-	ray = init_ray_values(vars->player_vars, angle);
-	distance_hor = get_x_intercept_length(ray, *vars);
-	distance_ver = get_y_intercept_length(ray, *vars);
-	//TODO: Maybe calcular simplemente la distancia perpendicular y cuando compruebe que choca
-	//con una pared entonces calcular la relativa a donde mira el jugador
-	char tile_crossed = '0';
+	t_ray	ray;
+	int		ray_direction;
+	char	tile_crossed;
+
+	init_ray_values(&ray, vars->player_vars, angle, *vars);
 	while (true)
 	{
-		ray_direction = (distance_hor < distance_ver) ? 0 : 1;
-		//Solo comprobar si el menor choca con pared
-		if (distance_hor < distance_ver)
-			tile_crossed = vars->map[(int)ray.y + ray.tile_step_y][(int)floorf(ray.x_intercept)];
-		else
-			tile_crossed = vars->map[(int)floorf(ray.y_intercept)][(int)ray.x + ray.tile_step_x];
-		
-		if (tile_crossed == '2' && ray_direction == 0)
-			add_sprite_coords((int)floorf(ray.x_intercept), (int)ray.y + ray.tile_step_y, vars, x_coord);
-		else if (tile_crossed == '2' && ray_direction == 1)
-			add_sprite_coords((int)ray.x + ray.tile_step_x, (int)floorf(ray.y_intercept), vars, x_coord);
-		
+		ray_direction = (ray.distance_hor < ray.distance_ver) ? 0 : 1;
+		get_tile_crossed(ray, vars->map);
+		check_sprite_crossed(ray, tile_crossed, ray_direction, vars, x_coord);
 		if (tile_crossed == '1' && ray_direction == 0)
 		{
-			vars->distances[x_coord] = distance_hor;
+			vars->distances[x_coord] = ray.distance_hor;
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
 			*x_wall = ray.x_intercept - ray.x;
-			return (distance_hor * cosf(angle_beta));
+			return (ray.distance_hor * cosf(ray.angle_beta));
 		}
 		else if (tile_crossed == '1' && ray_direction == 1)
 		{
-			vars->distances[x_coord] = distance_ver;
+			vars->distances[x_coord] = ray.distance_ver;
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
 			*x_wall = ray.y_intercept - ray.y;
-			return (distance_ver * cosf(angle_beta));
+			return (ray.distance_ver * cosf(ray.angle_beta));
 		}
-		sum_distance(vars, &ray, &distance_hor, &distance_ver);
+		sum_distance(vars, &ray);
 	}
 	return (1);
+}
+
+void	check_sprite_crossed(t_ray ray, char tile_crossed, int ray_direction,
+t_vars *vars, int x_coord)
+{
+	if (tile_crossed == '2' && ray_direction == 0)
+		add_sprite_coords((int)floorf(ray.x_intercept),
+		(int)ray.y + ray.tile_step_y, vars, x_coord);
+	else if (tile_crossed == '2' && ray_direction == 1)
+		add_sprite_coords((int)ray.x + ray.tile_step_x,
+		(int)floorf(ray.y_intercept), vars, x_coord);
+}
+
+char	get_tile_crossed(t_ray ray, const char **map)
+{
+	char	tile_crossed;
+
+	if (ray.distance_hor < ray.distance_ver)
+		tile_crossed = map[(int)ray.y + ray.tile_step_y]
+		[(int)floorf(ray.x_intercept)];
+	else
+		tile_crossed = map[(int)floorf(ray.y_intercept)]
+		[(int)ray.x + ray.tile_step_x];
+	return (tile_crossed);
 }
 
 /*
 **	Suma la distancia más corta u know
 */
-void	sum_distance(t_vars *vars, t_ray *ray, float *distance_hor, float *distance_ver)
+void	sum_distance(t_vars *vars, t_ray *ray)
 {
-	if (*distance_hor < *distance_ver)
+	if (ray->distance_hor < ray->distance_ver)
 	{
 		ray->x_intercept += ray->x_step;
 		ray->y += ray->tile_step_y;
-		*distance_hor = get_x_intercept_length(*ray, *vars);
+		ray->distance_hor = get_x_intercept_length(*ray, *vars);
 	}
 	else
 	{
 		ray->y_intercept += ray->y_step;
 		ray->x += ray->tile_step_x;
-		*distance_ver = get_y_intercept_length(*ray, *vars);
+		ray->distance_ver = get_y_intercept_length(*ray, *vars);
 	}
 }
 
-t_ray	init_ray_values(t_player_vars vars, float angle)
+void	init_ray_values(t_ray *ray, t_player_vars player, float angle, t_vars vars)
 {
-	t_ray ray;
-
-	ray.tang = get_tangent(angle);
-	//Setting tile_setps accordingly to the quadrant
-	set_tile_step(&ray.tile_step_x, &ray.tile_step_y, angle);
-	//Set x_step and y_step
-	ray.y_step = (ray.tile_step_y == 1) ? ray.tang : -ray.tang;
-	ray.x_step = (ray.tile_step_x == 1) ? 1/ray.tang : -1/ray.tang;
-
-	//Calculate x_intercept
-	if (ray.tile_step_y == 1)		//Facing downwards
-		ray.x_intercept = (ceilf(vars.py) - vars.py) / ray.tang;
+	ray->tang = get_tangent(angle);
+	set_tile_step(&ray->tile_step_x, &ray->tile_step_y, angle);
+	ray->y_step = (ray->tile_step_y == 1) ? ray->tang : -ray->tang;
+	ray->x_step = (ray->tile_step_x == 1) ? 1/ray->tang : -1/ray->tang;
+	if (ray->tile_step_y == 1) //Calculate x_intercept
+		ray->x_intercept = (ceilf(player.py) - player.py) / ray->tang;
 	else
-		ray.x_intercept = (vars.py - floorf(vars.py)) / ray.tang;
-	if (ray.tile_step_x == 1)		//facing right
-		ray.x_intercept = vars.px + ray.x_intercept;
+		ray->x_intercept = (player.py - floorf(player.py)) / ray->tang;
+	if (ray->tile_step_x == 1)		//facing right
+		ray->x_intercept = player.px + ray->x_intercept;
 	else							//facing left
-		ray.x_intercept = vars.px - ray.x_intercept;
-	//Calculate y_intercept
-	if (ray.tile_step_x == 1)
-		ray.y_intercept = (ceilf(vars.px) - vars.px) * ray.tang;
+		ray->x_intercept = player.px - ray->x_intercept;
+	if (ray->tile_step_x == 1)  //Calculate y_intercept
+		ray->y_intercept = (ceilf(player.px) - player.px) * ray->tang;
 	else
-		ray.y_intercept = (vars.px - floorf(vars.px)) * ray.tang;
-	if (ray.tile_step_y == -1) 		//facing upwards
-		ray.y_intercept = vars.py - ray.y_intercept;
+		ray->y_intercept = (player.px - floorf(player.px)) * ray->tang;
+	if (ray->tile_step_y == -1) 		//facing upwards
+		ray->y_intercept = player.py - ray->y_intercept;
 	else
-		ray.y_intercept = vars.py + ray.y_intercept;
-
-	ray.x = floorf(vars.px);
-	ray.y = floorf(vars.py);
-	return (ray);
+		ray->y_intercept = player.py + ray->y_intercept;
+	ray->angle_beta = angle - player.pangle;
+	check_angle_overflow(&ray->angle_beta);
+	ray->x = floorf(player.px);
+	ray->y = floorf(player.py);
+	ray->distance_hor = get_x_intercept_length(*ray, vars);
+	ray->distance_ver = get_y_intercept_length(*ray, vars);
 }
 
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle)

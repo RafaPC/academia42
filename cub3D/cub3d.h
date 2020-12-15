@@ -167,6 +167,9 @@ typedef struct	s_ray
 	float		y_intercept;
 	float		x_step;
 	float		y_step;
+	float		distance_hor;
+	float		distance_ver;
+	float		angle_beta;
 }				t_ray;
 
 /**
@@ -243,7 +246,11 @@ float	get_tangent(float angle);
 void	check_angle_overflow(float *angle);
 float	get_x_intercept_length(t_ray ray, t_vars vars);
 float	get_y_intercept_length(t_ray ray, t_vars vars);
-t_ray	init_ray_values(t_player_vars vars, float angle);
+void	init_ray_values(t_ray *ray, t_player_vars player, float angle, t_vars vars);
+void	sum_distance(t_vars *vars, t_ray *ray);
+char	get_tile_crossed(t_ray ray, const char **map);
+void	check_sprite_crossed(t_ray ray, char tile_crossed, int ray_direction,
+t_vars *vars, int x_coord);
 /*
 **			HOOKS
 */
