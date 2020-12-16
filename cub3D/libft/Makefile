@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 18:09:12 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/16 12:48:16 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/16 16:43:27 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ BONUS = ft_lstadd_back_bonus.c	\
 		ft_lstdelone_bonus.c	\
 		ft_lstiter_bonus.c		\
 		ft_lstclear_bonus.c		\
-		ft_lstmap_bonus.c
+		ft_lstmap_bonus.c		\
+		ft_lstmove_backwards.c
 OBJS2 = ${BONUS:.c=.o};
 all: ${NAME}
 ${NAME}: ${SRCS}

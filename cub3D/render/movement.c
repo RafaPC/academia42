@@ -6,14 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 12:19:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 16:41:32 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <math.h>
 
-void	move(t_player *player, char **map, float angle, float velocity)
+void	move(t_player_vars *player, char **map, float angle, float velocity)
 {	 
 	float	newX;
 	float	newY;
