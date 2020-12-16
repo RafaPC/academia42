@@ -160,6 +160,14 @@ typedef enum e_ray_direction
 	vertical,
 	horizontal
 }			t_ray_direction;
+
+typedef struct s_coords
+{
+	int			start_x;
+	int			start_y;
+	int			end_x;
+	int			end_y;
+}				t_coords;
 /*
 **	RAYCASTING
 */
@@ -178,6 +186,7 @@ typedef struct		s_ray
 	float			distance_ver;
 	float			angle_beta;
 	t_ray_direction	direction;
+	char			tile_crossed;
 }					t_ray;
 
 /**
@@ -211,12 +220,16 @@ t_bool		raise_error(t_error_info *error_info, t_error_type error_id);
 */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 /*
-**			RENDER COLOR
+**			RGB UTILS
 */
 int		create_trgb(int t, int r, int g, int b);
+int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
+/*
+**			RENDER COLOR
+*/
 int		add_shade(double distance, int color);
 unsigned	get_image_color(t_texture texture, float x, float y);
 unsigned	get_wall_color(t_vars *vars, float x, float y);
@@ -235,20 +248,22 @@ int		render_screen(t_vars *vars);
 void	display_vars(t_vars *vars);
 void	render_column(t_vars *vars, float distance,  float wall_x, int offset_column);
 void	draw_sprite(t_vars *vars, t_sprite sprite);
+void	render_ceil_and_floor(t_vars *vars, int x_coord, int column_height);
 /*
 **			DRAW THINGS
 */
-void	draw_player(t_vars *vars);
-void	draw_map(t_vars *vars);
-void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars);
-void	draw_line(t_vars *vars, float xend, float yend, int color);
-void	draw_fov(t_vars *vars, int color);
+void		draw_player(t_vars *vars);
+void		draw_map(t_vars *vars);
+void		draw_square(t_coords coords, int color, t_data *img);
+void		draw_line(t_vars *vars, float xend, float yend, int color);
+t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end);
 /*
 **			RAYCASTING
 */
 void	main_raycast(t_program_params program_params);
 void	raycast(t_vars *vars);
-float	drawRays3D(t_vars *vars, float angle, int x_coord, float *x_wall);
+float	get_distance_to_wall(t_vars *vars, float angle, int x_coord,
+float *x_wall);
 void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle);
 float	get_tangent(float angle);
 void	check_angle_overflow(float *angle);
@@ -256,7 +271,7 @@ float	get_x_intercept_length(t_ray ray, t_player_vars player);
 float	get_y_intercept_length(t_ray ray, t_player_vars player);
 void	init_ray_values(t_ray *ray, t_player_vars player, float angle);
 void	sum_distance(t_ray *ray, t_player_vars player);
-char	get_tile_crossed(t_ray ray, char **map);
+void	set_tile_crossed(t_ray *ray, char **map);
 void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars);
 /*
 **			HOOKS

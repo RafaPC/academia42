@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/14 19:04:33 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/15 16:25:38 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ LIB_DIR = libft
 CC = gcc
 SRCS =	main.c \
 		render/render_color.c \
+		render/rgb_utils.c \
 		render/draw_things.c \
 		render/render.c \
 		render/render_sprites.c \

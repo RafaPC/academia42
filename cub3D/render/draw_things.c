@@ -6,27 +6,46 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:27:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/14 15:46:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 01:03:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <math.h>
 
-void	draw_square(int width, int height, int xpos, int ypos, int color, t_vars *vars)
+void	draw_square(t_coords coords, int color, t_data *img)
 {
-	int x, y;
-	x = 0;
-	y = 0;
-	while (x < width)
+	int x;
+	int y;
+
+	x = coords.start_x;
+	while (x <= coords.end_x)
 	{
-		while (y < height)
+		y = coords.start_y;
+		while (y <= coords.end_y)
 		{
-			my_mlx_pixel_put(vars->mlx.img, xpos + x, ypos + y, color);
+			my_mlx_pixel_put(img, x, y, color);
 			y++;
 		}
 		x++;
-		y = 0;
+	}
+}
+
+void	draw_square_length(t_coords coords, int color, t_data *img)
+{
+	int x;
+	int y;
+
+	x = coords.start_x;
+	while (x <= coords.end_x)
+	{
+		y = coords.start_y;
+		while (y <= coords.end_y)
+		{
+			my_mlx_pixel_put(img, x, y, color);
+			y++;
+		}
+		x++;
 	}
 }
 
@@ -47,30 +66,17 @@ void	draw_line(t_vars *vars, float xend, float yend, int color)
 	}
 }
 
-void	draw_fov(t_vars *vars, int color)
-{
-	float i = vars->player_vars.pangle - PI/3;
-	if (i < 0)
-		i += 2 * PI;
-	for (int j = 0; j < 20; j++)
-	{
-		i += 0.1;
-		if (i > 2 * PI)
-			i -= 2 * PI;
-		draw_line(vars, ((vars->player_vars.px * 40) + cosf(i) * 50),
-		((vars->player_vars.py * 40) - sinf(i) * 50), color);
-	}
-}
-
 void	draw_map(t_vars *vars)
 {
-	int x, y;
-	
-	y = 0;
+	int x;
+	int y;
+	int color;
+
 	int wall_color = create_trgb(0, 255, 255, 255);
 	int space_color = create_trgb(0, 50, 50, 50);
 	int sprite_color = create_trgb(0, 220, 50, 100);
-	int color = space_color;
+
+	y = 0;
 	while (vars->map[y])
 	{
 		x = 0;
@@ -83,7 +89,9 @@ void	draw_map(t_vars *vars)
 			else if (vars->map[y][x] == '0')
 				color = space_color;
 			if (vars->map[y][x] != ' ')
-				draw_square(10, 10, (x * 10), (y * 10), color, vars);	
+				draw_square(
+				get_coords_struct(x * 10, y * 10, x * 10 + 10, y * 10 + 10),
+				color, vars->mlx.img);	
 			x++;
 		}
 		y++;
@@ -93,7 +101,23 @@ void	draw_map(t_vars *vars)
 void	draw_player(t_vars *vars)
 {
 	int color;
+	int x;
+	int y;
 
+	x = vars->player_vars.px * 10;
+	y = vars->player_vars.py * 10;
 	color = create_trgb(0, 255, 0, 0);
-	draw_square(5, 5, vars->player_vars.px * 10, vars->player_vars.py * 10, color, vars);
+	draw_square(
+	get_coords_struct(x, y, x + 5, y + 5), color, vars->mlx.img);
+}
+
+t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end)
+{
+	t_coords coords;
+
+	coords.start_x = x_start;
+	coords.start_y = y_start;
+	coords.end_x = x_end;
+	coords.end_y = y_end;
+	return (coords);
 }
