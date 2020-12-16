@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:27:55 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 01:03:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 12:20:32 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ void	draw_line(t_vars *vars, float xend, float yend, int color)
 	float xincrement;
 	float yincrement;
 
-	xincrement = (xend - (vars->player_vars.px * 40)) / 30;
-	yincrement = (yend - (vars->player_vars.py * 40)) / 30;
+	xincrement = (xend - (vars->player.x * 40)) / 30;
+	yincrement = (yend - (vars->player.y * 40)) / 30;
 	while (i < length)
 	{
-		my_mlx_pixel_put(vars->mlx.img, (vars->player_vars.px * 40) + (xincrement * i),
-		(vars->player_vars.py * 40) + (yincrement * i), color);
+		my_mlx_pixel_put(vars->mlx.img, (vars->player.x * 40) + (xincrement * i),
+		(vars->player.y * 40) + (yincrement * i), color);
 		i++;
 	}
 }
@@ -104,8 +104,8 @@ void	draw_player(t_vars *vars)
 	int x;
 	int y;
 
-	x = vars->player_vars.px * 10;
-	y = vars->player_vars.py * 10;
+	x = vars->player.x * 10;
+	y = vars->player.y * 10;
 	color = create_trgb(0, 255, 0, 0);
 	draw_square(
 	get_coords_struct(x, y, x + 5, y + 5), color, vars->mlx.img);

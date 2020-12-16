@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/15 16:25:38 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/16 16:37:49 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,20 @@ CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft
 CC = gcc
-SRCS =	main.c \
-		render/render_color.c \
-		render/rgb_utils.c \
-		render/draw_things.c \
-		render/render.c \
-		render/render_sprites.c \
-		render/hooks.c \
-		render/raycast.c \
-		render/sprites_utils.c \
-		main_file_utils.c \
-		checks/check_file.c \
-		checks/check_map.c \
-		checks/handle_error.c \
+SRCS =	main.c					\
+		render/render_color.c	\
+		render/rgb_utils.c		\
+		render/draw_things.c	\
+		render/render.c			\
+		render/render_sprites.c	\
+		render/hooks.c			\
+		render/movement.c		\
+		render/raycast.c		\
+		render/sprites_utils.c	\
+		main_file_utils.c		\
+		checks/check_file.c		\
+		checks/check_map.c		\
+		checks/handle_error.c	\
 		checks/check_file/check_file_utils.c
 SRCSTEST = main_file_utils.c checks/check_map.c checks/check_file/check_file_utils.c checks/handle_error.c render/render_color.c render/render.c render/hooks.c render/raycast.c
 //OBJS = ${SRCS:.c=.o}

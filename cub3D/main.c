@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/15 12:50:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 12:18:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	init_textures(t_vars *vars, t_program_params program_params)
 
 void	init(t_vars *vars, t_program_params program_params)
 {
+	//check window x and y
 	int sizex, sizey;
 	vars->mlx.mlx = mlx_init();
 	mlx_get_screen_size(vars->mlx.mlx, &sizex, &sizey);
@@ -54,11 +55,11 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->ceiling_color = program_params.ceilling_color;
 	vars->floor_color = program_params.floor_color;
 	//POSITION
-	vars->player_vars.px = program_params.player_x + 0.5;
-	vars->player_vars.py = program_params.player_y + 0.5;
-	vars->player_vars.pangle = program_params.player_angle;
-	vars->player_vars.pdx = cos(vars->player_vars.pangle);
-	vars->player_vars.pdy = sin(vars->player_vars.pangle);
+	vars->player.x = program_params.player_x + 0.5;
+	vars->player.y = program_params.player_y + 0.5;
+	vars->player.angle = program_params.player_angle;
+	vars->player.dx = cos(vars->player.angle);
+	vars->player.dy = sin(vars->player.angle);
 	vars->wall_face = 1;
 	vars->keys_pressed.w = false;
 	vars->keys_pressed.a = false;
@@ -82,6 +83,5 @@ void		main_raycast(t_program_params program_params)
 	mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
 	mlx_hook(vars.mlx.win, 17, 0L, on_window_closed, &vars);
 	mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
-	render_screen(&vars);
 	mlx_loop(vars.mlx.mlx);
 }

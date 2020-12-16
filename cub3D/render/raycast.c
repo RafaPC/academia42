@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 00:23:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 12:20:34 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	raycast(t_vars *vars)
 	x_coord = 0;
 	while (x_coord < vars->screen_width)
 	{
-		angle = vars->player_vars.pangle - atanf(tanf(FOV / 2.0) *
+		angle = vars->player.angle - atanf(tanf(FOV / 2.0) *
 		(2.0 * x_coord / vars->screen_width - 1.0));
 		check_angle_overflow(&angle);
 		vars->distances[x_coord] =
@@ -38,7 +38,7 @@ float *x_wall)
 {
 	t_ray	ray;
 
-	init_ray_values(&ray, vars->player_vars, angle);
+	init_ray_values(&ray, vars->player, angle);
 	while (true)
 	{
 		ray.direction = (ray.distance_hor < ray.distance_ver) ? 1 : 0;
@@ -58,7 +58,7 @@ float *x_wall)
 			*x_wall = ray.y_intercept - ray.y;
 			return (ray.distance_ver * cosf(ray.angle_beta));
 		}
-		sum_distance(&ray, vars->player_vars);
+		sum_distance(&ray, vars->player);
 	}
 	return (1);
 }
@@ -113,25 +113,25 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 	ray->y_step = (ray->tile_step_y == 1) ? ray->tang : -ray->tang;
 	ray->x_step = (ray->tile_step_x == 1) ? 1 / ray->tang : -1 / ray->tang;
 	if (ray->tile_step_y == 1)
-		ray->x_intercept = (ceilf(player.py) - player.py) / ray->tang;
+		ray->x_intercept = (ceilf(player.y) - player.y) / ray->tang;
 	else
-		ray->x_intercept = (player.py - floorf(player.py)) / ray->tang;
+		ray->x_intercept = (player.y - floorf(player.y)) / ray->tang;
 	if (ray->tile_step_x == 1)
-		ray->x_intercept = player.px + ray->x_intercept;
+		ray->x_intercept = player.x + ray->x_intercept;
 	else
-		ray->x_intercept = player.px - ray->x_intercept;
+		ray->x_intercept = player.x - ray->x_intercept;
 	if (ray->tile_step_x == 1)
-		ray->y_intercept = (ceilf(player.px) - player.px) * ray->tang;
+		ray->y_intercept = (ceilf(player.x) - player.x) * ray->tang;
 	else
-		ray->y_intercept = (player.px - floorf(player.px)) * ray->tang;
+		ray->y_intercept = (player.x - floorf(player.x)) * ray->tang;
 	if (ray->tile_step_y == -1)
-		ray->y_intercept = player.py - ray->y_intercept;
+		ray->y_intercept = player.y - ray->y_intercept;
 	else
-		ray->y_intercept = player.py + ray->y_intercept;
-	ray->angle_beta = angle - player.pangle;
+		ray->y_intercept = player.y + ray->y_intercept;
+	ray->angle_beta = angle - player.angle;
 	check_angle_overflow(&ray->angle_beta);
-	ray->x = floorf(player.px);
-	ray->y = floorf(player.py);
+	ray->x = floorf(player.x);
+	ray->y = floorf(player.y);
 	ray->distance_hor = get_x_intercept_length(*ray, player);
 	ray->distance_ver = get_y_intercept_length(*ray, player);
 }
@@ -159,13 +159,13 @@ float	get_x_intercept_length(t_ray ray, t_player_vars player)
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = ray.x_intercept - player.px;
+		x = ray.x_intercept - player.x;
 	else
-		x = player.px - ray.x_intercept;
+		x = player.x - ray.x_intercept;
 	if (ray.tile_step_y == 1)
-		y = (ray.y + 1) - player.py;
+		y = (ray.y + 1) - player.y;
 	else
-		y = player.py - ray.y;
+		y = player.y - ray.y;
 	distance = sqrtf(x * x + y * y);
 	return (distance);
 }
@@ -181,13 +181,13 @@ float	get_y_intercept_length(t_ray ray, t_player_vars player)
 	float y;
 
 	if (ray.tile_step_x == 1)
-		x = (ray.x + 1) - player.px;
+		x = (ray.x + 1) - player.x;
 	else
-		x = player.px - ray.x;
+		x = player.x - ray.x;
 	if (ray.tile_step_y == 1)
-		y = ray.y_intercept - player.py;
+		y = ray.y_intercept - player.y;
 	else
-		y = player.py - ray.y_intercept;
+		y = player.y - ray.y_intercept;
 	distance = sqrtf(x * x + y * y);
 	return (distance);
 }

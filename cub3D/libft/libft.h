@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 12:42:43 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/19 21:43:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/16 12:47:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void				ft_lstadd_back(t_list **alst, t_list *new);
 void				ft_lstdelone(t_list *lst, void (*del)(void*));
 void				ft_lstclear(t_list **lst, void (*del)(void*));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
+void				ft_lstmove_backwards(t_list *lst);
 t_bool				ft_checkchar(char c, char *set);
 int					ft_get_index_of(char *string, char c);
 int					ft_nbrlen(int n);

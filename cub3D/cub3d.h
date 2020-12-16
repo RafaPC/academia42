@@ -128,11 +128,11 @@ typedef struct	s_mlx {
 }				t_mlx;
 
 typedef struct	s_player_vars {
-	float	px;
-	float	py;
-	float	pdx;
-	float	pdy;
-	float	pangle;
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
+	float	angle;
 }				t_player_vars;
 
 typedef struct  s_vars
@@ -140,7 +140,7 @@ typedef struct  s_vars
 	int				ceiling_color;
 	int				floor_color;
     t_mlx			mlx;
-	t_player_vars	player_vars;
+	t_player_vars	player;
 	char			**map;
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
@@ -281,7 +281,10 @@ int		on_key_released(int keycode, t_keys *keys_pressed);
 int		on_window_enter(t_vars *vars);
 int		on_window_closed(t_vars *vars);
 void	check_movement(t_vars *vars);
-void	move(t_vars *vars, float angle, float velocity);
+/*
+**			MOVEMENT
+*/
+void	move(t_player_vars *player, char **map, float angle, float velocity);
 void	close_game(t_vars *vars);
 
 /*

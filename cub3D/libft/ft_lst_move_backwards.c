@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_lst_move_backwards.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/14 15:08:51 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 13:17:59 by rprieto-         ###   ########.fr       */
+/*   Created: 2020/12/16 12:24:24 by rprieto-          #+#    #+#             */
+/*   Updated: 2020/12/16 12:25:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_abs(long n)
+void	ft_lstmove_backwards(t_list *lst)
 {
-	if (n < 0)
-		n = -n;
-	return (n);
+	void *aux;
+
+	if (lst->next)
+	{
+		aux = lst->content;
+		lst->content = lst->next->content;
+		lst->next->content = aux;
+	}
 }
