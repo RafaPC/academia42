@@ -6,13 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 18:35:07 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 20:53:10 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <mlx.h>
 #include <math.h>
+#include <X11/X.h>
 
 int		init_texture(void *mlx, t_texture *text, char *file)
 {
@@ -92,10 +93,10 @@ void		main_raycast(t_program_params program_params)
 {
 	t_vars			vars;
 	init(&vars, program_params);
-	mlx_hook(vars.mlx.win, 2, 1L<<0, on_key_pressed, &vars);
-	mlx_hook(vars.mlx.win, 3, 1L<<1, on_key_released, &vars.keys_pressed);
+	mlx_hook(vars.mlx.win, KeyPress, KeyPressMask, on_key_pressed, &vars);
+	mlx_hook(vars.mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars.keys_pressed);
 	// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
-	mlx_hook(vars.mlx.win, 17, 0L, on_window_closed, &vars);
+	mlx_hook(vars.mlx.win, ClientMessage, NoEventMask, on_window_closed, &vars);
 	mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
 	mlx_loop(vars.mlx.mlx);
 }
