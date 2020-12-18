@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 16:16:57 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 19:04:13 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		on_key_pressed(int keycode, t_vars *vars)
 	if (keycode == 65307)
 	{
 		on_window_closed(vars);
-		exit(0);
 		return (0);
 	}
 	if (keycode == 'a')
@@ -69,8 +68,6 @@ int		on_window_enter(t_vars *vars)
 int		on_window_closed(t_vars *vars)
 {
 	free_memory(vars);
-	mlx_destroy_window(vars->mlx.mlx, vars->mlx.win);
-	mlx_destroy_display(vars->mlx.mlx);
 	exit(0);
 	return (0);
 }

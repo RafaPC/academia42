@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 16:02:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 18:35:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 
 int		init_texture(void *mlx, t_texture *text, char *file)
 {
-	if (!(text->data = (t_data*)malloc(sizeof(t_data))))
-		return (0);
-	text->data->img = mlx_xpm_file_to_image(
+	text->data.img = mlx_xpm_file_to_image(
 		mlx, file, &text->width, &text->height);
-	if (text->data->img == NULL)
+	if (text->data.img == NULL)
 		return (0);
-	text->data->addr = mlx_get_data_addr(text->data->img, &text->data->bits_per_pixel, &text->data->line_length, &text->data->endian);
+	text->data.addr = mlx_get_data_addr(text->data.img,
+		&text->data.bits_per_pixel,
+		&text->data.line_length,
+		&text->data.endian);
 	return (1);
 }
 
@@ -63,7 +64,12 @@ void	init(t_vars *vars, t_program_params program_params)
 	init_textures(vars, program_params);
 	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
 	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
-	
+
+	free(program_params.path_NO_texture);
+	free(program_params.path_SO_texture);
+	free(program_params.path_EA_texture);
+	free(program_params.path_WE_texture);
+	free(program_params.path_sprite_texture);
 
 	vars->ceiling_color = program_params.ceilling_color;
 	vars->floor_color = program_params.floor_color;

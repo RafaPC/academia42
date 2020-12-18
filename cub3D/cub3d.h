@@ -116,7 +116,7 @@ typedef struct	s_texture
 {
 	int		width;
 	int		height;
-	t_data	*data;
+	t_data	data;
 }				t_texture;
 
 typedef struct	s_sprite
@@ -244,7 +244,7 @@ int		add_shade(double distance, int color);
 unsigned	get_image_color(t_texture texture, float x, float y);
 unsigned	get_wall_color(t_vars *vars, float x, float y);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-unsigned int    get_pixel(t_data *image, int x, int y);
+unsigned int    get_pixel(t_data image, int x, int y);
 /*
 **			RENDER SPRITES
 */

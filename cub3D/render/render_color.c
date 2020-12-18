@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 16:01:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 18:38:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-unsigned int	get_pixel(t_data *image, int x, int y)
+unsigned int	get_pixel(t_data image, int x, int y)
 {
 	unsigned int	*dst;
 
-	dst = (unsigned int*)(image->addr + (y * image->line_length +
-	(x * (image->bits_per_pixel / 8))));
+	dst = (unsigned int*)(image.addr + (y * image.line_length +
+	(x * (image.bits_per_pixel / 8))));
 	return (*(dst));
 }

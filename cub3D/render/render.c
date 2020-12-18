@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 01:47:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 18:58:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <mlx.h>
 #include <math.h>
 #include "libft.h"
-#include <stdio.h>
 
 int		render_screen(t_vars *vars)
 {
@@ -28,17 +27,7 @@ int		render_screen(t_vars *vars)
 	render_sprites(vars);
 	mlx_put_image_to_window(
 	vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
-	display_vars(vars);
 	return (0);
-}
-
-void	display_vars(t_vars *vars)
-{
-	int color;
-
-	color = create_trgb(0, 0, 255, 0);
-	mlx_string_put(
-	vars->mlx.mlx, vars->mlx.win, vars->screen_width - 100, 50, color, "hola");
 }
 
 int		get_column_height(t_vars vars, float distance)
