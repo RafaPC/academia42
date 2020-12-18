@@ -18,6 +18,11 @@
 # define PI 3.141592
 // #define FOV 1.74532
 #define FOV 0.785398
+/*
+**		MINIMAP COLORS
+*/
+#define WALL_COLOR	16777215
+#define SPACE_COLOR 3289650
 typedef enum	e_error_type
 {	
 	missing_argument_error = 1,
@@ -94,7 +99,11 @@ typedef struct s_keys
 	t_bool		left_arrow;
 	t_bool		right_arrow;
 }				t_keys;
-//RAYCASTING
+
+/*
+**RAYCASTING
+*/
+
 typedef enum	e_wall_face
 {
 	north_face,
@@ -102,6 +111,7 @@ typedef enum	e_wall_face
 	east_face,
 	west_face
 }				t_wall_face;
+
 typedef struct	s_texture
 {
 	int		width;
@@ -109,7 +119,7 @@ typedef struct	s_texture
 	t_data	*data;
 }				t_texture;
 
-typedef struct s_sprite
+typedef struct	s_sprite
 {
 	float			x;
 	float			y;
@@ -144,11 +154,11 @@ typedef struct  s_vars
 	char			**map;
 	t_wall_face		wall_face;
 	t_keys			keys_pressed;
-	t_texture		*textureN;
-	t_texture		*textureS;
-	t_texture		*textureE;
-	t_texture		*textureW;
-	t_texture		*textureSprite;
+	t_texture		textureN;
+	t_texture		textureS;
+	t_texture		textureE;
+	t_texture		textureW;
+	t_texture		textureSprite;
 	t_list			*sprite;
 	int				screen_width;
 	int				screen_height;
@@ -255,7 +265,6 @@ void	render_ceil_and_floor(t_vars *vars, int x_coord, int column_height);
 void		draw_player(t_vars *vars);
 void		draw_map(t_vars *vars);
 void		draw_square(t_coords coords, int color, t_data *img);
-void		draw_line(t_vars *vars, float xend, float yend, int color);
 t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end);
 /*
 **			RAYCASTING
@@ -276,7 +285,7 @@ void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars);
 /*
 **			HOOKS
 */
-int		on_key_pressed(int keycode,t_keys *keys_pressed);
+int		on_key_pressed(int keycode,t_vars *vars);
 int		on_key_released(int keycode, t_keys *keys_pressed);
 int		on_window_enter(t_vars *vars);
 int		on_window_closed(t_vars *vars);
@@ -292,4 +301,10 @@ void	close_game(t_vars *vars);
 */
 void	add_sprite_coords(float x, float y, t_vars *vars);
 void    order_sprites(t_list *sprite_list);
+/*
+**			FREE MEMORY
+*/
+void	free_textures(t_vars *vars);
+void	free_memory(t_vars *vars);
+void	free_map(char **map);
 #endif

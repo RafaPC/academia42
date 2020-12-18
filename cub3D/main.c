@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 12:18:59 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 16:02:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,64 @@
 #include <mlx.h>
 #include <math.h>
 
-void init_texture(void *mlx, t_texture *text, char *file)
+int		init_texture(void *mlx, t_texture *text, char *file)
 {
-	text->data = (t_data*)malloc(sizeof(t_data));
-	text->data->img = mlx_xpm_file_to_image(mlx, file, &text->width, &text->height);
+	if (!(text->data = (t_data*)malloc(sizeof(t_data))))
+		return (0);
+	text->data->img = mlx_xpm_file_to_image(
+		mlx, file, &text->width, &text->height);
+	if (text->data->img == NULL)
+		return (0);
 	text->data->addr = mlx_get_data_addr(text->data->img, &text->data->bits_per_pixel, &text->data->line_length, &text->data->endian);
+	return (1);
 }
 
-void	init_textures(t_vars *vars, t_program_params program_params)
+int		init_textures(t_vars *vars, t_program_params program_params)
 {
-	vars->textureN = (t_texture*)malloc(sizeof(t_texture));
-	vars->textureS = (t_texture*)malloc(sizeof(t_texture));
-	vars->textureE = (t_texture*)malloc(sizeof(t_texture));
-	vars->textureW = (t_texture*)malloc(sizeof(t_texture));
-	vars->textureSprite = (t_texture*)malloc(sizeof(t_texture));
+	if (!init_texture(vars->mlx.mlx, &vars->textureN, program_params.path_NO_texture))
+		return (0);
+	if (!init_texture(vars->mlx.mlx, &vars->textureS, program_params.path_SO_texture))
+		return (0);
+	if (!init_texture(vars->mlx.mlx, &vars->textureE, program_params.path_EA_texture))
+		return (0);
+	if (!init_texture(vars->mlx.mlx, &vars->textureW, program_params.path_WE_texture))
+		return (0);
+	if (!init_texture(vars->mlx.mlx, &vars->textureSprite,
+		program_params.path_sprite_texture))
+		return (0);
+	return (1);
+}
 
-	//Checkear si se abren bien y se inicializan
-	init_texture(vars->mlx.mlx, vars->textureN, program_params.path_NO_texture);
-	init_texture(vars->mlx.mlx, vars->textureS, program_params.path_SO_texture);
-	init_texture(vars->mlx.mlx, vars->textureE, program_params.path_EA_texture);
-	init_texture(vars->mlx.mlx, vars->textureW, program_params.path_WE_texture);
-	init_texture(vars->mlx.mlx, vars->textureSprite, program_params.path_sprite_texture);
+void	check_window_size(t_vars *vars, int resolution_x, int resolution_y)
+{
+	int size_x;
+	int size_y;
+
+	mlx_get_screen_size(vars->mlx.mlx, &size_x, &size_y);
+	vars->screen_width = (size_x < resolution_x) ? size_x : resolution_x;
+	vars->screen_height = (size_y < resolution_y) ? size_y : resolution_y;
 }
 
 void	init(t_vars *vars, t_program_params program_params)
 {
-	//check window x and y
-	int sizex, sizey;
 	vars->mlx.mlx = mlx_init();
-	mlx_get_screen_size(vars->mlx.mlx, &sizex, &sizey);
-	vars->screen_width = (sizex < program_params.resolution_x) ? sizex : program_params.resolution_x;
-	vars->screen_height = (sizey < program_params.resolution_y) ? sizey : program_params.resolution_y;
+	check_window_size(vars, program_params.resolution_x, program_params.resolution_y);
 	vars->mlx.win = mlx_new_window(vars->mlx.mlx, vars->screen_width, vars->screen_height, "Cub3D");
-	//IMAGE
 	vars->mlx.img = (t_data*)malloc(sizeof(t_data));
 	vars->mlx.img->img = mlx_new_image(vars->mlx.mlx, vars->screen_width, vars->screen_height);
 	vars->mlx.img->addr = mlx_get_data_addr(vars->mlx.img->img, &vars->mlx.img->bits_per_pixel, &vars->mlx.img->line_length, &vars->mlx.img->endian);
+	init_textures(vars, program_params);
 	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
-	//COLOR
+	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
+	
+
 	vars->ceiling_color = program_params.ceilling_color;
 	vars->floor_color = program_params.floor_color;
-	//POSITION
 	vars->player.x = program_params.player_x + 0.5;
 	vars->player.y = program_params.player_y + 0.5;
 	vars->player.angle = program_params.player_angle;
-	vars->player.dx = cos(vars->player.angle);
-	vars->player.dy = sin(vars->player.angle);
-	vars->wall_face = 1;
+	vars->player.dx = cosf(vars->player.angle);
+	vars->player.dy = sinf(vars->player.angle);
 	vars->keys_pressed.w = false;
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
@@ -68,9 +79,6 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->keys_pressed.left_arrow = false;
 	vars->keys_pressed.right_arrow = false;
 	vars->map = program_params.map;
-	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
-	init_textures(vars, program_params);
-
 	vars->sprite = NULL;
 }
 
@@ -78,9 +86,9 @@ void		main_raycast(t_program_params program_params)
 {
 	t_vars			vars;
 	init(&vars, program_params);
-	mlx_hook(vars.mlx.win, 2, 1L<<0, on_key_pressed, &vars.keys_pressed);
+	mlx_hook(vars.mlx.win, 2, 1L<<0, on_key_pressed, &vars);
 	mlx_hook(vars.mlx.win, 3, 1L<<1, on_key_released, &vars.keys_pressed);
-	mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
+	// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
 	mlx_hook(vars.mlx.win, 17, 0L, on_window_closed, &vars);
 	mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
 	mlx_loop(vars.mlx.mlx);

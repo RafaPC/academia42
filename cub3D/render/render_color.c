@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/15 16:32:36 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 16:01:54 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ unsigned int	get_wall_color(t_vars *vars, float x, float y)
 	t_texture texture;
 
 	if (vars->wall_face == south_face)
-		texture = *vars->textureS;
+		texture = vars->textureS;
 	else if (vars->wall_face == north_face)
-		texture = *vars->textureN;
+		texture = vars->textureN;
 	else if (vars->wall_face == east_face)
-		texture = *vars->textureE;
+		texture = vars->textureE;
 	else if (vars->wall_face == west_face)
-		texture = *vars->textureW;
+		texture = vars->textureW;
 	return (get_image_color(texture, x, y));
 }
 

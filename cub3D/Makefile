@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/16 16:37:49 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/18 16:56:06 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS =	main.c					\
 		render/movement.c		\
 		render/raycast.c		\
 		render/sprites_utils.c	\
+		render/free_memory.c	\
 		main_file_utils.c		\
 		checks/check_file.c		\
 		checks/check_map.c		\
@@ -44,7 +45,7 @@ ${NAME}:
 				make bonus -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} -I. -Ilibft ${SRCS} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o ${NAME}
+				${CC} ${FLAGS} -I. -Ilibft ${SRCS} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o ${NAME}
 ${OBJS}: ${SRCS}
 				${CC} ${FLAGS} -c ${SRCS} -O3
 

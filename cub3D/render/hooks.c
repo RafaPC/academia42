@@ -6,17 +6,25 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 12:10:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 16:16:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <mlx.h>
-#include <math.h>
 #include <stdio.h>
 
-int		on_key_pressed(int keycode, t_keys *keys_pressed)
+int		on_key_pressed(int keycode, t_vars *vars)
 {
+	t_keys	*keys_pressed;
+
+	keys_pressed = &vars->keys_pressed;
+	if (keycode == 65307)
+	{
+		on_window_closed(vars);
+		exit(0);
+		return (0);
+	}
 	if (keycode == 'a')
 		keys_pressed->a = true;
 	if (keycode == 'd')
@@ -50,22 +58,19 @@ int		on_key_released(int keycode, t_keys *keys_pressed)
 }
 
 /*
-** //TODO: funcion que se trigeree cuando se vuelva a entrar a la ventana
+** TODO: funcion que se trigeree cuando se vuelva a entrar a la ventana
 */
 
 int		on_window_enter(t_vars *vars)
 {
-	// printf("entra\n");
 	return (0);
 }
 
 int		on_window_closed(t_vars *vars)
 {
-
+	free_memory(vars);
+	mlx_destroy_window(vars->mlx.mlx, vars->mlx.win);
+	mlx_destroy_display(vars->mlx.mlx);
+	exit(0);
 	return (0);
-}
-
-void	close_game(t_vars *vars)
-{
-	
 }
