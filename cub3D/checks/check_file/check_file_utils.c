@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 11:27:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 16:38:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_bool check_color_characters(char *line)
 	if (*line++ != ',')
 		return (false);
 	i = 0;
-	while (ft_isdigit(*line++))
+	while (*line && ft_isdigit(*line++))
 		i++;
 	if (i == 0 || i > 3)
 		return (false);
