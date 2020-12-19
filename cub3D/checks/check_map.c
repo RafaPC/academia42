@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 17:42:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/19 01:13:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,14 +134,16 @@ static t_bool		map_is_closed(char **map)
 	return (true);
 }
 
-t_bool		read_map(t_error_info *error_info, t_list *line, t_program_params *program_params)
+t_bool		read_map(t_list *line, t_program_params *program_params)
 {
+	while (*((char*)line->content) == '\0') //TODO: mirar el subject
+		line = line->next;
 	program_params->map = (char**)malloc((get_map_height(line) + 1) * sizeof(char*));
 	save_map(line, program_params->map);
 	if (!check_map_characters(line))
-		return (raise_error(error_info, wrong_map_character));
-	if (!map_is_closed(program_params->map)) //TODO: pasarle error_info y que guarde fila y columna
-		return (raise_error(error_info, map_not_closed_error));
+		return (print_error("Hay un carácter no válido en el mapa"));
+	if (!map_is_closed(program_params->map))
+		return (print_error("El mapa no está rodeado de paredes"));
 	set_player_parameters(program_params->map, program_params);
 	return (true);
 }

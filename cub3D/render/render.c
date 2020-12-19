@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 18:58:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 22:11:31 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,13 @@
 
 int		render_screen(t_vars *vars)
 {
-	mlx_destroy_image(vars->mlx.mlx, vars->mlx.img->img);
-	vars->mlx.img->img =
-	mlx_new_image(vars->mlx.mlx, vars->screen_width, vars->screen_height);
 	check_movement(vars);
 	raycast(vars);
 	draw_map(vars);
 	draw_player(vars);
 	render_sprites(vars);
 	mlx_put_image_to_window(
-	vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
+		vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
 	return (0);
 }
 

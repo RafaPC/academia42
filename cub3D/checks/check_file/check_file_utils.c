@@ -6,14 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 16:38:18 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/19 01:09:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_bool	read_resolution(t_error_info *error_info, char *line,
-t_program_params *program_params)
+t_bool	read_resolution(char *line, t_program_params *program_params)
 {
 	t_bool	correct;
 
@@ -30,31 +29,36 @@ t_program_params *program_params)
 		line++;
 	if (*line)
 		correct = false;
-	//TODO: checkeo si después del número hay nulo o más cosas, ya veré que poner
 	return (correct);
 }
 
-t_bool	read_path(t_error_info *error_info, char *line, char **path_to_texture)
+t_bool	read_path(char *line, char **path_to_texture)
 {
 	t_bool	correct;
+	int		path_length;
 
 	correct = true;
 	while (*line == ' ')
 		line++;
 	if (*(line) == '.' && *(line + 1) == '/')
 	{
-		*path_to_texture = (char*)malloc(sizeof(char) * (ft_strlen(line) + 1));
-		ft_strlcpy(*path_to_texture, line, ft_strlen(line) + 1);
+		path_length = ft_strlen(line);
+		*path_to_texture = (char*)malloc(sizeof(char) * (path_length + 1));
+		ft_strlcpy(*path_to_texture, line, path_length + 1);
+		if (ft_strncmp("XPM", &(*path_to_texture)[path_length - 3], 3)
+		&& ft_strncmp("xpm", &(*path_to_texture)[path_length - 3], 3))
+			return (print_error("Extensión incorrecta del archivo dado por parámetro"));
 	}
 	else
-	{
-		//TODO: error wrong format
-	}
+		return (print_error("Formato del path incorrecto"));
 	return (correct);
 }
 
 
-//Checkea los cáracteres de la línea donde se define un color, solo puede haber números, espacios y comas
+/*
+** Checkea los cáracteres de la línea donde se define un color, solo puede haber números, espacios y comas
+*/
+
 t_bool check_color_characters(char *line)
 {
 	int i;
@@ -98,14 +102,14 @@ t_bool check_colors_min_max(int colors[3])
 }
 
 //TODO: checkear la funcion en sí
-t_bool	read_color(t_error_info *error_info, char *line, int *color)
+t_bool	read_color(char *line, int *color)
 {
 	int		colors[3];
 
 	while (*line == ' ')
 		line++;
 	if (!check_color_characters(line))
-		return (raise_error(error_info, color_wrong_character));
+		return (print_error("Carácter incorrecto en la definición del color"));
 	colors[0] = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
@@ -114,7 +118,7 @@ t_bool	read_color(t_error_info *error_info, char *line, int *color)
 		line++;
 	colors[2] = ft_atoi(++line);
 	if (!check_colors_min_max(colors))
-		raise_error(error_info, color_wrong_value);
+		return (print_error("Valores de color incorrecto"));
 	*color = create_trgb(0, colors[0], colors[1], colors[2]);
 	return (true);
 }

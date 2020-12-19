@@ -6,45 +6,16 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 15:30:32 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 12:05:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/19 01:14:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "libft.h"
-#include <stdio.h>
+#include "ft_printf.h"
 
-void		init_error_struct(t_error_info *error_info)
+t_bool	print_error(const char *msg)
 {
-	error_info->error_type = 0;
-	error_info->error_row = 0;
-	error_info->error_column = 0;
-}
-
-// FIXME: utilizar ft_printf
-// FIXME: sustituir todos los raise_error por print_error
-t_bool		print_error(t_error_info *error_info)
-{
-	//Here reads the error type and prints it
-	if (error_info->error_type == missing_argument_error)
-		printf("Falta argumento");
-	else if (error_info->error_type == too_many_args_error)
-		printf("Hay demasiados argumentos");
-	else if (error_info->error_type == second_arg_error)
-		printf("Segundo argumento mal escrito");
-	else if (error_info->error_type == wrong_filename_error)
-		printf("El nombre del archivo dado por argumento no es correcto");
-	else if (error_info->error_type == wrong_extension_error)
-		printf("El archivo dado por argumento tiene la extensión errónea");
-	else if (error_info->error_type == map_not_closed_error)
-		printf("El mapa no está rodeado de paredes");
-	else
-		printf("Error indefinido");
-	return (false);
-}
-
-t_bool	raise_error(t_error_info *error_info, t_error_type error_id)
-{
-	error_info->error_type = error_id;
+	ft_printf("Error\n%s\n", msg);
 	return (false);
 }

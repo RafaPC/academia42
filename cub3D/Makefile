@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/18 16:56:06 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/18 22:42:29 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ ${NAME}:
 				make bonus -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} -I. -Ilibft ${SRCS} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o ${NAME}
+				${CC} ${FLAGS} -I. -Ilibft -I../printf ${SRCS} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o ${NAME}
 ${OBJS}: ${SRCS}
 				${CC} ${FLAGS} -c ${SRCS} -O3
 

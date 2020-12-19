@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/10 17:54:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/18 23:10:17 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include "libft.h"
 
 //TODO: Cambiar nombre a la función
-t_bool	check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path)
+t_bool	check_file(t_program_params *program_params, const char *file_path)
 {
 	t_list	*file_content;
 	int 	fd;
 
 	initialice_program_params(program_params);
 	file_content = NULL;
-	if ((fd = check_file_path(error_info, file_path)) < 0)
-		return (raise_error(error_info, open_file_error));
-	else if ((file_content = save_file_content(error_info, fd)) == NULL)
-		return (raise_error(error_info, read_file_error));
-	else if (!check_file_content(error_info, file_content, program_params))
+	if ((fd = check_file_path(file_path)) < 0)
+		return (false);
+	else if ((file_content = save_file_content(fd)) == NULL)
+		return (false);
+	else if (!check_file_content(file_content, program_params))
 	{
 		ft_lstclear(&file_content, free);
 		return (false);
@@ -34,16 +34,16 @@ t_bool	check_file(t_error_info *error_info, t_program_params *program_params, co
 	return (true);
 }
 
-int		check_file_path(t_error_info *error_info, const char *file_path)
+int		check_file_path(const char *file_path)
 {
 	int	fd;
 
 	if ((fd = open(file_path, O_RDONLY)) < 0)
-		error_info->error_type = open_file_error;
+		print_error("No se ha podido abrir el archivo");
 	return (fd);
 }
 
-t_list	*save_file_content(t_error_info *error_info, int fd)
+t_list	*save_file_content(int fd)
 {
 	t_list	*file_content;
 	t_list	*actual_line;
@@ -60,7 +60,7 @@ t_list	*save_file_content(t_error_info *error_info, int fd)
 	}
 	if (result == -1)
 	{
-		error_info->error_type = read_file_error;
+		print_error("Error al leer el archivo");
 		ft_lstclear(&file_content, free);
 		return (NULL);
 	}
@@ -80,7 +80,7 @@ void	initialice_info_ids(t_bool info_id[8])
 }
 
 
-t_bool		check_file_content(t_error_info *error_info, t_list *file_content,
+t_bool		check_file_content(t_list *file_content,
 t_program_params *program_params)
 {
 	t_list	*line;
@@ -97,19 +97,19 @@ t_program_params *program_params)
 			if ((info_id = search_identifier(line->content)))
 			{
 				if (info_id_list[info_id - 1] == true) //Si ya se ha leído ese identificador, ERROR está duplicado
-					return (raise_error(error_info, duplicated_info_error));
+					return (print_error("Se ha encontrado 2 veces la misma id"));
 				info_id_list[info_id - 1] = true;
 			}
 			else
-				return (raise_error(error_info, wrong_identifier_error));
-			if (!get_info(info_id, error_info, line->content, program_params))
-				return (print_error(error_info));
+				return (print_error("Hay un identificador incorrecto"));
+			if (!get_info(info_id, line->content, program_params))
+				return (false); //FIXME:
 		}
 		else
-			return (raise_error(error_info, missing_information_error)); //Si entra aquí ha acabado el archivo y no ha encontrado toda la información
+			return (print_error("Falta algún parámetro de información")); //Si entra aquí ha acabado el archivo y no ha encontrado toda la información
 		line = line->next;
 	}
-	if (!read_map(error_info, line, program_params))
+	if (!read_map(line, program_params))
 		return (false);
 	return (true);
 }
@@ -129,24 +129,24 @@ t_bool	check_info_ids(t_bool info_id[8])
 	return (completed);
 }
 
-t_bool		get_info(t_info_id info_id, t_error_info *error_info, char *line, t_program_params *params)
+t_bool		get_info(t_info_id info_id, char *line, t_program_params *params)
 {
 	if (info_id == id_resolution)
-		return (read_resolution(error_info, line + 2, params));
+		return (read_resolution(line + 2, params));
 	else if (info_id == id_path_north)
-		return (read_path(error_info, line + 3, &(params->path_NO_texture)));
+		return (read_path(line + 3, &(params->path_NO_texture)));
 	else if (info_id == id_path_south)
-		return (read_path(error_info, line + 3, &(params->path_SO_texture)));
+		return (read_path(line + 3, &(params->path_SO_texture)));
 	else if (info_id == id_path_west)
-		return (read_path(error_info, line + 3, &(params->path_WE_texture)));
+		return (read_path(line + 3, &(params->path_WE_texture)));
 	else if (info_id == id_path_east)
-		return (read_path(error_info, line + 3, &(params->path_EA_texture)));
+		return (read_path(line + 3, &(params->path_EA_texture)));
 	else if (info_id == id_path_sprite)
-		return (read_path(error_info, line + 2, &(params->path_sprite_texture)));
+		return (read_path(line + 2, &(params->path_sprite_texture)));
 	else if (info_id == id_color_floor)
-		return (read_color(error_info, line + 2, &params->floor_color));
+		return (read_color(line + 2, &params->floor_color));
 	else if (info_id == id_color_ceilling)
-		return (read_color(error_info, line + 2, &params->ceilling_color));
+		return (read_color(line + 2, &params->ceilling_color));
 	//TODO:Maybe añadir un código de error aunque nunca debería llegar a este return
 	return (false);
 }

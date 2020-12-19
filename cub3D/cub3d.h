@@ -53,12 +53,6 @@ typedef enum	e_info_id
 	id_color_floor,
 	id_color_ceilling
 }				t_info_id;
-typedef	struct	s_error_info
-{
-	enum e_error_type	error_type;
-	int 				error_row;
-	int					error_column;
-}				t_error_info;
 
 typedef struct	s_line
 {
@@ -202,29 +196,26 @@ typedef struct		s_ray
 /**
 **			CHECK FILE THINGS
 */
-t_bool		check_arguments(t_error_info *error_info, t_bool *save_img, int argc, char **argv);
-t_bool		check_file(t_error_info *error_info, t_program_params *program_params, const char *file_path);
-int			check_file_path(t_error_info *error_info, const char *file_path);
-t_list		*save_file_content(t_error_info *error_info, int fd);
-t_bool		check_file_content(t_error_info *error_info, t_list *file_content,
+t_bool		check_arguments(t_bool *save_img, int argc, char **argv);
+t_bool		check_file(t_program_params *program_params, const char *file_path);
+int			check_file_path(const char *file_path);
+t_list		*save_file_content(int fd);
+t_bool		check_file_content(t_list *file_content,
 t_program_params *t_program_params);
 t_bool		check_info_ids(t_bool info_id[8]);
 t_info_id	search_identifier(char *line);
-t_bool		get_info(t_info_id info_id, t_error_info *error_info, char *line,
+t_bool		get_info(t_info_id info_id, char *line,
 t_program_params *params);
-t_bool		read_resolution(t_error_info *error_info, char *line,
+t_bool		read_resolution(char *line,
 t_program_params *program_params);
-t_bool		read_path(t_error_info *error_info, char *line, char **path_to_texture);
-t_bool		read_color(t_error_info *error_info, char *line, int *color);
+t_bool		read_path(char *line, char **path_to_texture);
+t_bool		read_color(char *line, int *color);
 void		initialice_program_params(t_program_params *program_params);
-t_bool		read_map(t_error_info *error_info, t_list *line, t_program_params *program_params);
+t_bool		read_map(t_list *line, t_program_params *program_params);
 /*
 **			ERROR HANDLING
 */
-void		init_error_struct(t_error_info *error_info);
-t_bool		print_error(t_error_info *error_info);
-t_bool		raise_error(t_error_info *error_info, t_error_type error_id);
-
+t_bool		print_error(const char *msg);
 /*
 **			RENDER THINGS
 */
