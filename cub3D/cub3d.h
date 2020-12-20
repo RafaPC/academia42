@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
- /*   Updated: 2020/12/11 13:47:27 by rprieto-         ###   ########.fr       */
+ /*   Updated: 2020/12/11 13:47477 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ t_bool		check_file(t_program_params *program_params, const char *file_path);
 int			check_file_path(const char *file_path);
 t_list		*save_file_content(int fd);
 t_bool		check_file_content(t_list *file_content,
-t_program_params *t_program_params);
+t_program_params *t_program_params, t_info_id info_id);
 t_bool		check_info_ids(t_bool info_id[8]);
 t_info_id	search_identifier(char *line);
 t_bool		get_info(t_info_id info_id, char *line,

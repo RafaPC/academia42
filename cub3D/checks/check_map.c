@@ -6,46 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/19 01:13:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/20 01:21:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "cub3d.h"
 
-//TODO: mirar si junto funcionas de checkear carácteres del mapa
-//también mirar el ir pasando líneas vacías al acabar de leer todos los parámetros
-//para no leer líneas vacías en el mapa
-
-t_bool		check_map_characters(t_list *line_elem)
-{
-	char	*line;
-	t_bool	player_pos;
-
-	player_pos = false;
-	while (line_elem)
-	{
-		line = line_elem->content;
-		while (*line)
-		{
-			if (*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W')
-			{
-				if (player_pos)
-					return (false);
-				player_pos = true;
-			}
-			else if (*line != '0' && *line != '1' && *line != '2' && *line != ' ')
-				return (false);
-			line++;
-		}
-		line_elem = line_elem->next;
-	}
-	if (!player_pos) //No se ha encontrado con N, S, E o W
-		return (false);
-	return (true);
-}
-
-int			get_map_height(t_list *line)
+int				get_map_height(t_list *line)
 {
 	int i;
 
@@ -58,92 +26,93 @@ int			get_map_height(t_list *line)
 	return (i);
 }
 
-static void	set_player_angle(char c, float *angle)
+static t_bool	set_player_parameters(char angle_char, int y, int x,
+t_program_params *params)
 {
-	if (c == 'N')
-		*angle = PI/2;
-	else if (c == 'S')
-		*angle = (3*PI)/2;
-	else if (c == 'E')
-		*angle = 0;
+	if (params->player_angle != -1)
+		return (false);
+	params->player_y = y;
+	params->player_x = x;
+	if (angle_char == 'N')
+		params->player_angle = PI / 2;
+	else if (angle_char == 'S')
+		params->player_angle = (3 * PI) / 2;
+	else if (angle_char == 'E')
+		params->player_angle = 0;
 	else
-		*angle = PI;
+		params->player_angle = PI;
+	return (true);
 }
 
-static void	set_player_parameters(char **map, t_program_params *program_params)
+static t_bool	map_is_closed(char **map, int y, int x)
 {
-	int x;
-	int y;
-
-	y = 0;
-	while (map[y])
+	if (map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'S'
+	|| map[y][x] == 'E' || map[y][x] == 'W')
 	{
-		x = 0;
-		while(map[y][x])
-		{
-			if (map[y][x] == 'N' || map[y][x] == 'S' || 
-			map[y][x] == 'E' || map[y][x] == 'W')
-			{
-				program_params->player_y = y;
-				program_params->player_x = x;
-				set_player_angle(map[y][x], &program_params->player_angle);
-				map[y][x] = '0';
-				return ;
-			}
-			x++;
-		}
-		y++;
+		if (y == 0 || map[y + 1] == NULL ||
+		x == 0 || map[y][x + 1] == '\0')
+			return (false);
+		else if (map[y - 1][x] == ' ' || map[y + 1][x] == ' ' ||
+		map[y][x - 1] == ' ' || map[y][x + 1] == ' ')
+			return (false);
 	}
+	return (true);
 }
 
-static void	save_map(t_list *line_elem, char **map)
+t_bool			check_map_characters(char **map, int y, int x,
+t_program_params *params)
 {
-	while (line_elem)
-	{
-		*map = ft_strdup(line_elem->content);
-		(map)++;
-		line_elem = line_elem->next;
-	}
-	*map = NULL;
-}
-
-static t_bool		map_is_closed(char **map)
-{
-	int y;
-	int x;
-
-	y = 0;
 	while (map[y])
 	{
 		x = 0;
 		while (map[y][x])
 		{
-			if (map[y][x] == '0')
+			if (map[y][x] == 'N' || map[y][x] == 'S' ||
+			map[y][x] == 'E' || map[y][x] == 'W')
 			{
-				if (y == 0 || map[y + 1] == NULL ||
-				x == 0 || map[y][x + 1] == '\0')
-					return (false);
-				else if (map[y-1][x] == ' ' || map[y+1][x] == ' ' ||
-				map[y][x-1] == ' ' || map[y][x+1] == ' ')
-					return (false);
+				if (!set_player_parameters(map[y][x], y, x, params))
+					return (print_error(
+						"Hay al menos dos carácteres dejugador (N, S, E, W)"));
 			}
-			x++;	
+			else if (map[y][x] != '0' && map[y][x] != '1'
+			&& map[y][x] != '2' && map[y][x] != ' ')
+				return (false);
+			if (!map_is_closed(map, y, x))
+				return (print_error("Map not closed by walls"));
+			x++;
 		}
 		y++;
 	}
+	if (params->player_angle == -1)
+		return (print_error("Player angle and position not defined"));
 	return (true);
 }
 
-t_bool		read_map(t_list *line, t_program_params *program_params)
+t_bool			read_map(t_list *line_elem, t_program_params *program_params)
 {
-	while (*((char*)line->content) == '\0') //TODO: mirar el subject
-		line = line->next;
-	program_params->map = (char**)malloc((get_map_height(line) + 1) * sizeof(char*));
-	save_map(line, program_params->map);
-	if (!check_map_characters(line))
-		return (print_error("Hay un carácter no válido en el mapa"));
-	if (!map_is_closed(program_params->map))
-		return (print_error("El mapa no está rodeado de paredes"));
-	set_player_parameters(program_params->map, program_params);
+	char	*line;
+	char	**map;
+
+	line = (char*)line_elem->content;
+	while (line_elem && *line == '\0')
+	{
+		line = (char*)line_elem->content;
+		line_elem = line_elem->next;
+	}
+	if (search_identifier(line))
+		return (print_error("Información repetida"));
+	if (line_elem == NULL)
+		return (print_error("There is no map"));
+	program_params->map = (char**)ft_calloc(
+		get_map_height(line_elem) + 1, sizeof(char*));
+	map = program_params->map;
+	while (line_elem)
+	{
+		*map = (char*)ft_strdup(line_elem->content);
+		(map)++;
+		line_elem = line_elem->next;
+	}
+	if (!check_map_characters(program_params->map, 0, 0, program_params))
+		return (false);
 	return (true);
 }

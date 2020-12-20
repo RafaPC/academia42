@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 12:42:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/19 00:48:12 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/20 01:07:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		main(int argc, char const *argv[])
 	t_program_params program_params;
 
 	save_img = false;
-	
+	initialice_program_params(&program_params);
 	if (check_arguments(&save_img, argc, (char**)argv) && check_file(&program_params, argv[1]))
 	{
 		main_raycast(program_params);
@@ -30,6 +30,18 @@ int		main(int argc, char const *argv[])
 	else
 	{
 		//TODO:Maybe liberar memoria del program params
+		if (program_params.path_NO_texture)
+			free(program_params.path_NO_texture);
+		if (program_params.path_SO_texture)
+			free(program_params.path_SO_texture);
+		if (program_params.path_EA_texture)
+			free(program_params.path_EA_texture);
+		if (program_params.path_WE_texture)
+			free(program_params.path_WE_texture);
+		if (program_params.path_sprite_texture)
+			free(program_params.path_sprite_texture);
+		if (program_params.map)
+			free_map(program_params.map);
 	}
 	return (0);
 }

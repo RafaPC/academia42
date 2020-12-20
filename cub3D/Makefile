@@ -6,12 +6,12 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/18 22:42:29 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/19 11:41:53 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = cub3d
+NAME = cub3D
 CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft

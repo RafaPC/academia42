@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/19 01:09:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/20 01:22:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 	while (*line == ' ')
 		line++;
 	program_params->resolution_x = ft_atoi(line);
-	while(ft_isdigit(*line))
+	while (ft_isdigit(*line))
 		line++;
-	while(ft_isspace(*line))
+	while (ft_isspace(*line))
 		line++;
 	program_params->resolution_y = ft_atoi(line);
-	while(ft_isdigit(*line))
+	while (ft_isdigit(*line))
 		line++;
-	if (*line)
-		correct = false;
+	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))
+		return (print_error("Carácter inválido en la resolución"));
 	return (correct);
 }
 
@@ -47,61 +47,45 @@ t_bool	read_path(char *line, char **path_to_texture)
 		ft_strlcpy(*path_to_texture, line, path_length + 1);
 		if (ft_strncmp("XPM", &(*path_to_texture)[path_length - 3], 3)
 		&& ft_strncmp("xpm", &(*path_to_texture)[path_length - 3], 3))
-			return (print_error("Extensión incorrecta del archivo dado por parámetro"));
+			return (print_error(
+				"Extensión incorrecta del archivo dado por parámetro"));
 	}
 	else
 		return (print_error("Formato del path incorrecto"));
 	return (correct);
 }
 
-
 /*
-** Checkea los cáracteres de la línea donde se define un color, solo puede haber números, espacios y comas
+** Checkea los cáracteres de la línea donde se define un color,
+** solo puede haber números, espacios y comas
 */
 
-t_bool check_color_characters(char *line)
+t_bool	check_color_characters(char *line)
 {
 	int i;
 
 	i = 0;
-	while (ft_isdigit(*line++))
+	while (line[i] == ',' || ft_isdigit(line[i]))
 		i++;
-	if (i == 0 || i > 3)
-		return (false);
-	line--;
-	if (*line++ != ',')
-		return (false);
-	i = 0;
-	while (ft_isdigit(*line++))
-		i++;
-	if (i == 0 || i > 3)
-		return (false);
-	line--;
-	if (*line++ != ',')
-		return (false);
-	i = 0;
-	while (*line && ft_isdigit(*line++))
-		i++;
-	if (i == 0 || i > 3)
-		return (false);
-	if (*line != '\0')
+	if (line[i])
 		return (false);
 	return (true);
 }
 
-t_bool check_colors_min_max(int colors[3])
+t_bool	check_colors_min_max(int colors[3])
 {
-	int i = 0;
+	int i;
+
+	i = 0;
 	while (i < 3)
 	{
 		if (colors[i] < 0 || colors[i] > 255)
 			return (false);
 		i++;
 	}
-		return (true);
+	return (true);
 }
 
-//TODO: checkear la funcion en sí
 t_bool	read_color(char *line, int *color)
 {
 	int		colors[3];
@@ -117,6 +101,10 @@ t_bool	read_color(char *line, int *color)
 	while (ft_isdigit(*line))
 		line++;
 	colors[2] = ft_atoi(++line);
+	while (ft_isdigit(*line))
+		line++;
+	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))
+		return (print_error("Carácter de más en la definición de color"));
 	if (!check_colors_min_max(colors))
 		return (print_error("Valores de color incorrecto"));
 	*color = create_trgb(0, colors[0], colors[1], colors[2]);
