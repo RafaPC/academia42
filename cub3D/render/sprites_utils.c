@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 12:49:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/20 13:14:34 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 #include "cub3d.h"
 #include "libft.h"
 
-/*
-** //TODO:Aquí podría pasarle player_vars y el puntero al sprite por separado
-*/
-
-void	add_sprite_coords(float x, float y, t_vars *vars)
+void	add_sprite_coords(float x, float y, t_vars *vars,
+t_player_vars player)
 {
 	t_list		*sprite_elem;
 	t_sprite	*sprite;
 
-	x += 0.5;
-	y += 0.5;
 	sprite_elem = vars->sprite;
 	while (sprite_elem != NULL)
 	{
@@ -37,9 +32,9 @@ void	add_sprite_coords(float x, float y, t_vars *vars)
 		return ;
 	sprite->x = x;
 	sprite->y = y;
-	x = sprite->x - vars->player.x;
-	y = -(sprite->y - vars->player.y);
-	sprite->angle = vars->player.angle - atanf(y / x);
+	x = sprite->x - player.x;
+	y = -(sprite->y - player.y);
+	sprite->angle = player.angle - atanf(y / x);
 	sprite->distance = sqrtf(x * x + y * y) * fabsf(cosf(sprite->angle));
 	sprite->size_half = (vars->screen_height / 2) / sprite->distance;
 	sprite->center_y = vars->screen_height / 2 + (vars->screen_height / 2) /
@@ -48,10 +43,6 @@ void	add_sprite_coords(float x, float y, t_vars *vars)
 		vars->screen_width / 2;
 	ft_lstadd_front(&vars->sprite, ft_lstnew(sprite));
 }
-
-/*
-** TODO: Meter esto a la libft
-*/
 
 void	order_sprites(t_list *sprite)
 {

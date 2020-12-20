@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 12:20:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/20 13:14:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,13 @@ void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars)
 	if (tile_crossed == '2')
 	{
 		if (ray.direction == horizontal)
-			add_sprite_coords((int)floorf(ray.x_intercept),
-			(int)ray.y + ray.tile_step_y, vars);
+			add_sprite_coords(floorf(ray.x_intercept) + 0.5,
+			ray.y + ray.tile_step_y + 0.5,
+			vars, vars->player);
 		else if (ray.direction == vertical)
-			add_sprite_coords((int)ray.x + ray.tile_step_x,
-			(int)floorf(ray.y_intercept), vars);
+			add_sprite_coords((int)ray.x + ray.tile_step_x + 0.5,
+			floorf(ray.y_intercept) + 0.5,
+			vars, vars->player);
 	}
 }
 
