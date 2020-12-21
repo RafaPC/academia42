@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 22:11:31 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/21 15:53:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		get_column_height(t_vars vars, float distance)
 {
 	int column_height;
 
-	column_height = (8 * 90) / distance;
+	column_height = (int)(vars.max_col_height / distance);
 	if (column_height > vars.screen_height)
 		column_height = vars.screen_height;
 	else if (column_height < 30)
@@ -48,7 +48,7 @@ int x_coord)
 	float	i;
 	int		draw_start;
 
-	real_column_height = (8 * 90) / distance;
+	real_column_height = (int)(vars->max_col_height / distance);
 	i = 1;
 	draw_start = vars->screen_height / 2;
 	column_height = get_column_height(*vars, distance);

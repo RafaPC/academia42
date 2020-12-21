@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/19 11:41:53 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/21 12:26:39 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS =	main.c					\
 		render/raycast.c		\
 		render/sprites_utils.c	\
 		render/free_memory.c	\
+		render/screenshot.c		\
 		main_file_utils.c		\
 		checks/check_file.c		\
 		checks/check_map.c		\

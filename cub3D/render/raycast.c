@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/20 13:14:05 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/21 16:42:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,7 @@ float	get_tangent(float angle)
 	else if (angle == 90 || angle == 270)
 		tangent = 10;
 	else
-		tangent = tanf(angle);
-	tangent = fabsf(tangent);
+		tangent = fabsf(tanf(angle));
 	return (tangent);
 }
 

@@ -157,6 +157,7 @@ typedef struct  s_vars
 	int				screen_width;
 	int				screen_height;
 	float			*distances;
+	int				max_col_height;
 }               t_vars;
 
 typedef enum e_ray_direction
@@ -246,7 +247,6 @@ void	draw_sprite_column(int drawing_position, t_sprite sprite, t_vars *vars);
 **			RENDER
 */
 int		render_screen(t_vars *vars);
-void	display_vars(t_vars *vars);
 void	render_column(t_vars *vars, float distance,  float wall_x, int offset_column);
 void	draw_sprite(t_vars *vars, t_sprite sprite);
 void	render_ceil_and_floor(t_vars *vars, int x_coord, int column_height);
@@ -260,7 +260,7 @@ t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end);
 /*
 **			RAYCASTING
 */
-void	main_raycast(t_program_params program_params);
+void	main_raycast(t_program_params program_params, t_bool save_img);
 void	raycast(t_vars *vars);
 float	get_distance_to_wall(t_vars *vars, float angle, int x_coord,
 float *x_wall);
@@ -290,7 +290,7 @@ void	close_game(t_vars *vars);
 /*
 **			SPRITE UTILS
 */
-void	add_sprite_coords(float x, float y, t_vars *vars);
+void	add_sprite_coords(float x, float y, t_vars *vars, t_player_vars player);
 void    order_sprites(t_list *sprite_list);
 /*
 **			FREE MEMORY
@@ -298,4 +298,7 @@ void    order_sprites(t_list *sprite_list);
 void	free_textures(t_vars *vars);
 void	free_memory(t_vars *vars);
 void	free_map(char **map);
+
+void	take_screenshot(t_data render, t_vars vars);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 20:53:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/21 15:34:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,12 @@ void	check_window_size(t_vars *vars, int resolution_x, int resolution_y)
 void	init(t_vars *vars, t_program_params program_params)
 {
 	vars->mlx.mlx = mlx_init();
+	vars->mlx.win = NULL;
 	check_window_size(vars, program_params.resolution_x, program_params.resolution_y);
-	vars->mlx.win = mlx_new_window(vars->mlx.mlx, vars->screen_width, vars->screen_height, "Cub3D");
 	vars->mlx.img = (t_data*)malloc(sizeof(t_data));
 	vars->mlx.img->img = mlx_new_image(vars->mlx.mlx, vars->screen_width, vars->screen_height);
 	vars->mlx.img->addr = mlx_get_data_addr(vars->mlx.img->img, &vars->mlx.img->bits_per_pixel, &vars->mlx.img->line_length, &vars->mlx.img->endian);
 	init_textures(vars, program_params);
-	mlx_put_image_to_window(vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
 	vars->distances = (float*)malloc(vars->screen_width * sizeof(float));
 
 	free(program_params.path_NO_texture);
@@ -87,16 +86,30 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->keys_pressed.right_arrow = false;
 	vars->map = program_params.map;
 	vars->sprite = NULL;
+	vars->max_col_height = vars->screen_width / (tanf(FOV / 2 ) * 2);
 }
 
-void		main_raycast(t_program_params program_params)
+void		main_raycast(t_program_params program_params, t_bool save_img)
 {
 	t_vars			vars;
+
 	init(&vars, program_params);
-	mlx_hook(vars.mlx.win, KeyPress, KeyPressMask, on_key_pressed, &vars);
-	mlx_hook(vars.mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars.keys_pressed);
-	// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
-	mlx_hook(vars.mlx.win, ClientMessage, NoEventMask, on_window_closed, &vars);
-	mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
-	mlx_loop(vars.mlx.mlx);
+	if (save_img)
+	{
+		raycast(&vars);
+		render_sprites(&vars);
+		take_screenshot(*vars.mlx.img, vars);
+		free_memory(&vars);
+	}
+	else
+	{
+		vars.mlx.win = mlx_new_window(vars.mlx.mlx, vars.screen_width, vars.screen_height, "Cub3D");
+		mlx_put_image_to_window(vars.mlx.mlx, vars.mlx.win, vars.mlx.img->img, 0, 0);
+		mlx_hook(vars.mlx.win, KeyPress, KeyPressMask, on_key_pressed, &vars);
+		mlx_hook(vars.mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars.keys_pressed);
+		// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
+		mlx_hook(vars.mlx.win, ClientMessage, NoEventMask, on_window_closed, &vars);
+		mlx_loop_hook(vars.mlx.mlx, render_screen, &vars);
+		mlx_loop(vars.mlx.mlx);
+	}
 }
