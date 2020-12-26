@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/26 17:20:59 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/26 17:40:23 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void	set_tile_crossed(t_ray *ray, char **map)
 {
 	if (ray->distance_hor < ray->distance_ver)
 		ray->tile_crossed = map[(int)ray->y + ray->tile_step_y]
-		[(int)floorf(ray->x_intercept)];
+		[(int)ray->x_intercept];
 	else
-		ray->tile_crossed = map[(int)floorf(ray->y_intercept)]
+		ray->tile_crossed = map[(int)ray->y_intercept]
 		[(int)ray->x + ray->tile_step_x];
 }
 
