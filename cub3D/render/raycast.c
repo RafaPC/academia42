@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/21 16:42:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/26 17:20:59 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	raycast(t_vars *vars)
 		(2.0 * x_coord / vars->screen_width - 1.0));
 		check_angle_overflow(&angle);
 		vars->distances[x_coord] =
-		get_distance_to_wall(vars, angle, x_coord, &x_wall);
-		render_column(vars, vars->distances[x_coord], x_wall, x_coord);
+			get_distance_to_wall(vars, angle, x_coord, &x_wall);		
+		render_column(vars, vars->distances[x_coord], x_wall, x_coord);	
 		x_coord++;
 	}
 }
@@ -115,7 +115,7 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 	ray->y_step = (ray->tile_step_y == 1) ? ray->tang : -ray->tang;
 	ray->x_step = (ray->tile_step_x == 1) ? 1 / ray->tang : -1 / ray->tang;
 	if (ray->tile_step_y == 1)
-		ray->x_intercept = (ceilf(player.y) - player.y) / ray->tang;
+		ray->x_intercept = (floorf(player.y + 1) - player.y) / ray->tang;
 	else
 		ray->x_intercept = (player.y - floorf(player.y)) / ray->tang;
 	if (ray->tile_step_x == 1)
@@ -123,7 +123,7 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 	else
 		ray->x_intercept = player.x - ray->x_intercept;
 	if (ray->tile_step_x == 1)
-		ray->y_intercept = (ceilf(player.x) - player.x) * ray->tang;
+		ray->y_intercept = (floorf(player.x + 1) - player.x) * ray->tang;
 	else
 		ray->y_intercept = (player.x - floorf(player.x)) * ray->tang;
 	if (ray->tile_step_y == -1)
@@ -195,7 +195,7 @@ float	get_y_intercept_length(t_ray ray, t_player_vars player)
 }
 
 /*
-**		Receives an angle and returns its tangent avoiding limits and negative values
+**	Receives an angle and returns its tangent avoiding limits and negative values
 */
 
 float	get_tangent(float angle)

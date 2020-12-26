@@ -280,12 +280,12 @@ int		on_key_pressed(int keycode,t_vars *vars);
 int		on_key_released(int keycode, t_keys *keys_pressed);
 int		on_window_enter(t_vars *vars);
 int		on_window_closed(t_vars *vars);
-void	check_movement(t_vars *vars);
 /*
 **			MOVEMENT
 */
 void	move(t_player_vars *player, char **map, float angle, float velocity);
-void	close_game(t_vars *vars);
+void	check_movement(t_vars *vars);
+t_bool	is_moving(t_keys keys);
 
 /*
 **			SPRITE UTILS
@@ -298,7 +298,7 @@ void    order_sprites(t_list *sprite_list);
 void	free_textures(t_vars *vars);
 void	free_memory(t_vars *vars);
 void	free_map(char **map);
+void	close_game(t_vars *vars);
 
 void	take_screenshot(t_data render, t_vars vars);
-
 #endif

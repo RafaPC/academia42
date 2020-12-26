@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/21 15:34:18 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/26 17:22:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ void		main_raycast(t_program_params program_params, t_bool save_img)
 	{
 		vars.mlx.win = mlx_new_window(vars.mlx.mlx, vars.screen_width, vars.screen_height, "Cub3D");
 		mlx_put_image_to_window(vars.mlx.mlx, vars.mlx.win, vars.mlx.img->img, 0, 0);
+
+		raycast(&vars);
+		render_sprites(&vars);
+		mlx_put_image_to_window(
+			vars.mlx.mlx, vars.mlx.win, vars.mlx.img->img, 0, 0);
+
 		mlx_hook(vars.mlx.win, KeyPress, KeyPressMask, on_key_pressed, &vars);
 		mlx_hook(vars.mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars.keys_pressed);
 		// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);

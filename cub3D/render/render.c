@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/21 15:53:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/26 17:18:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 int		render_screen(t_vars *vars)
 {
 	check_movement(vars);
-	raycast(vars);
-	draw_map(vars);
-	draw_player(vars);
-	render_sprites(vars);
-	mlx_put_image_to_window(
-		vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
+	if (is_moving(vars->keys_pressed))
+	{
+		raycast(vars);
+		// draw_map(vars);
+		// draw_player(vars);
+		render_sprites(vars);
+		mlx_put_image_to_window(
+			vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
+	}
 	return (0);
 }
 
@@ -34,8 +37,6 @@ int		get_column_height(t_vars vars, float distance)
 	column_height = (int)(vars.max_col_height / distance);
 	if (column_height > vars.screen_height)
 		column_height = vars.screen_height;
-	else if (column_height < 30)
-		column_height = 30;
 	return (column_height);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/16 17:10:35 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/26 17:12:44 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,13 @@ void	check_movement(t_vars *vars)
 		move(&vars->player, vars->map, vars->player.angle - PI, 0.5);
 	if (vars->keys_pressed.d)
 		move(&vars->player, vars->map, vars->player.angle - PI / 2, 0.3);
+}
+
+t_bool	is_moving(t_keys keys)
+{
+	if (keys.w || keys.a || keys.s || keys.d ||
+	keys.left_arrow || keys.right_arrow)
+		return (true);
+	else
+		return (false);
 }
