@@ -92,6 +92,7 @@ typedef struct s_keys
 	t_bool		d;
 	t_bool		left_arrow;
 	t_bool		right_arrow;
+	t_bool		mouse_moved;
 }				t_keys;
 
 /*
@@ -158,6 +159,7 @@ typedef struct  s_vars
 	int				screen_height;
 	float			*distances;
 	int				max_col_height;
+	int				mouse_x;
 }               t_vars;
 
 typedef enum e_ray_direction
