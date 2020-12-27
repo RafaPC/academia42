@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/26 17:22:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/27 12:20:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->keys_pressed.d = false;
 	vars->keys_pressed.left_arrow = false;
 	vars->keys_pressed.right_arrow = false;
+	vars->keys_pressed.mouse_moved = false;
+	vars->mouse_x = 1;
 	vars->map = program_params.map;
 	vars->sprite = NULL;
 	vars->max_col_height = vars->screen_width / (tanf(FOV / 2 ) * 2);
@@ -110,7 +112,7 @@ void		main_raycast(t_program_params program_params, t_bool save_img)
 		render_sprites(&vars);
 		mlx_put_image_to_window(
 			vars.mlx.mlx, vars.mlx.win, vars.mlx.img->img, 0, 0);
-
+		mlx_mouse_hide(vars.mlx.mlx, vars.mlx.win);
 		mlx_hook(vars.mlx.win, KeyPress, KeyPressMask, on_key_pressed, &vars);
 		mlx_hook(vars.mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars.keys_pressed);
 		// mlx_hook(vars.mlx.win, 07, 1L<<4, on_window_enter, &vars);
