@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/26 17:18:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/27 12:35:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int x_coord)
 	my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start, color_text);
 	while ((int)i <= column_height / 2)
 	{
-		color_text = get_wall_color(
-			vars, wall_x, (real_column_height / 2 - i) / real_column_height);
-		my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start - i, color_text);
-		color_text = get_wall_color(
-			vars, wall_x, (real_column_height / 2 + i) / real_column_height);
-		my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start + i, color_text);
+			color_text = get_wall_color(
+				vars, wall_x, (real_column_height / 2 - i) / real_column_height);
+			my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start - i, add_shade(distance, color_text));
+			color_text = get_wall_color(
+				vars, wall_x, (real_column_height / 2 + i) / real_column_height);
+			my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start + i, add_shade(distance, color_text));
 		i++;
 	}
 }
@@ -72,7 +72,7 @@ int x_coord)
 void	render_ceil_and_floor(t_vars *vars, int x_coord, int column_height)
 {
 	draw_square(get_coords_struct(x_coord, 0, x_coord,
-		vars->screen_height / 2 - column_height / 2),
+	vars->screen_height / 2 - column_height / 2),
 		vars->ceiling_color, vars->mlx.img);
 	draw_square(get_coords_struct(x_coord,
 		vars->screen_height / 2 + column_height / 2,
