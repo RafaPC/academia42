@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/27 12:20:20 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 16:20:15 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,17 @@ void	init(t_vars *vars, t_program_params program_params)
 	vars->keys_pressed.a = false;
 	vars->keys_pressed.s = false;
 	vars->keys_pressed.d = false;
+	vars->keys_pressed.up_arrow = false;
+	vars->keys_pressed.down_arrow = false;
 	vars->keys_pressed.left_arrow = false;
 	vars->keys_pressed.right_arrow = false;
 	vars->keys_pressed.mouse_moved = false;
 	vars->mouse_x = 1;
+	vars->mouse_y = 1;
 	vars->map = program_params.map;
 	vars->sprite = NULL;
 	vars->max_col_height = vars->screen_width / (tanf(FOV / 2 ) * 2);
+	vars->y_offset = 0;
 }
 
 void		main_raycast(t_program_params program_params, t_bool save_img)

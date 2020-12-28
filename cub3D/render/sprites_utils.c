@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/20 13:14:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 16:20:15 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ t_player_vars player)
 	sprite->angle = player.angle - atanf(y / x);
 	sprite->distance = sqrtf(x * x + y * y) * fabsf(cosf(sprite->angle));
 	sprite->size_half = (vars->screen_height / 2) / sprite->distance;
-	sprite->center_y = vars->screen_height / 2 + (vars->screen_height / 2) /
-		sprite->distance - sprite->size_half * 0.75;
+	// sprite->center_y = vars->screen_height / 2 + (vars->screen_height / 2) /
+	// 	sprite->distance - sprite->size_half * 0.75;
+	sprite->center_y = vars->screen_height/2 + vars->y_offset + (vars->max_col_height / 2) /
+		sprite->distance - sprite->size_half;
 	sprite->center_x = (tanf(sprite->angle) / tanf(FOV / 2) + 1) *
 		vars->screen_width / 2;
 	ft_lstadd_front(&vars->sprite, ft_lstnew(sprite));

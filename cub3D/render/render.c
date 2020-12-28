@@ -6,14 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/27 12:35:09 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 16:41:14 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <mlx.h>
-#include <math.h>
-#include "libft.h"
 
 int		render_screen(t_vars *vars)
 {
@@ -30,52 +28,37 @@ int		render_screen(t_vars *vars)
 	return (0);
 }
 
-int		get_column_height(t_vars vars, float distance)
-{
-	int column_height;
-
-	column_height = (int)(vars.max_col_height / distance);
-	if (column_height > vars.screen_height)
-		column_height = vars.screen_height;
-	return (column_height);
-}
-
-void	render_column(t_vars *vars, float distance, float wall_x,
-int x_coord)
+void	render_column(t_vars *vars, float distance, float wall_x, int x_coord)
 {
 	int		column_height;
-	int		color_text;
-	int		real_column_height;
+	int		starting_position;
 	float	i;
-	int		draw_start;
 
-	real_column_height = (int)(vars->max_col_height / distance);
-	i = 1;
-	draw_start = vars->screen_height / 2;
-	column_height = get_column_height(*vars, distance);
-	if (column_height < vars->screen_height)
+	column_height = (int)(vars->max_col_height / distance);
 		render_ceil_and_floor(vars, x_coord, column_height);
-	color_text = get_wall_color(vars, wall_x, 0.5);
-	my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start, color_text);
-	while ((int)i <= column_height / 2)
-	{
-			color_text = get_wall_color(
-				vars, wall_x, (real_column_height / 2 - i) / real_column_height);
-			my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start - i, add_shade(distance, color_text));
-			color_text = get_wall_color(
-				vars, wall_x, (real_column_height / 2 + i) / real_column_height);
-			my_mlx_pixel_put(vars->mlx.img, x_coord, draw_start + i, add_shade(distance, color_text));
-		i++;
+	
+	starting_position  = vars->screen_height / 2 - column_height / 2 + vars->y_offset;
+	i = starting_position < 0 ? -starting_position : 0;
+	while ((int)i++ < column_height && starting_position + (int)i < vars->screen_height)
+	{	
+		my_mlx_pixel_put(vars->mlx.img, x_coord, starting_position + i,
+			get_wall_color(vars, wall_x, i / column_height));
 	}
 }
 
 void	render_ceil_and_floor(t_vars *vars, int x_coord, int column_height)
 {
-	draw_square(get_coords_struct(x_coord, 0, x_coord,
-	vars->screen_height / 2 - column_height / 2),
+	int start_floor;
+	int end_ceiling;
+
+	end_ceiling = vars->screen_height / 2 + vars->y_offset;
+	if (end_ceiling > vars->screen_height)
+		end_ceiling = vars->screen_height;
+	draw_square(get_coords_struct(x_coord, 0, x_coord, end_ceiling),
 		vars->ceiling_color, vars->mlx.img);
-	draw_square(get_coords_struct(x_coord,
-		vars->screen_height / 2 + column_height / 2,
-		x_coord, vars->screen_height),
+	start_floor = vars->screen_height / 2 + vars->y_offset;
+	if (start_floor < 0)
+		start_floor = 0;
+	draw_square(get_coords_struct(x_coord, start_floor, x_coord, vars->screen_height),
 		vars->floor_color, vars->mlx.img);
 }

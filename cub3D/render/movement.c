@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/27 12:24:24 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 16:24:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	check_mouse_move(t_vars *vars)
 	x != vars->mouse_x)
 	{
 		vars->keys_pressed.mouse_moved = true;
-		if (x > vars->mouse_x)
+		if (x > vars->mouse_x + 2)
 		{
 			vars->player.angle -= 0.1;
 			if (vars->player.angle < 0)
@@ -73,7 +73,7 @@ void	check_mouse_move(t_vars *vars)
 			vars->player.dx = cosf(vars->player.angle);
 			vars->player.dy = sinf(vars->player.angle);
 		}
-		else if (x < vars->mouse_x)
+		else if (x < vars->mouse_x - 2)
 		{
 			vars->player.angle += 0.1;
 			if (vars->player.angle > 2 * PI)
@@ -81,7 +81,12 @@ void	check_mouse_move(t_vars *vars)
 			vars->player.dx = cosf(vars->player.angle);
 			vars->player.dy = sinf(vars->player.angle);
 		}
+		if (y < vars->mouse_y - 1)
+			vars->y_offset += 20;
+		else if (y > vars->mouse_y + 1)
+			vars->y_offset -= 20;
 		vars->mouse_x = x;
+		vars->mouse_y = y;
 	}
 	else
 		vars->keys_pressed.mouse_moved = false;
@@ -107,6 +112,15 @@ void	check_movement(t_vars *vars)
 		vars->player.dx = cosf(vars->player.angle);
 		vars->player.dy = sinf(vars->player.angle);
 	}
+	if (vars->keys_pressed.up_arrow)
+	{
+		//TODO: checkear límites
+		vars->y_offset += 10;
+	}
+	if (vars->keys_pressed.down_arrow)
+	{
+		vars->y_offset -= 10;
+	}
 	if (vars->keys_pressed.w)
 		move(&vars->player, vars->map, vars->player.angle, 1);
 	if (vars->keys_pressed.a)
@@ -120,7 +134,7 @@ void	check_movement(t_vars *vars)
 t_bool	is_moving(t_keys keys)
 {
 	if (keys.w || keys.a || keys.s || keys.d ||
-	keys.left_arrow || keys.right_arrow || keys.mouse_moved)
+	keys.left_arrow || keys.right_arrow || keys.mouse_moved || keys.up_arrow || keys.down_arrow)
 		return (true);
 	else
 		return (false);

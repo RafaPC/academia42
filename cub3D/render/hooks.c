@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/18 19:04:13 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/27 12:25:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ int		on_key_pressed(int keycode, t_vars *vars)
 		keys_pressed->left_arrow = true;
 	if (keycode == 65363)
 		keys_pressed->right_arrow = true;
+	if (keycode == 65362)
+		keys_pressed->up_arrow = true;
+	if (keycode == 65364)
+		keys_pressed->down_arrow = true;
 	return (0);
 }
 
@@ -53,6 +57,10 @@ int		on_key_released(int keycode, t_keys *keys_pressed)
 		keys_pressed->left_arrow = false;
 	if (keycode == 65363)
 		keys_pressed->right_arrow = false;
+	if (keycode == 65362)
+		keys_pressed->up_arrow = false;
+	if (keycode == 65364)
+		keys_pressed->down_arrow = false;
 	return (0);
 }
 
