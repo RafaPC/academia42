@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/28 16:24:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/30 18:23:35 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_bool	blocks_movement(char c)
 {
-	if (c == '1' || c == '2')
+	if (c == '1' || c == '2' || c == '3')
 		return (true);
 	else
 		return (false);
@@ -24,8 +24,8 @@ t_bool	blocks_movement(char c)
 
 void	move(t_player_vars *player, char **map, float angle, float velocity)
 {
-	float	new_x;
-	float	new_y;
+	int		new_x;
+	int		new_y;
 	float	pdx;
 	float	pdy;
 
@@ -34,16 +34,16 @@ void	move(t_player_vars *player, char **map, float angle, float velocity)
 	pdy = sinf(angle);
 	new_x = player->x + pdx * (0.3 * velocity);
 	new_y = player->y - pdy * (0.3 * velocity);
-	if (blocks_movement(map[(int)new_y][(int)player->x]))
+	if (blocks_movement(map[new_y][(int)player->x]))
 	{
-		if (blocks_movement(map[(int)player->y][(int)new_x]))
+		if (!blocks_movement(map[(int)player->y][new_x]))
 			player->x += pdx * (0.05 * velocity);
 	}
 	else
 		player->y -= pdy * (0.1 * velocity);
-	if (blocks_movement(map[(int)player->y][(int)new_x]))
+	if (blocks_movement(map[(int)player->y][new_x]))
 	{
-		if (blocks_movement(map[(int)new_y][(int)player->x]))
+		if (!blocks_movement(map[new_y][(int)player->x]))
 			player->y -= pdy * (0.05 * velocity);
 	}
 	else
@@ -60,27 +60,18 @@ void	check_mouse_move(t_vars *vars)
 	int x;
 	int y;
 
-	mlx_mouse_get_pos(vars->mlx.mlx, vars->mlx.win, &x, &y);	
-	if (x > 0 && x < vars->screen_width && y > 0 && y < vars->screen_height &&
+	mlx_mouse_get_pos(vars->mlx.mlx, vars->mlx.win, &x, &y);
+	if (x > 0 && x < vars->window_width && y > 0 && y < vars->window_height &&
 	x != vars->mouse_x)
 	{
 		vars->keys_pressed.mouse_moved = true;
 		if (x > vars->mouse_x + 2)
-		{
 			vars->player.angle -= 0.1;
-			if (vars->player.angle < 0)
-				vars->player.angle += 2 * PI;
-			vars->player.dx = cosf(vars->player.angle);
-			vars->player.dy = sinf(vars->player.angle);
-		}
 		else if (x < vars->mouse_x - 2)
-		{
 			vars->player.angle += 0.1;
-			if (vars->player.angle > 2 * PI)
-				vars->player.angle -= 2 * PI;
-			vars->player.dx = cosf(vars->player.angle);
-			vars->player.dy = sinf(vars->player.angle);
-		}
+		check_angle_overflow(&vars->player.angle);
+		vars->player.dx = cosf(vars->player.angle);
+		vars->player.dy = sinf(vars->player.angle);
 		if (y < vars->mouse_y - 1)
 			vars->y_offset += 20;
 		else if (y > vars->mouse_y + 1)
@@ -92,49 +83,40 @@ void	check_mouse_move(t_vars *vars)
 		vars->keys_pressed.mouse_moved = false;
 }
 
-
-void	check_movement(t_vars *vars)
+void	check_movement(t_vars *vars, t_keys keys)
 {
 	check_mouse_move(vars);
-	if (vars->keys_pressed.left_arrow)
-	{
+	if (keys.left_arrow)
 		vars->player.angle += 0.1;
-		if (vars->player.angle > 2 * PI)
-			vars->player.angle -= 2 * PI;
-		vars->player.dx = cosf(vars->player.angle);
-		vars->player.dy = sinf(vars->player.angle);
-	}
-	if (vars->keys_pressed.right_arrow)
-	{
+	else if (keys.right_arrow)
 		vars->player.angle -= 0.1;
-		if (vars->player.angle < 0)
-			vars->player.angle += 2 * PI;
-		vars->player.dx = cosf(vars->player.angle);
-		vars->player.dy = sinf(vars->player.angle);
-	}
-	if (vars->keys_pressed.up_arrow)
-	{
-		//TODO: checkear límites
+	check_angle_overflow(&vars->player.angle);
+	vars->player.dx = cosf(vars->player.angle);
+	vars->player.dy = sinf(vars->player.angle);
+	if (keys.up_arrow && vars->y_offset < vars->window_height / 2)
 		vars->y_offset += 10;
-	}
-	if (vars->keys_pressed.down_arrow)
-	{
+	if (keys.down_arrow && vars->y_offset > -vars->window_height / 2)
 		vars->y_offset -= 10;
-	}
-	if (vars->keys_pressed.w)
+	if (keys.w)
 		move(&vars->player, vars->map, vars->player.angle, 1);
-	if (vars->keys_pressed.a)
+	if (keys.a)
 		move(&vars->player, vars->map, vars->player.angle + PI / 2, 0.3);
-	if (vars->keys_pressed.s)
+	if (keys.s)
 		move(&vars->player, vars->map, vars->player.angle - PI, 0.5);
-	if (vars->keys_pressed.d)
+	if (keys.d)
 		move(&vars->player, vars->map, vars->player.angle - PI / 2, 0.3);
+	if (vars->map[(int)vars->player.y][(int)vars->player.x] == '4')
+	{
+		vars->map[(int)vars->player.y][(int)vars->player.x] = '0';
+		vars->score++;
+	}
 }
 
 t_bool	is_moving(t_keys keys)
 {
 	if (keys.w || keys.a || keys.s || keys.d ||
-	keys.left_arrow || keys.right_arrow || keys.mouse_moved || keys.up_arrow || keys.down_arrow)
+	keys.left_arrow || keys.right_arrow || keys.up_arrow || keys.down_arrow
+	|| keys.mouse_moved)
 		return (true);
 	else
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/20 00:41:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 23:04:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ t_list		*save_file_content(int fd)
 ** Sets all info id's to false
 */
 
-void		initialice_info_ids(t_bool info_id[8])
+void		initialice_info_ids(t_bool info_id[10])
 {
 	int i;
 
 	i = 0;
-	while (i < 8)
+	while (i < 10)
 		info_id[i++] = false;
 }
 
@@ -88,7 +88,7 @@ t_bool		check_file_content(t_list *line_elem,
 t_program_params *program_params, t_info_id info_id)
 {
 	char	*line;
-	t_bool	info_id_list[8];
+	t_bool	info_id_list[10];
 
 	line = (char*)line_elem->content;
 	initialice_info_ids(info_id_list);
@@ -115,14 +115,14 @@ t_program_params *program_params, t_info_id info_id)
 	return (read_map(line_elem, program_params));
 }
 
-t_bool		check_info_ids(t_bool info_id[8])
+t_bool		check_info_ids(t_bool info_id[10])
 {
 	int		i;
 	t_bool	completed;
 
 	i = 0;
 	completed = true;
-	while (i < 8 && completed)
+	while (i < 10 && completed)
 	{
 		if (info_id[i++] == false)
 			completed = false;
@@ -144,6 +144,10 @@ t_bool		get_info(t_info_id info_id, char *line, t_program_params *params)
 		return (read_path(line + 3, &(params->path_EA_texture)));
 	else if (info_id == id_path_sprite)
 		return (read_path(line + 2, &(params->path_sprite_texture)));
+	else if (info_id == id_path_sprite_2)
+		return (read_path(line + 3, &(params->path_sprite2_texture)));
+	else if (info_id == id_path_sprite_3)
+		return (read_path(line + 3, &(params->path_sprite3_texture)));
 	else if (info_id == id_color_floor)
 		return (read_color(line + 2, &params->floor_color));
 	else if (info_id == id_color_ceilling)
@@ -179,6 +183,10 @@ t_info_id	search_identifier(char *line)
 		id = id_path_east;
 	else if (ft_strncmp(line, "S ", 2) == 0)
 		id = id_path_sprite;
+	else if (ft_strncmp(line, "S2 ", 3) == 0)
+		id = id_path_sprite_2;
+	else if (ft_strncmp(line, "S3 ", 3) == 0)
+		id = id_path_sprite_3;
 	else if (ft_strncmp(line, "F ", 2) == 0)
 		id = id_color_floor;
 	else if (ft_strncmp(line, "C ", 2) == 0)

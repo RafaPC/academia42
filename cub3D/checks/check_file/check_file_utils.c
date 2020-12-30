@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/20 01:22:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/30 17:02:23 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 	correct = true;
 	while (*line == ' ')
 		line++;
-	program_params->resolution_x = ft_atoi(line);
+	program_params->window_width = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
 	while (ft_isspace(*line))
 		line++;
-	program_params->resolution_y = ft_atoi(line);
+	program_params->window_height = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
 	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))

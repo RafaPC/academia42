@@ -6,13 +6,18 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/26 17:40:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/30 12:26:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
 #include "cub3d.h"
+
+/*
+**		Iterates as many times as window width getting the proper
+**		distance and x_wall values for each column to render them right
+*/
 
 void	raycast(t_vars *vars)
 {
@@ -21,17 +26,24 @@ void	raycast(t_vars *vars)
 	int		x_coord;
 
 	x_coord = 0;
-	while (x_coord < vars->screen_width)
+	while (x_coord < vars->window_width)
 	{
 		angle = vars->player.angle - atanf(tanf(FOV / 2.0) *
-		(2.0 * x_coord / vars->screen_width - 1.0));
+		(2.0 * x_coord / vars->window_width - 1.0));
 		check_angle_overflow(&angle);
 		vars->distances[x_coord] =
-			get_distance_to_wall(vars, angle, x_coord, &x_wall);		
-		render_column(vars, vars->distances[x_coord], x_wall, x_coord);	
+			get_distance_to_wall(vars, angle, x_coord, &x_wall);
+		render_column(vars, vars->distances[x_coord], x_wall, x_coord);
 		x_coord++;
 	}
 }
+
+/*
+**		Iterates checking wether the ray meets a wall advancing the collision
+**		coordinates with vertical and horizontal walls
+**		It never reach an infinite loop because the map is checked to be
+**		surrounded by walls
+*/
 
 float	get_distance_to_wall(t_vars *vars, float angle, int x_coord,
 float *x_wall)
@@ -60,36 +72,11 @@ float *x_wall)
 		}
 		sum_distance(&ray, vars->player);
 	}
-	return (1);
-}
-
-void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars)
-{
-	if (tile_crossed == '2')
-	{
-		if (ray.direction == horizontal)
-			add_sprite_coords(floorf(ray.x_intercept) + 0.5,
-			ray.y + ray.tile_step_y + 0.5,
-			vars, vars->player);
-		else if (ray.direction == vertical)
-			add_sprite_coords((int)ray.x + ray.tile_step_x + 0.5,
-			floorf(ray.y_intercept) + 0.5,
-			vars, vars->player);
-	}
-}
-
-void	set_tile_crossed(t_ray *ray, char **map)
-{
-	if (ray->distance_hor < ray->distance_ver)
-		ray->tile_crossed = map[(int)ray->y + ray->tile_step_y]
-		[(int)ray->x_intercept];
-	else
-		ray->tile_crossed = map[(int)ray->y_intercept]
-		[(int)ray->x + ray->tile_step_x];
+	return (1.0);
 }
 
 /*
-**	Suma la distancia más corta u know
+**	Advances the shortest distance to the next intersection
 */
 
 void	sum_distance(t_ray *ray, t_player_vars player)
@@ -108,10 +95,16 @@ void	sum_distance(t_ray *ray, t_player_vars player)
 	}
 }
 
+/*
+**		Initialices ray values such as ray coordinates, first intersections
+**		with horizontal and vertical walls, steps in each axis to reach
+**		the next intersections, distances to each intersection type
+**		(vertical and horizontal)
+*/
+
 void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 {
-	ray->tang = get_tangent(angle);
-	set_tile_step(&ray->tile_step_x, &ray->tile_step_y, angle);
+	init_ray_values2(ray, angle);
 	ray->y_step = (ray->tile_step_y == 1) ? ray->tang : -ray->tang;
 	ray->x_step = (ray->tile_step_x == 1) ? 1 / ray->tang : -1 / ray->tang;
 	if (ray->tile_step_y == 1)
@@ -126,10 +119,8 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 		ray->y_intercept = (floorf(player.x + 1) - player.x) * ray->tang;
 	else
 		ray->y_intercept = (player.x - floorf(player.x)) * ray->tang;
-	if (ray->tile_step_y == -1)
-		ray->y_intercept = player.y - ray->y_intercept;
-	else
-		ray->y_intercept = player.y + ray->y_intercept;
+	ray->y_intercept = (ray->tile_step_y == 1)
+	? player.y + ray->y_intercept : player.y - ray->y_intercept;
 	ray->angle_beta = angle - player.angle;
 	check_angle_overflow(&ray->angle_beta);
 	ray->x = floorf(player.x);
@@ -138,87 +129,25 @@ void	init_ray_values(t_ray *ray, t_player_vars player, float angle)
 	ray->distance_ver = get_y_intercept_length(*ray, player);
 }
 
-void	set_tile_step(int *tile_step_x, int *tile_step_y, float angle)
+/*
+**		Inicialices tile steps in both axis and
+**		the tangent avoiding negative values and limits
+*/
+
+void	init_ray_values2(t_ray *ray, float angle)
 {
 	if (angle >= 0 && angle <= PI)
-		*tile_step_y = -1;
+		ray->tile_step_y = -1;
 	else
-		*tile_step_y = 1;
+		ray->tile_step_y = 1;
 	if (angle >= PI / 2 && angle <= PI + PI / 2)
-		*tile_step_x = -1;
+		ray->tile_step_x = -1;
 	else
-		*tile_step_x = 1;
-}
-
-/*
-**FIXME: Calcular esto sin el cuadrado, con senos y cosenos
-*/
-
-float	get_x_intercept_length(t_ray ray, t_player_vars player)
-{
-	float distance;
-	float x;
-	float y;
-
-	if (ray.tile_step_x == 1)
-		x = ray.x_intercept - player.x;
-	else
-		x = player.x - ray.x_intercept;
-	if (ray.tile_step_y == 1)
-		y = (ray.y + 1) - player.y;
-	else
-		y = player.y - ray.y;
-	distance = sqrtf(x * x + y * y);
-	return (distance);
-}
-
-/*
-** FIXME: Calcular esto sin el cuadrado, con senos y cosenos
-*/
-
-float	get_y_intercept_length(t_ray ray, t_player_vars player)
-{
-	float distance;
-	float x;
-	float y;
-
-	if (ray.tile_step_x == 1)
-		x = (ray.x + 1) - player.x;
-	else
-		x = player.x - ray.x;
-	if (ray.tile_step_y == 1)
-		y = ray.y_intercept - player.y;
-	else
-		y = player.y - ray.y_intercept;
-	distance = sqrtf(x * x + y * y);
-	return (distance);
-}
-
-/*
-**	Receives an angle and returns its tangent avoiding limits and negative values
-*/
-
-float	get_tangent(float angle)
-{
-	float tangent;
-
+		ray->tile_step_x = 1;
 	if (angle == 0 || angle == 180)
-		tangent = 0.1;
+		ray->tang = 0.1;
 	else if (angle == 90 || angle == 270)
-		tangent = 10;
+		ray->tang = 10;
 	else
-		tangent = fabsf(tanf(angle));
-	return (tangent);
-}
-
-/*
-**	Check if the given angle is under 0 or over 2PI and corrects it
-*/
-
-void	check_angle_overflow(float *angle)
-{
-	if (*angle < 0)
-		*angle += 2 * PI;
-	if (*angle > 2 * PI)
-		*angle -= 2 * PI;
+		ray->tang = fabsf(tanf(angle));
 }

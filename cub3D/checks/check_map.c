@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/20 01:21:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/28 23:14:58 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ t_program_params *params)
 
 static t_bool	map_is_closed(char **map, int y, int x)
 {
-	if (map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'S'
-	|| map[y][x] == 'E' || map[y][x] == 'W')
+	if (map[y][x] != '1' && map[y][x] != ' ')
 	{
 		if (y == 0 || map[y + 1] == NULL ||
 		x == 0 || map[y][x + 1] == '\0')
@@ -74,9 +73,9 @@ t_program_params *params)
 					return (print_error(
 						"Hay al menos dos carácteres dejugador (N, S, E, W)"));
 			}
-			else if (map[y][x] != '0' && map[y][x] != '1'
-			&& map[y][x] != '2' && map[y][x] != ' ')
-				return (false);
+			else if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != '2'
+			&& map[y][x] != '3' && map[y][x] != '4' && map[y][x] != ' ')
+				return (print_error("Wrong char found"));
 			if (!map_is_closed(map, y, x))
 				return (print_error("Map not closed by walls"));
 			x++;

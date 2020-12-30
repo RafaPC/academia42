@@ -6,15 +6,16 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/21 12:26:39 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/30 12:22:33 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME = cub3D
 CUB3D_A = cub3d.a
 LIBFT_A = 	libft.a
 LIB_DIR = libft
+INCLUDES = -I. -Ilibft -Imlx -I../printf
+LIBRARIES = -lXext -lX11 -lm
 CC = gcc
 SRCS =	main.c					\
 		render/render_color.c	\
@@ -28,12 +29,12 @@ SRCS =	main.c					\
 		render/sprites_utils.c	\
 		render/free_memory.c	\
 		render/screenshot.c		\
+		render/raycast_utils.c	\
 		main_file_utils.c		\
 		checks/check_file.c		\
 		checks/check_map.c		\
 		checks/handle_error.c	\
 		checks/check_file/check_file_utils.c
-SRCSTEST = main_file_utils.c checks/check_map.c checks/check_file/check_file_utils.c checks/handle_error.c render/render_color.c render/render.c render/hooks.c render/raycast.c
 //OBJS = ${SRCS:.c=.o}
 FLAGS = -Wall -Wextra
 OBJS = ./*.o
@@ -46,17 +47,10 @@ ${NAME}:
 				make bonus -C ${LIB_DIR}
 				cp ${LIB_DIR}/${LIBFT_A} .
 				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} -I. -Ilibft -I../printf ${SRCS} ${CUB3D_A} libftprintf.a -lmlx -lXext -lX11 -lm -o ${NAME}
+				${CC} ${FLAGS} ${INCLUDES} ${SRCS} ${CUB3D_A} libftprintf.a mlx/libmlx.a ${LIBRARIES} -o ${NAME}
 ${OBJS}: ${SRCS}
 				${CC} ${FLAGS} -c ${SRCS} -O3
 
-test:	fclean
-				make -C ../printf
-				cp ../printf/libftprintf.a .
-				make -C ${LIB_DIR}
-				cp ${LIB_DIR}/${LIBFT_A} .
-				mv ${LIBFT_A} ${CUB3D_A}
-				gcc -I. -Ilibft ${SRCSTEST} ${CUB3D_A} libftprintf.a ~/Desktop/minilibx-linux/libmlx.a -lXext -lX11 -lm -o main.out
 clean:
 		rm -f ${OBJS}
 		make -C $(LIB_DIR) clean
