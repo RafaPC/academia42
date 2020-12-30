@@ -1,9 +1,11 @@
 /* XPM */
 static char *_8697b00e3aa4693df20bb53ee4932fa7vT4yfJNLy1dUL7X[] = {
 /* columns rows colors chars-per-pixel */
-"64 64 27 1 ",
+"64 64 29 1 ",
 "  c black",
 ". c gray11",
+"p c #999900",
+"b c #CCCC00",
 "X c #231C0A",
 "o c #312611",
 "O c #382A15",
@@ -62,8 +64,8 @@ static char *_8697b00e3aa4693df20bb53ee4932fa7vT4yfJNLy1dUL7X[] = {
 "                                                                ",
 "                                                                ",
 "                       <<<<<<<<<1111112222                      ",
-"                     1<>>>>>>>>>>>,,,,,<<<21                    ",
-"                    12>#....@@@@@@@##$$$$><><                   ",
+"                     1<>>>bbbbbbbbbbbbb<<<21                    ",
+"                    12>#ppppppppppppppppp#<><                   ",
 "                    112882211111<<<<,,,,>>$##                   ",
 "                   33112211<<<,,,,>>>$$$####++                  ",
 "                   ;4:33;---====***&&&++++++&+                  ",
