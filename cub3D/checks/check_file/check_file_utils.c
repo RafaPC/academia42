@@ -6,11 +6,15 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 17:02:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 12:42:10 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+/*
+**		Reads the window resolution definition
+*/
 
 t_bool	read_resolution(char *line, t_program_params *program_params)
 {
@@ -28,9 +32,13 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 	while (ft_isdigit(*line))
 		line++;
 	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))
-		return (print_error("Carácter inválido en la resolución"));
+		return (print_error("Invalid character in resolution definition"));
 	return (correct);
 }
+
+/*
+**		Reads a path and checks the extension is .xpm or .XPM
+*/
 
 t_bool	read_path(char *line, char **path_to_texture)
 {
@@ -40,51 +48,39 @@ t_bool	read_path(char *line, char **path_to_texture)
 	correct = true;
 	while (*line == ' ')
 		line++;
-	if (*(line) == '.' && *(line + 1) == '/')
-	{
-		path_length = ft_strlen(line);
-		*path_to_texture = (char*)malloc(sizeof(char) * (path_length + 1));
-		ft_strlcpy(*path_to_texture, line, path_length + 1);
-		if (ft_strncmp("XPM", &(*path_to_texture)[path_length - 3], 3)
-		&& ft_strncmp("xpm", &(*path_to_texture)[path_length - 3], 3))
-			return (print_error(
-				"Extensión incorrecta del archivo dado por parámetro"));
-	}
-	else
-		return (print_error("Formato del path incorrecto"));
+	path_length = ft_strlen(line);
+	if (!(*path_to_texture = (char*)malloc(sizeof(char) * (path_length + 1))))
+		return (print_error("Error while allocating memory"));
+	ft_strlcpy(*path_to_texture, line, path_length + 1);
+	if (ft_strncmp("XPM", &(*path_to_texture)[path_length - 3], 3)
+	&& ft_strncmp("xpm", &(*path_to_texture)[path_length - 3], 3))
+		return (print_error("Wrong extension of file"));
 	return (correct);
 }
 
 /*
-** Checkea los cáracteres de la línea donde se define un color,
-** solo puede haber números, espacios y comas
+**		Checks there are only numbers and commas
 */
 
 t_bool	check_color_characters(char *line)
 {
-	int i;
+	int commas;
 
-	i = 0;
-	while (line[i] == ',' || ft_isdigit(line[i]))
-		i++;
-	if (line[i])
+	commas = 0;
+	while (*line == ',' || ft_isdigit(*line))
+	{
+		if (*line == ',')
+			commas++;
+		line++;
+	}
+	if (*line || commas > 2)
 		return (false);
 	return (true);
 }
 
-t_bool	check_colors_min_max(int colors[3])
-{
-	int i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (colors[i] < 0 || colors[i] > 255)
-			return (false);
-		i++;
-	}
-	return (true);
-}
+/*
+**		Reads a color definition
+*/
 
 t_bool	read_color(char *line, int *color)
 {
@@ -93,7 +89,7 @@ t_bool	read_color(char *line, int *color)
 	while (*line == ' ')
 		line++;
 	if (!check_color_characters(line))
-		return (print_error("Carácter incorrecto en la definición del color"));
+		return (print_error("Invalid character in color definition"));
 	colors[0] = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
@@ -103,10 +99,8 @@ t_bool	read_color(char *line, int *color)
 	colors[2] = ft_atoi(++line);
 	while (ft_isdigit(*line))
 		line++;
-	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))
-		return (print_error("Carácter de más en la definición de color"));
-	if (!check_colors_min_max(colors))
-		return (print_error("Valores de color incorrecto"));
+	if (colors[0] > 255 || colors[1] > 255 || colors[2] > 255)
+		return (print_error("Incorrect rgb values, max should be 255"));
 	*color = create_trgb(0, colors[0], colors[1], colors[2]);
 	return (true);
 }

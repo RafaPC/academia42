@@ -197,29 +197,52 @@ typedef struct		s_ray
 	char			tile_crossed;
 }					t_ray;
 
-/**
+/*
 **			CHECK FILE THINGS
 */
 t_bool		check_arguments(t_bool *save_img, int argc, char **argv);
 t_bool		check_file(t_program_params *program_params, const char *file_path);
-int			check_file_path(const char *file_path);
-t_list		*save_file_content(int fd);
+t_bool		save_file_content(t_list **file_content, const char *file_path);
 t_bool		check_file_content(t_list *file_content,
-t_program_params *t_program_params, t_info_id info_id);
-t_bool		check_info_ids(t_bool info_id[8]);
+t_program_params *t_program_params, t_info_id info_id, t_bool list_info_ids[10]);
 t_info_id	search_identifier(char *line);
 t_bool		get_info(t_info_id info_id, char *line,
 t_program_params *params);
-t_bool		read_resolution(char *line,
-t_program_params *program_params);
-t_bool		read_path(char *line, char **path_to_texture);
-t_bool		read_color(char *line, int *color);
+
 void		initialice_program_params(t_program_params *program_params);
 t_bool		read_map(t_list *line, t_program_params *program_params);
+/*
+**			CHECK FILE UTILS
+*/
+t_bool		read_resolution(char *line, t_program_params *program_params);
+t_bool		read_path(char *line, char **path_to_texture);
+t_bool		read_color(char *line, int *color);
+/*
+**			INFO IDS
+*/
+void		initialice_info_ids(t_bool info_id[10]);
+t_bool		check_info_ids(t_bool info_id[10]);
+/*
+**			CHECK MAP
+*/
+
 /*
 **			ERROR HANDLING
 */
 t_bool		print_error(const char *msg);
+/*
+**			START GAME
+*/
+void	start_game(t_program_params program_params, t_bool save_img);
+void	set_hooks(t_vars *vars);
+/*
+**			INITIALICE GAME VARIABLES
+*/
+t_bool	init_game_variables(t_vars *vars, t_program_params params);
+void	init_game_variables2(t_vars *vars, t_program_params params);
+void	set_window_size(t_vars *vars, int window_width, int window_height);
+t_bool	init_textures(void *mlx, t_textures *textures, t_program_params params);
+t_bool	init_texture(void *mlx, t_texture *text, char *file);
 /*
 **			RENDER THINGS
 */
@@ -307,8 +330,10 @@ t_vars vars);
 void	free_and_close(t_vars *vars);
 void	free_textures(void *mlx, t_textures textures);
 void	free_map(char **map);
+void	free_program_params(t_program_params params);
 /*
 **			SCREENSHOT
 */
-void	take_screenshot(t_data render, t_vars vars);
+void	take_screenshot(t_vars vars);
+void	save_image(t_data render, t_vars vars);
 #endif

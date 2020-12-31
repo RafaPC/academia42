@@ -6,12 +6,12 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 12:07:12 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 19:50:48 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 17:35:56 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <mlx.h>
+#include "mlx.h"
 
 /*
 **		Calls functions to free the textures and the map
@@ -74,4 +74,27 @@ void	free_map(char **map)
 	}
 	free(map[i]);
 	free(map);
+}
+
+/*
+**		This function is only called if it encounters a
+**		discrepancy in the .cub file
+*/
+
+void	free_program_params(t_program_params params)
+{
+	if (params.path_NO_texture)
+		free(params.path_NO_texture);
+	if (params.path_SO_texture)
+		free(params.path_SO_texture);
+	if (params.path_EA_texture)
+		free(params.path_EA_texture);
+	if (params.path_WE_texture)
+		free(params.path_WE_texture);
+	if (params.path_sprite_texture)
+		free(params.path_sprite_texture);
+	if (params.path_sprite2_texture)
+		free(params.path_sprite2_texture);
+	if (params.path_sprite3_texture)
+		free(params.path_sprite3_texture);
 }

@@ -6,12 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 12:26:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 00:13:42 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdio.h>
+#include <float.h>
 #include "cub3d.h"
 
 /*
@@ -145,9 +146,9 @@ void	init_ray_values2(t_ray *ray, float angle)
 	else
 		ray->tile_step_x = 1;
 	if (angle == 0 || angle == 180)
-		ray->tang = 0.1;
+		ray->tang = FLT_MIN;
 	else if (angle == 90 || angle == 270)
-		ray->tang = 10;
+		ray->tang = FLT_MAX;
 	else
 		ray->tang = fabsf(tanf(angle));
 }

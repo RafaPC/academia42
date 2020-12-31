@@ -6,11 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 18:23:35 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 16:02:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
+#include "mlx.h"
 #include "cub3d.h"
 #include <math.h>
 

@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/30 12:22:33 by rprieto-         ###   ########.fr        #
+#    Updated: 2020/12/31 16:12:53 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ INCLUDES = -I. -Ilibft -Imlx -I../printf
 LIBRARIES = -lXext -lX11 -lm
 CC = gcc
 SRCS =	main.c					\
+		render/init_game_variables.c		\
 		render/render_color.c	\
 		render/rgb_utils.c		\
 		render/draw_things.c	\
@@ -30,8 +31,9 @@ SRCS =	main.c					\
 		render/free_memory.c	\
 		render/screenshot.c		\
 		render/raycast_utils.c	\
-		main_file_utils.c		\
+		start_game.c			\
 		checks/check_file.c		\
+		checks/info_ids.c		\
 		checks/check_map.c		\
 		checks/handle_error.c	\
 		checks/check_file/check_file_utils.c

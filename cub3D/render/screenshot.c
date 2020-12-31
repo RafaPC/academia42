@@ -6,12 +6,16 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 11:51:26 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 12:27:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 19:45:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <sys/stat.h>
+
+/*
+**		Writes each pixel to the file
+*/
 
 void	copy_image(t_data render, t_vars vars, int fd)
 {
@@ -34,6 +38,24 @@ void	copy_image(t_data render, t_vars vars, int fd)
 	}
 	return ;
 }
+
+/*
+**	Prints in order:
+**	-Magic byte BM											(2 pixels).
+**	-Size of the file										(4 pixels).
+**	-Reservado												(4 pixels).
+**	-Desajuste de la imagen -donde empiezan los píxeles-	(4 bytes).
+**
+**	--HEADER--
+**	-Tamaño del header										(4 bytes).
+**	-Ancho de la imagen										(2 bytes).
+**	-Número de planos -Siempre es igual a uno-				(2 bytes).
+**  -tamaño del pixel en bytes								(4 bytes).
+**	-Reservado												(28 bytes).
+**
+**	--IMAGEN--
+**	Pixels de la imagen (invertidos).
+*/
 
 void	copy_header(t_data render, t_vars vars, int fd)
 {
@@ -58,24 +80,15 @@ void	copy_header(t_data render, t_vars vars, int fd)
 }
 
 /*
-**	Prints in order:
-**	-Magic byte BM											(2 pixels).
-**	-Size of the file										(4 pixels).
-**	-Reservado												(4 pixels).
-**	-Desajuste de la imagen -donde empiezan los píxeles-	(4 bytes).
-**
-**	--HEADER--
-**	-Tamaño del header										(4 bytes).
-**	-Ancho de la imagen										(2 bytes).
-**	-Número de planos -Siempre es igual a uno-				(2 bytes).
-**  -tamaño del pixel en bytes								(4 bytes).
-**	-Reservado												(28 bytes).
-**
-**	--IMAGEN--
-**	Pixels de la imagen (invertidos).
+**		Creates the file and writes the first bytes
+**		Prints in order:
+**		-Magic byte BM											(2 pixels).
+**		-Size of the file										(4 pixels).
+**		-Reservado												(4 pixels).
+**		-Desajuste de la imagen -donde empiezan los píxeles-	(4 bytes).
 */
 
-void	take_screenshot(t_data render, t_vars vars)
+void	save_image(t_data render, t_vars vars)
 {
 	int fd;
 	int file_size;
@@ -91,4 +104,17 @@ void	take_screenshot(t_data render, t_vars vars)
 	copy_header(render, vars, fd);
 	copy_image(render, vars, fd);
 	close(fd);
+}
+
+/*
+**		Calls the appropiate functions to save one frame into an image
+**		and then reads this image to save it in .bmp format
+*/
+
+void	take_screenshot(t_vars vars)
+{
+	raycast(&vars);
+	render_sprites(&vars);
+	save_image(*vars.mlx.img, vars);
+	free_and_close(&vars);
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/28 23:04:40 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 17:49:51 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@
 t_bool		check_file(t_program_params *program_params, const char *file_path)
 {
 	t_list	*file_content;
-	int		fd;
+	t_bool	info_id_list[10];
 
 	file_content = NULL;
-	if ((fd = check_file_path(file_path)) < 0)
+	if (!(save_file_content(&file_content, file_path)))
 		return (false);
-	else if ((file_content = save_file_content(fd)) == NULL)
-		return (false);
-	else if (!check_file_content(file_content, program_params, 0))
+	initialice_info_ids(info_id_list);
+	if (!check_file_content(file_content, program_params, 0, info_id_list))
 	{
 		ft_lstclear(&file_content, free);
 		return (false);
@@ -36,25 +35,22 @@ t_bool		check_file(t_program_params *program_params, const char *file_path)
 	return (true);
 }
 
-int			check_file_path(const char *file_path)
-{
-	int	fd;
+/*
+**			Stores the .cub file content in an allocated struct
+*/
 
-	if ((fd = open(file_path, O_RDONLY)) < 0)
-		print_error("Couldn't open the file");
-	return (fd);
-}
-
-t_list		*save_file_content(int fd)
+t_bool		save_file_content(t_list **file_content, const char *file_path)
 {
-	t_list	*file_content;
 	t_list	*actual_line;
 	char	*aux;
 	int		result;
+	int		fd;
 
+	if ((fd = open(file_path, O_RDONLY)) < 0)
+		return (print_error("Couldn't open the file"));
 	get_next_line(fd, &aux);
-	file_content = ft_lstnew(aux);
-	actual_line = file_content;
+	*file_content = ft_lstnew(aux);
+	actual_line = *file_content;
 	while ((result = get_next_line(fd, &aux)) == 1)
 	{
 		actual_line->next = ft_lstnew(aux);
@@ -62,38 +58,27 @@ t_list		*save_file_content(int fd)
 	}
 	if (result == -1)
 	{
-		print_error("Error al leer el archivo");
-		ft_lstclear(&file_content, free);
-		return (NULL);
+		ft_lstclear(file_content, free);
+		return (print_error("Error while reading the .cub file"));
 	}
 	else
 		actual_line->next = ft_lstnew(aux);
-	return (file_content);
+	return (true);
 }
 
 /*
-** Sets all info id's to false
+**			TODO:
 */
 
-void		initialice_info_ids(t_bool info_id[10])
-{
-	int i;
-
-	i = 0;
-	while (i < 10)
-		info_id[i++] = false;
-}
-
 t_bool		check_file_content(t_list *line_elem,
-t_program_params *program_params, t_info_id info_id)
+t_program_params *program_params, t_info_id info_id, t_bool info_id_list[10])
 {
 	char	*line;
-	t_bool	info_id_list[10];
 
 	line = (char*)line_elem->content;
-	initialice_info_ids(info_id_list);
-	while (line && !check_info_ids(info_id_list))
+	while (line_elem && !check_info_ids(info_id_list))
 	{
+		line = (char*)line_elem->content;
 		if (*line)
 		{
 			if ((info_id = search_identifier(line)))
@@ -103,32 +88,20 @@ t_program_params *program_params, t_info_id info_id)
 				info_id_list[info_id - 1] = true;
 			}
 			else
-				return (print_error("Hay un identificador incorrecto"));
+				return (print_error("Wrong identifier"));
 			if (!get_info(info_id, line, program_params))
 				return (false);
 		}
 		line_elem = line_elem->next;
-		line = (char*)line_elem->content;
 	}
 	if (!check_info_ids(info_id_list))
 		return (print_error("Missing parameter in .cub file"));
 	return (read_map(line_elem, program_params));
 }
 
-t_bool		check_info_ids(t_bool info_id[10])
-{
-	int		i;
-	t_bool	completed;
-
-	i = 0;
-	completed = true;
-	while (i < 10 && completed)
-	{
-		if (info_id[i++] == false)
-			completed = false;
-	}
-	return (completed);
-}
+/*
+**			Checks the info id and calls the appropiate function
+*/
 
 t_bool		get_info(t_info_id info_id, char *line, t_program_params *params)
 {
@@ -152,19 +125,13 @@ t_bool		get_info(t_info_id info_id, char *line, t_program_params *params)
 		return (read_color(line + 2, &params->floor_color));
 	else if (info_id == id_color_ceilling)
 		return (read_color(line + 2, &params->ceilling_color));
-	return (print_error("Error indefinido"));
+	return (print_error("Undefined error"));
 }
 
-void		initialice_program_params(t_program_params *program_params)
-{
-	program_params->path_NO_texture = NULL;
-	program_params->path_SO_texture = NULL;
-	program_params->path_WE_texture = NULL;
-	program_params->path_EA_texture = NULL;
-	program_params->path_sprite_texture = NULL;
-	program_params->map = NULL;
-	program_params->player_angle = -1;
-}
+/*
+**			Compares the first charcters of the line with every identifier
+**			and returns the correct identifier id
+*/
 
 t_info_id	search_identifier(char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/28 23:14:58 by rprieto-         ###   ########.fr       */
+/*   Updated: 2020/12/31 17:42:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ int				get_map_height(t_list *line)
 	}
 	return (i);
 }
+
+/*
+**				Sets the player coordinates and angle
+*/
 
 static t_bool	set_player_parameters(char angle_char, int y, int x,
 t_program_params *params)
@@ -46,12 +50,24 @@ t_program_params *params)
 
 static t_bool	map_is_closed(char **map, int y, int x)
 {
+	int	top_line;
+	int	down_line;
+
+	top_line = 0;
+	down_line = 0;
 	if (map[y][x] != '1' && map[y][x] != ' ')
 	{
 		if (y == 0 || map[y + 1] == NULL ||
 		x == 0 || map[y][x + 1] == '\0')
 			return (false);
-		else if (map[y - 1][x] == ' ' || map[y + 1][x] == ' ' ||
+		while (map[y - 1][top_line] && map[y + 1][down_line])
+		{
+			top_line++;
+			down_line++;
+		}
+		if (top_line < x || down_line < x)
+			return (false);
+		if (map[y - 1][x] == ' ' || map[y + 1][x] == ' ' ||
 		map[y][x - 1] == ' ' || map[y][x + 1] == ' ')
 			return (false);
 	}
@@ -71,7 +87,7 @@ t_program_params *params)
 			{
 				if (!set_player_parameters(map[y][x], y, x, params))
 					return (print_error(
-						"Hay al menos dos carácteres dejugador (N, S, E, W)"));
+						"At least two player character found (N, S, E, W)"));
 			}
 			else if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != '2'
 			&& map[y][x] != '3' && map[y][x] != '4' && map[y][x] != ' ')
@@ -95,8 +111,8 @@ t_bool			read_map(t_list *line_elem, t_program_params *program_params)
 	line = (char*)line_elem->content;
 	while (line_elem && *line == '\0')
 	{
-		line = (char*)line_elem->content;
 		line_elem = line_elem->next;
+		line = (char*)line_elem->content;
 	}
 	if (search_identifier(line))
 		return (print_error("Información repetida"));
