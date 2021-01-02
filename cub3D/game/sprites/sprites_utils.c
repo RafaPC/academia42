@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 16:40:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 12:54:37 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:29:45 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,20 @@ t_vars vars)
 	float y;
 	float x;
 	float sprite_angle;
-	float diferencia;
+	float height_adjustment;
 
 	x = sprite->x - player.x;
 	y = -(sprite->y - player.y);
 	sprite_angle = player.angle - atanf(y / x);
 	sprite->distance = sqrtf(x * x + y * y) * fabsf(cosf(sprite_angle));
-	sprite->size_half = ((vars.window_height + vars.window_width) / 4)
+	sprite->size_half = ((vars.max_col_height + vars.window_width) / 4)
 	/ sprite->distance;
-	diferencia = vars.window_width - vars.window_height;
+	height_adjustment = vars.window_width - vars.window_height;
 	sprite->center_y = vars.window_height / 2 + vars.y_offset +
 	(vars.window_height / 2) / sprite->distance - sprite->size_half * 0.75;
-	sprite->center_y += (diferencia / 2) / sprite->distance;
+	if (vars.keys_pressed.left_ctrl)
+		sprite->center_y -= (vars.max_col_height / 6) / (sprite->distance * 3);
+	sprite->center_y += (height_adjustment / 2) / sprite->distance;
 	sprite->center_x = (tanf(sprite_angle) / tanf(FOV / 2) + 1) *
 		vars.window_width / 2;
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 02:14:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 13:09:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,24 @@ int		on_key_pressed(int keycode, t_vars *vars)
 	keys_pressed = &vars->keys_pressed;
 	if (keycode == ESC_KEY)
 		free_and_close(vars);
-	if (keycode == 'a')
-		keys_pressed->a = true;
-	if (keycode == 'd')
-		keys_pressed->d = true;
-	if (keycode == 'w')
-		keys_pressed->w = true;
-	if (keycode == 's')
-		keys_pressed->s = true;
-	if (keycode == ARROW_LEFT_KEY)
-		keys_pressed->left_arrow = true;
-	if (keycode == ARROW_RIGHT_KEY)
-		keys_pressed->right_arrow = true;
+	keys_pressed->w = (keycode == 'w') ? true : keys_pressed->w;
+	keys_pressed->a = (keycode == 'a') ? true : keys_pressed->a;
+	keys_pressed->s = (keycode == 's') ? true : keys_pressed->s;
+	keys_pressed->d = (keycode == 'd') ? true : keys_pressed->d;
 	if (keycode == ARROW_UP_KEY)
 		keys_pressed->up_arrow = true;
 	if (keycode == ARROW_DOWN_KEY)
 		keys_pressed->down_arrow = true;
+	if (keycode == ARROW_LEFT_KEY)
+		keys_pressed->left_arrow = true;
+	if (keycode == ARROW_RIGHT_KEY)
+		keys_pressed->right_arrow = true;
+	if (keycode == LEFT_CTRL_KEY)
+	{
+		keys_pressed->left_ctrl = true;
+		vars->y_offset = -vars->window_height / 4;
+		render_once(vars);
+	}
 	return (0);
 }
 
@@ -52,24 +54,29 @@ int		on_key_pressed(int keycode, t_vars *vars)
 **		Sets to false whichever key it's been released
 */
 
-int		on_key_released(int keycode, t_keys *keys_pressed)
+int		on_key_released(int keycode, t_vars *vars)
 {
-	if (keycode == 'a')
-		keys_pressed->a = false;
-	if (keycode == 'd')
-		keys_pressed->d = false;
-	if (keycode == 'w')
-		keys_pressed->w = false;
-	if (keycode == 's')
-		keys_pressed->s = false;
-	if (keycode == ARROW_LEFT_KEY)
-		keys_pressed->left_arrow = false;
-	if (keycode == ARROW_RIGHT_KEY)
-		keys_pressed->right_arrow = false;
+	t_keys *keys_pressed;
+
+	keys_pressed = &vars->keys_pressed;
+	keys_pressed->w = (keycode == 'w') ? false : keys_pressed->w;
+	keys_pressed->a = (keycode == 'a') ? false : keys_pressed->a;
+	keys_pressed->s = (keycode == 's') ? false : keys_pressed->s;
+	keys_pressed->d = (keycode == 'd') ? false : keys_pressed->d;
 	if (keycode == ARROW_UP_KEY)
 		keys_pressed->up_arrow = false;
 	if (keycode == ARROW_DOWN_KEY)
 		keys_pressed->down_arrow = false;
+	if (keycode == ARROW_LEFT_KEY)
+		keys_pressed->left_arrow = false;
+	if (keycode == ARROW_RIGHT_KEY)
+		keys_pressed->right_arrow = false;
+	if (keycode == LEFT_CTRL_KEY)
+	{
+		keys_pressed->left_ctrl = false;
+		vars->y_offset = 0;
+		render_once(vars);
+	}
 	return (0);
 }
 

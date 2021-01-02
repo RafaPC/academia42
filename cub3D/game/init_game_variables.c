@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 15:49:18 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 18:05:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	init_game_variables2(t_vars *vars, t_program_params params)
 	vars->keys_pressed.down_arrow = false;
 	vars->keys_pressed.left_arrow = false;
 	vars->keys_pressed.right_arrow = false;
-	vars->keys_pressed.mouse_moved = false;
+	vars->keys_pressed.left_ctrl = false;
 	vars->mouse_x = 1;
 	vars->mouse_y = 1;
 	vars->map = params.map;
@@ -97,13 +97,13 @@ t_bool	init_texture(void *mlx, t_texture *text, char *file)
 t_bool	init_textures(void *mlx, t_textures *textures,
 t_program_params params)
 {
-	if (!init_texture(mlx, &textures->wall_north, params.path_NO_texture))
+	if (!init_texture(mlx, &textures->wall_north, params.path_north_texture))
 		return (false);
-	if (!init_texture(mlx, &textures->wall_south, params.path_SO_texture))
+	if (!init_texture(mlx, &textures->wall_south, params.path_south_texture))
 		return (false);
-	if (!init_texture(mlx, &textures->wall_east, params.path_EA_texture))
+	if (!init_texture(mlx, &textures->wall_east, params.path_east_texture))
 		return (false);
-	if (!init_texture(mlx, &textures->wall_west, params.path_WE_texture))
+	if (!init_texture(mlx, &textures->wall_west, params.path_west_texture))
 		return (false);
 	if (!init_texture(mlx, &textures->sprite_1, params.path_sprite_texture))
 		return (false);

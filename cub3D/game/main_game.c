@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:36:18 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:59:22 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 #include "cub3d.h"
 
 /*
-**		TODO:
+**		Calls functions to initialice the variables needed and then
+**		renders and saves an image in .bmp format or starts the game
+**		If something goes wrong while initialicing variables frees everything
+**		and closes the program
 */
 
 void	start_game(t_program_params params, t_bool screenshot)
@@ -52,8 +55,7 @@ void	start_game(t_program_params params, t_bool screenshot)
 void	set_hooks(t_vars *vars)
 {
 	mlx_hook(vars->mlx.win, KeyPress, KeyPressMask, on_key_pressed, vars);
-	mlx_hook(vars->mlx.win, KeyRelease, KeyReleaseMask,
-		on_key_released, &vars->keys_pressed);
+	mlx_hook(vars->mlx.win, KeyRelease, KeyReleaseMask, on_key_released, vars);
 	mlx_hook(vars->mlx.win, FocusIn, FocusChangeMask, on_window_focused, vars);
 	mlx_hook(vars->mlx.win, ClientMessage, NoEventMask,
 		on_window_closed, vars);

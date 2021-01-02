@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 02:36:16 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:10:36 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,15 @@ void	move(t_player_vars *player, char **map, float angle, float velocity)
 **		to the right or left respective to its last position
 */
 
-void	check_mouse_move(t_vars *vars)
+void	check_mouse_move(t_vars *vars, t_bool left_ctrl_key)
 {
 	int x;
 	int y;
 
 	mlx_mouse_get_pos(vars->mlx.mlx, vars->mlx.win, &x, &y);
 	if (x > 0 && x < vars->window_width && y > 0 && y < vars->window_height &&
-	x != vars->mouse_x)
+	(x != vars->mouse_x || (y != vars->mouse_y && !left_ctrl_key)))
 	{
-		vars->keys_pressed.mouse_moved = true;
 		if (x > vars->mouse_x + 2)
 			vars->player.angle -= 0.1;
 		else if (x < vars->mouse_x - 2)
@@ -69,15 +68,15 @@ void	check_mouse_move(t_vars *vars)
 		check_angle_overflow(&vars->player.angle);
 		vars->player.dx = cosf(vars->player.angle);
 		vars->player.dy = sinf(vars->player.angle);
-		if (y < vars->mouse_y - 1)
+		if (!left_ctrl_key && y < vars->mouse_y - 1 &&
+		vars->y_offset < vars->window_height / 2)
 			vars->y_offset += 20;
-		else if (y > vars->mouse_y + 1)
+		else if (!left_ctrl_key && y > vars->mouse_y + 1 &&
+		vars->y_offset > -vars->window_height / 2)
 			vars->y_offset -= 20;
 		vars->mouse_x = x;
 		vars->mouse_y = y;
 	}
-	else
-		vars->keys_pressed.mouse_moved = false;
 }
 
 /*
@@ -87,7 +86,7 @@ void	check_mouse_move(t_vars *vars)
 
 void	check_movement(t_vars *vars, t_keys keys)
 {
-	check_mouse_move(vars);
+	check_mouse_move(vars, keys.left_ctrl);
 	if (keys.left_arrow)
 		vars->player.angle += 0.1;
 	else if (keys.right_arrow)
@@ -95,9 +94,11 @@ void	check_movement(t_vars *vars, t_keys keys)
 	check_angle_overflow(&vars->player.angle);
 	vars->player.dx = cosf(vars->player.angle);
 	vars->player.dy = sinf(vars->player.angle);
-	if (keys.up_arrow && vars->y_offset < vars->window_height / 2)
+	if (!keys.left_ctrl && keys.up_arrow &&
+		vars->y_offset < vars->window_height / 2)
 		vars->y_offset += (vars->window_height / 2) / 20;
-	if (keys.down_arrow && vars->y_offset > -vars->window_height / 2)
+	if (!keys.left_ctrl && keys.down_arrow &&
+		vars->y_offset > -vars->window_height / 2)
 		vars->y_offset -= (vars->window_height / 2) / 20;
 	if (keys.w)
 		move(&vars->player, vars->map, vars->player.angle, 1);
@@ -107,25 +108,31 @@ void	check_movement(t_vars *vars, t_keys keys)
 		move(&vars->player, vars->map, vars->player.angle - PI, 0.5);
 	if (keys.d)
 		move(&vars->player, vars->map, vars->player.angle - PI / 2, 0.3);
-	if (vars->map[(int)vars->player.y][(int)vars->player.x] == '4')
-	{
+	if (vars->map[(int)vars->player.y][(int)vars->player.x] == '4'
+		&& ++vars->score)
 		vars->map[(int)vars->player.y][(int)vars->player.x] = '0';
-		vars->score++;
-	}
 }
 
 /*
 **		Returns true if any of the inputs is set to true
 */
 
-t_bool	is_moving(t_keys keys)
+t_bool	is_moving(t_keys keys, t_vars vars)
 {
-	if (keys.w || keys.a || keys.s || keys.d ||
-	keys.left_arrow || keys.right_arrow || keys.up_arrow || keys.down_arrow
-	|| keys.mouse_moved)
+	int x;
+	int y;
+
+	if (keys.left_arrow || keys.right_arrow || keys.up_arrow || keys.down_arrow
+		|| keys.w || keys.a || keys.s || keys.d)
 		return (true);
 	else
-		return (false);
+	{
+		mlx_mouse_get_pos(vars.mlx.mlx, vars.mlx.win, &x, &y);
+		if (x > 0 && x < vars.window_width && y > 0 &&
+			y < vars.window_height && (x != vars.mouse_x || y != vars.mouse_y))
+			return (true);
+	}
+	return (false);
 }
 
 /*

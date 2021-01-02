@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 12:07:12 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:35:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ void	free_map(char **map)
 
 void	free_program_params(t_program_params params)
 {
-	if (params.path_NO_texture)
-		free(params.path_NO_texture);
-	if (params.path_SO_texture)
-		free(params.path_SO_texture);
-	if (params.path_EA_texture)
-		free(params.path_EA_texture);
-	if (params.path_WE_texture)
-		free(params.path_WE_texture);
+	if (params.path_north_texture)
+		free(params.path_north_texture);
+	if (params.path_south_texture)
+		free(params.path_south_texture);
+	if (params.path_east_texture)
+		free(params.path_east_texture);
+	if (params.path_west_texture)
+		free(params.path_west_texture);
 	if (params.path_sprite_texture)
 		free(params.path_sprite_texture);
 	if (params.path_sprite2_texture)

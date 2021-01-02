@@ -6,18 +6,20 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/01 23:28:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "libft.h"
+#include <fcntl.h>
 
 /*
 **			Saves the file content and search for the required information
 */
 
-t_bool		get_cub_data(t_program_params *program_params, const char *file_path)
+t_bool		get_cub_data(t_program_params *program_params,
+const char *file_path)
 {
 	t_list	*file_content;
 	t_bool	info_id_list[10];
@@ -110,13 +112,13 @@ t_bool		get_info(t_info_id info_id, char *line, t_program_params *params)
 	if (info_id == id_resolution)
 		return (read_resolution(line + 2, params));
 	else if (info_id == id_path_north)
-		return (read_path(line + 3, &(params->path_NO_texture)));
+		return (read_path(line + 3, &(params->path_north_texture)));
 	else if (info_id == id_path_south)
-		return (read_path(line + 3, &(params->path_SO_texture)));
+		return (read_path(line + 3, &(params->path_south_texture)));
 	else if (info_id == id_path_west)
-		return (read_path(line + 3, &(params->path_WE_texture)));
+		return (read_path(line + 3, &(params->path_west_texture)));
 	else if (info_id == id_path_east)
-		return (read_path(line + 3, &(params->path_EA_texture)));
+		return (read_path(line + 3, &(params->path_east_texture)));
 	else if (info_id == id_path_sprite)
 		return (read_path(line + 2, &(params->path_sprite_texture)));
 	else if (info_id == id_path_sprite_2)

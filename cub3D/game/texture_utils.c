@@ -6,12 +6,11 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 02:04:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 11:44:50 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 /*
 **	Receives a struct of texturas and a variable that indicates

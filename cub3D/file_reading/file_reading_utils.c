@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 11:50:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/01 23:46:08 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 
 void	initialice_program_params(t_program_params *program_params)
 {
-	program_params->path_NO_texture = NULL;
-	program_params->path_SO_texture = NULL;
-	program_params->path_WE_texture = NULL;
-	program_params->path_EA_texture = NULL;
+	program_params->path_north_texture = NULL;
+	program_params->path_south_texture = NULL;
+	program_params->path_west_texture = NULL;
+	program_params->path_east_texture = NULL;
 	program_params->path_sprite_texture = NULL;
 	program_params->path_sprite2_texture = NULL;
 	program_params->path_sprite3_texture = NULL;

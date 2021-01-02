@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/01 20:50:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 11:46:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "cub3d.h"
 
 /*
-**		Avoids empty lanes, saves the map and checks for anything wrong 
+**		Avoids empty lanes, saves the map and checks for anything wrong
 */
 
 t_bool	read_map(t_list *line_elem, t_program_params *program_params)

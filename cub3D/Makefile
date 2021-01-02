@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2021/01/02 02:27:56 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/01/02 16:01:24 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,21 +22,21 @@ SRCS =	main.c								\
 		file_reading/file_reading_utils.c 	\
 		file_reading/read_info.c			\
 		file_reading/read_map.c				\
-		render/init_game_variables.c		\
-		render/pixel_utils/put_get_pixel.c	\
-		render/pixel_utils/rgb_utils.c		\
-		render/drawing_utils.c				\
-		render/texture_utils.c				\
-		render/render.c						\
-		render/raycasting/raycast.c			\
-		render/raycasting/raycast_utils.c	\
-		render/sprites/sprites_utils.c		\
-		render/sprites/render_sprites.c		\
-		render/hooks.c						\
-		render/movement.c					\
-		render/free_memory.c				\
-		render/screenshot.c					\
-		start_game.c
+		game/main_game.c					\
+		game/init_game_variables.c			\
+		game/pixel_utils/put_get_pixel.c	\
+		game/pixel_utils/rgb_utils.c		\
+		game/drawing_utils.c				\
+		game/texture_utils.c				\
+		game/render.c						\
+		game/raycasting/raycast.c			\
+		game/raycasting/raycast_utils.c		\
+		game/sprites/sprites_utils.c		\
+		game/sprites/render_sprites.c		\
+		game/hooks.c						\
+		game/movement.c						\
+		game/free_memory.c					\
+		game/screenshot.c
 //OBJS = ${SRCS:.c=.o}
 FLAGS = -Wall -Wextra
 OBJS = ./*.o

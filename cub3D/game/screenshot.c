@@ -6,12 +6,13 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 11:51:26 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 19:45:30 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 11:58:00 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <sys/stat.h>
+#include <fcntl.h>
 
 /*
 **		Writes each pixel to the file

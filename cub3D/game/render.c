@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 02:10:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 15:56:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 #include "mlx.h"
 #include <math.h>
 #include "libft.h"
+
+/*
+**		
+*/
+
+void	render_once(t_vars *vars)
+{
+	raycast(vars);
+	render_sprites(vars);
+	mlx_put_image_to_window(
+			vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
+	display_score(*vars);
+}
 
 /*
 **		Write the amount of score at the top left corner of the screen
@@ -27,7 +40,7 @@ void	display_score(t_vars vars)
 	score = "SCORE: ";
 	aux = ft_itoa(vars.score);
 	score = ft_strjoin(score, aux);
-	mlx_string_put(vars.mlx.mlx, vars.mlx.win, 5, 20, WALL_COLOR, score);
+	mlx_string_put(vars.mlx.mlx, vars.mlx.win, 5, 20, TEXT_COLOR, score);
 	free(score);
 	free(aux);
 }
@@ -40,14 +53,10 @@ void	display_score(t_vars vars)
 
 int		render_screen(t_vars *vars)
 {
-	check_movement(vars, vars->keys_pressed);
-	if (is_moving(vars->keys_pressed))
+	if (is_moving(vars->keys_pressed, *vars))
 	{
-		raycast(vars);
-		render_sprites(vars);
-		mlx_put_image_to_window(
-			vars->mlx.mlx, vars->mlx.win, vars->mlx.img->img, 0, 0);
-		display_score(*vars);
+		check_movement(vars, vars->keys_pressed);
+		render_once(vars);
 	}
 	return (0);
 }
