@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2020/12/31 16:12:53 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/01/02 02:27:56 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,26 +17,26 @@ LIB_DIR = libft
 INCLUDES = -I. -Ilibft -Imlx -I../printf
 LIBRARIES = -lXext -lX11 -lm
 CC = gcc
-SRCS =	main.c					\
+SRCS =	main.c								\
+		file_reading/check_file.c			\
+		file_reading/file_reading_utils.c 	\
+		file_reading/read_info.c			\
+		file_reading/read_map.c				\
 		render/init_game_variables.c		\
-		render/render_color.c	\
-		render/rgb_utils.c		\
-		render/draw_things.c	\
-		render/render.c			\
-		render/render_sprites.c	\
-		render/hooks.c			\
-		render/movement.c		\
-		render/raycast.c		\
-		render/sprites_utils.c	\
-		render/free_memory.c	\
-		render/screenshot.c		\
-		render/raycast_utils.c	\
-		start_game.c			\
-		checks/check_file.c		\
-		checks/info_ids.c		\
-		checks/check_map.c		\
-		checks/handle_error.c	\
-		checks/check_file/check_file_utils.c
+		render/pixel_utils/put_get_pixel.c	\
+		render/pixel_utils/rgb_utils.c		\
+		render/drawing_utils.c				\
+		render/texture_utils.c				\
+		render/render.c						\
+		render/raycasting/raycast.c			\
+		render/raycasting/raycast_utils.c	\
+		render/sprites/sprites_utils.c		\
+		render/sprites/render_sprites.c		\
+		render/hooks.c						\
+		render/movement.c					\
+		render/free_memory.c				\
+		render/screenshot.c					\
+		start_game.c
 //OBJS = ${SRCS:.c=.o}
 FLAGS = -Wall -Wextra
 OBJS = ./*.o

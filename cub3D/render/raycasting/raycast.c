@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 13:57:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 00:13:42 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 01:43:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,30 @@
 
 /*
 **		Iterates as many times as window width getting the proper
-**		distance and x_wall values for each column to render them right
+**		distance and wall_x values for each column to render it
+**		Window_x is the coordinate of the window column of which calculate
+**		the right distance in order to draw it
+**		Value goes from 0 to window width (left to right)
+**		Wall_x is the coordinate within the wall where the ray hits
+**		Value goes 0.0 to 1.0 (left to right)
 */
 
 void	raycast(t_vars *vars)
 {
 	float	angle;
-	float	x_wall;
-	int		x_coord;
+	float	wall_x;
+	int		window_x;
 
-	x_coord = 0;
-	while (x_coord < vars->window_width)
+	window_x = 0;
+	while (window_x < vars->window_width)
 	{
 		angle = vars->player.angle - atanf(tanf(FOV / 2.0) *
-		(2.0 * x_coord / vars->window_width - 1.0));
+		(2.0 * window_x / vars->window_width - 1.0));
 		check_angle_overflow(&angle);
-		vars->distances[x_coord] =
-			get_distance_to_wall(vars, angle, x_coord, &x_wall);
-		render_column(vars, vars->distances[x_coord], x_wall, x_coord);
-		x_coord++;
+		vars->distances[window_x] =
+			get_distance_to_wall(vars, angle, window_x, &wall_x);
+		render_column(vars, vars->distances[window_x], wall_x, window_x);
+		window_x++;
 	}
 }
 
@@ -46,8 +51,8 @@ void	raycast(t_vars *vars)
 **		surrounded by walls
 */
 
-float	get_distance_to_wall(t_vars *vars, float angle, int x_coord,
-float *x_wall)
+float	get_distance_to_wall(t_vars *vars, float angle, int window_x,
+float *wall_x)
 {
 	t_ray	ray;
 
@@ -59,16 +64,16 @@ float *x_wall)
 		check_sprite_crossed(ray, ray.tile_crossed, vars);
 		if (ray.tile_crossed == '1' && ray.direction == horizontal)
 		{
-			vars->distances[x_coord] = ray.distance_hor;
+			vars->distances[window_x] = ray.distance_hor;
 			vars->wall_face = (ray.tile_step_y == 1) ? north_face : south_face;
-			*x_wall = ray.x_intercept - ray.x;
+			*wall_x = ray.x_intercept - ray.x;
 			return (ray.distance_hor * cosf(ray.angle_beta));
 		}
 		else if (ray.tile_crossed == '1' && ray.direction == vertical)
 		{
-			vars->distances[x_coord] = ray.distance_ver;
+			vars->distances[window_x] = ray.distance_ver;
 			vars->wall_face = (ray.tile_step_x == 1) ? west_face : east_face;
-			*x_wall = ray.y_intercept - ray.y;
+			*wall_x = ray.y_intercept - ray.y;
 			return (ray.distance_ver * cosf(ray.angle_beta));
 		}
 		sum_distance(&ray, vars->player);
@@ -77,7 +82,7 @@ float *x_wall)
 }
 
 /*
-**	Advances the shortest distance to the next intersection
+**		Advances the shortest distance to the next intersection
 */
 
 void	sum_distance(t_ray *ray, t_player_vars player)
@@ -145,9 +150,9 @@ void	init_ray_values2(t_ray *ray, float angle)
 		ray->tile_step_x = -1;
 	else
 		ray->tile_step_x = 1;
-	if (angle == 0 || angle == 180)
+	if (angle == 0 || angle == 2 * PI)
 		ray->tang = FLT_MIN;
-	else if (angle == 90 || angle == 270)
+	else if (angle == PI / 2 || angle == PI + PI / 2)
 		ray->tang = FLT_MAX;
 	else
 		ray->tang = fabsf(tanf(angle));

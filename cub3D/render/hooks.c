@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:44:13 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:10:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 02:14:27 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,19 @@
 #include <stdio.h>
 
 /*
-**	Function called whenever a key is pressed
-**	Sets to true whichever key it's been pressed
-**	If the pressed key is the Escape Key
-**	calls the funcion that close the program
+**		Function called whenever a key is pressed
+**		Sets to true whichever key it's been pressed
+**		If the pressed key is the Escape Key
+**		calls the funcion that close the program
 */
 
-int	on_key_pressed(int keycode, t_vars *vars)
+int		on_key_pressed(int keycode, t_vars *vars)
 {
 	t_keys	*keys_pressed;
 
 	keys_pressed = &vars->keys_pressed;
 	if (keycode == ESC_KEY)
-	{
 		free_and_close(vars);
-		return (0);
-	}
 	if (keycode == 'a')
 		keys_pressed->a = true;
 	if (keycode == 'd')
@@ -51,11 +48,11 @@ int	on_key_pressed(int keycode, t_vars *vars)
 }
 
 /*
-**	Function called whenever a key is released
-**	Sets to false whichever key it's been released
+**		Function called whenever a key is released
+**		Sets to false whichever key it's been released
 */
 
-int	on_key_released(int keycode, t_keys *keys_pressed)
+int		on_key_released(int keycode, t_keys *keys_pressed)
 {
 	if (keycode == 'a')
 		keys_pressed->a = false;
@@ -77,11 +74,11 @@ int	on_key_released(int keycode, t_keys *keys_pressed)
 }
 
 /*
-**	Function called when the windows is reopened
-**	Redraws the screen
+**		Function called when the windows is reopened
+**		Redraws the screen
 */
 
-int	on_window_focused(t_vars *vars)
+int		on_window_focused(t_vars *vars)
 {
 	raycast(vars);
 	render_sprites(vars);
@@ -92,11 +89,11 @@ int	on_window_focused(t_vars *vars)
 }
 
 /*
-**	Function called when the cross of the window is clicked
-**	Frees all the allocated memory and stop the program
+**		Function called when the cross of the window is clicked
+**		Frees all the allocated memory and stop the program
 */
 
-int	on_window_closed(t_vars *vars)
+int		on_window_closed(t_vars *vars)
 {
 	free_and_close(vars);
 	return (0);

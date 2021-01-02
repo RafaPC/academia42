@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:32:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 02:10:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,23 @@ int		render_screen(t_vars *vars)
 **		Renders one column of the window
 */
 
-void	render_column(t_vars *vars, float distance, float wall_x, int x_coord)
+void	render_column(t_vars *vars, float distance, float wall_x, int window_x)
 {
 	int		column_height;
-	int		starting_position;
-	float	i;
+	int		y_start;
+	int		y;
 
 	column_height = (int)(vars->max_col_height / distance);
-	render_ceil_and_floor(vars, x_coord);
-	starting_position = vars->window_height / 2 - column_height / 2 +
+	render_ceil_and_floor(vars, window_x);
+	y_start = vars->window_height / 2 - column_height / 2 +
 		vars->y_offset;
-	i = starting_position < 0 ? -starting_position : 0;
-	while ((int)i++ < column_height &&
-	starting_position + (int)i < vars->window_height)
+	y = y_start < 0 ? -y_start : 0;
+	while (y < column_height && y_start + y < vars->window_height)
 	{
-		my_mlx_pixel_put(vars->mlx.img, x_coord, starting_position + i,
+		put_pixel(vars->mlx.img, window_x, y_start + y,
 			add_shade(distance, get_wall_color(vars->textures,
-				vars->wall_face, wall_x, i / column_height)));
+				vars->wall_face, wall_x, (float)y / column_height)));
+		y++;
 	}
 }
 

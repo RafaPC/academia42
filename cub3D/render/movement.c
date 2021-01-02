@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 16:02:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 02:36:16 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 #include "cub3d.h"
 #include <math.h>
 
-t_bool	blocks_movement(char c)
-{
-	if (c == '1' || c == '2' || c == '3')
-		return (true);
-	else
-		return (false);
-}
+/*
+**		Moves the player in an angle with a determined velocity
+**		checking collisions
+*/
 
 void	move(t_player_vars *player, char **map, float angle, float velocity)
 {
@@ -83,6 +80,11 @@ void	check_mouse_move(t_vars *vars)
 		vars->keys_pressed.mouse_moved = false;
 }
 
+/*
+**		Checks for keyboard/mouse input and changes
+**		the position, y_offset and angle accordingly
+*/
+
 void	check_movement(t_vars *vars, t_keys keys)
 {
 	check_mouse_move(vars);
@@ -94,9 +96,9 @@ void	check_movement(t_vars *vars, t_keys keys)
 	vars->player.dx = cosf(vars->player.angle);
 	vars->player.dy = sinf(vars->player.angle);
 	if (keys.up_arrow && vars->y_offset < vars->window_height / 2)
-		vars->y_offset += 10;
+		vars->y_offset += (vars->window_height / 2) / 20;
 	if (keys.down_arrow && vars->y_offset > -vars->window_height / 2)
-		vars->y_offset -= 10;
+		vars->y_offset -= (vars->window_height / 2) / 20;
 	if (keys.w)
 		move(&vars->player, vars->map, vars->player.angle, 1);
 	if (keys.a)
@@ -112,11 +114,28 @@ void	check_movement(t_vars *vars, t_keys keys)
 	}
 }
 
+/*
+**		Returns true if any of the inputs is set to true
+*/
+
 t_bool	is_moving(t_keys keys)
 {
 	if (keys.w || keys.a || keys.s || keys.d ||
 	keys.left_arrow || keys.right_arrow || keys.up_arrow || keys.down_arrow
 	|| keys.mouse_moved)
+		return (true);
+	else
+		return (false);
+}
+
+/*
+**		Receives a map character and returns true if
+**		that character has collisions
+*/
+
+t_bool	blocks_movement(char c)
+{
+	if (c == '1' || c == '2' || c == '3')
 		return (true);
 	else
 		return (false);

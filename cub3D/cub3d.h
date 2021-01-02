@@ -198,84 +198,91 @@ typedef struct		s_ray
 }					t_ray;
 
 /*
-**			CHECK FILE THINGS
+**			MAIN
 */
 t_bool		check_arguments(t_bool *save_img, int argc, char **argv);
-t_bool		check_file(t_program_params *program_params, const char *file_path);
-t_bool		save_file_content(t_list **file_content, const char *file_path);
-t_bool		check_file_content(t_list *file_content,
-t_program_params *t_program_params, t_info_id info_id, t_bool list_info_ids[10]);
-t_info_id	search_identifier(char *line);
-t_bool		get_info(t_info_id info_id, char *line,
-t_program_params *params);
-
-void		initialice_program_params(t_program_params *program_params);
-t_bool		read_map(t_list *line, t_program_params *program_params);
 /*
-**			CHECK FILE UTILS
+**			READ CUB FILE
+*/
+t_bool		get_cub_data(t_program_params *program_params, const char *file_path);
+t_bool		save_file_lines(t_list **file_content, const char *file_path);
+t_bool		read_file_lines(t_list *file_content,
+t_program_params *program_params, t_info_id info_id, t_bool list_info_ids[10]);
+t_bool		get_info(t_info_id info_id, char *line, t_program_params *params);
+t_info_id	search_identifier(char *line);
+/*
+**			READ INFO
 */
 t_bool		read_resolution(char *line, t_program_params *program_params);
 t_bool		read_path(char *line, char **path_to_texture);
 t_bool		read_color(char *line, int *color);
+t_bool		check_color_characters(char *line);
 /*
-**			INFO IDS
+**			FILE READING UTILS
 */
+void		initialice_program_params(t_program_params *program_params);
 void		initialice_info_ids(t_bool info_id[10]);
 t_bool		check_info_ids(t_bool info_id[10]);
-/*
-**			CHECK MAP
-*/
-
-/*
-**			ERROR HANDLING
-*/
 t_bool		print_error(const char *msg);
+/*
+**			READ MAP
+*/
+t_bool		read_map(t_list *line, t_program_params *program_params);
+t_bool		check_map_characters(char **map, int y, int x,
+t_program_params *params);
+t_bool		map_is_closed(char **map, int y, int x);
+t_bool		set_player_parameters(char angle_char, int y, int x,
+t_program_params *params);
+int			get_map_height(t_list *line);
 /*
 **			START GAME
 */
-void	start_game(t_program_params program_params, t_bool save_img);
-void	set_hooks(t_vars *vars);
+void		start_game(t_program_params program_params, t_bool save_img);
+void		set_hooks(t_vars *vars);
 /*
 **			INITIALICE GAME VARIABLES
 */
-t_bool	init_game_variables(t_vars *vars, t_program_params params);
-void	init_game_variables2(t_vars *vars, t_program_params params);
-void	set_window_size(t_vars *vars, int window_width, int window_height);
-t_bool	init_textures(void *mlx, t_textures *textures, t_program_params params);
-t_bool	init_texture(void *mlx, t_texture *text, char *file);
-/*
-**			RENDER THINGS
-*/
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+t_bool		init_game_variables(t_vars *vars, t_program_params params);
+void		init_game_variables2(t_vars *vars, t_program_params params);
+void		set_window_size(t_vars *vars, int window_width, int window_height);
+t_bool		init_textures(void *mlx, t_textures *textures, t_program_params params);
+t_bool		init_texture(void *mlx, t_texture *text, char *file);
 /*
 **			RGB UTILS
 */
-int		create_trgb(int t, int r, int g, int b);
-int		get_t(int trgb);
-int		get_r(int trgb);
-int		get_g(int trgb);
-int		get_b(int trgb);
+int			create_trgb(int t, int r, int g, int b);
+int			get_transparency(int color);
+int			add_shade(float distance, int color);
 /*
-**			RENDER COLOR
+**			DRAWING UTILS
 */
-int		add_shade(float distance, int color);
-int		get_image_color(t_texture texture, float x, float y);
-int		get_wall_color(t_textures textures, t_wall_face wall_face, float x, float y);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int		get_pixel(t_data image, int x, int y);
+void		draw_square(t_coords coords, int color, t_data *img);
+t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end);
+/*
+**			PIXEL UTILS
+*/
+void		put_pixel(t_data *data, int x, int y, int color);
+int			get_pixel(t_data image, int x, int y);
+/*
+**			TEXTURE UTILS
+*/
+int			get_wall_color(t_textures textures, t_wall_face wall_face,
+float x, float y);
+int			get_image_color(t_texture texture, float x, float y);
 /*
 **			RENDER SPRITES
 */
-void	render_sprites(t_vars *vars);
-void	draw_sprite(t_vars vars, t_sprite sprite);
-void	draw_sprite_column(t_vars vars, t_sprite sprite, int drawing_position);
+void		render_sprites(t_vars *vars);
+void		draw_sprite(t_vars vars, t_sprite sprite);
+void		draw_sprite_column(t_vars vars, t_sprite sprite, int drawing_position);
 /*
 **			RENDER
 */
-int		render_screen(t_vars *vars);
-void	render_column(t_vars *vars, float distance,  float wall_x, int offset_column);
-void	render_ceil_and_floor(t_vars *vars, int x_coord);
-void	display_score(t_vars vars);
+int			render_screen(t_vars *vars);
+void		render_column(t_vars *vars, float distance, float wall_x,
+int window_x);
+void		render_ceil_and_floor(t_vars *vars, int x_coord);
+void		display_score(t_vars vars);
 /*
 **			DRAW THINGS
 */
@@ -283,39 +290,37 @@ void		draw_player(t_vars *vars);
 void		draw_map(t_vars *vars);
 void		draw_square(t_coords coords, int color, t_data *img);
 t_coords	get_coords_struct(int x_start, int y_start, int x_end, int y_end);
-
-
-void	main_raycast(t_program_params program_params, t_bool save_img);
 /*
 **			RAYCASTING
 */
-void	raycast(t_vars *vars);
-float	get_distance_to_wall(t_vars *vars, float angle, int x_coord,
+void		raycast(t_vars *vars);
+float		get_distance_to_wall(t_vars *vars, float angle, int x_window,
 float *x_wall);
-void	init_ray_values(t_ray *ray, t_player_vars player, float angle);
-void	init_ray_values2(t_ray *ray, float angle);
-void	sum_distance(t_ray *ray, t_player_vars player);
+void		init_ray_values(t_ray *ray, t_player_vars player, float angle);
+void		init_ray_values2(t_ray *ray, float angle);
+void		sum_distance(t_ray *ray, t_player_vars player);
 /*
 **			RAYCASTING UTILS
 */
-float	get_x_intercept_length(t_ray ray, t_player_vars player);
-float	get_y_intercept_length(t_ray ray, t_player_vars player);
-void	check_angle_overflow(float *angle);
-void	set_tile_crossed(t_ray *ray, char **map);
-void	check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars);
+float		get_x_intercept_length(t_ray ray, t_player_vars player);
+float		get_y_intercept_length(t_ray ray, t_player_vars player);
+void		check_angle_overflow(float *angle);
+void		set_tile_crossed(t_ray *ray, char **map);
+void		check_sprite_crossed(t_ray ray, char tile_crossed, t_vars *vars);
 /*
 **			HOOKS
 */
-int		on_key_pressed(int keycode,t_vars *vars);
-int		on_key_released(int keycode, t_keys *keys_pressed);
-int		on_window_focused(t_vars *vars);
-int		on_window_closed(t_vars *vars);
+int			on_key_pressed(int keycode,t_vars *vars);
+int			on_key_released(int keycode, t_keys *keys_pressed);
+int			on_window_focused(t_vars *vars);
+int			on_window_closed(t_vars *vars);
 /*
 **			MOVEMENT
 */
-void	move(t_player_vars *player, char **map, float angle, float velocity);
-void	check_movement(t_vars *vars, t_keys keys);
-t_bool	is_moving(t_keys keys);
+void		move(t_player_vars *player, char **map, float angle, float velocity);
+void		check_movement(t_vars *vars, t_keys keys);
+t_bool		is_moving(t_keys keys);
+t_bool		blocks_movement(char c);
 
 /*
 **			SPRITE UTILS

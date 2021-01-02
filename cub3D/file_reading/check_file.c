@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:49:51 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/01 23:28:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 #include "libft.h"
 
 /*
-** TODO: Cambiar nombre a la función
+**			Saves the file content and search for the required information
 */
 
-t_bool		check_file(t_program_params *program_params, const char *file_path)
+t_bool		get_cub_data(t_program_params *program_params, const char *file_path)
 {
 	t_list	*file_content;
 	t_bool	info_id_list[10];
 
 	file_content = NULL;
-	if (!(save_file_content(&file_content, file_path)))
+	if (!(save_file_lines(&file_content, file_path)))
 		return (false);
 	initialice_info_ids(info_id_list);
-	if (!check_file_content(file_content, program_params, 0, info_id_list))
+	if (!read_file_lines(file_content, program_params, 0, info_id_list))
 	{
 		ft_lstclear(&file_content, free);
 		return (false);
@@ -36,10 +36,10 @@ t_bool		check_file(t_program_params *program_params, const char *file_path)
 }
 
 /*
-**			Stores the .cub file content in an allocated struct
+**			Stores all the .cub file lines in an allocated struct
 */
 
-t_bool		save_file_content(t_list **file_content, const char *file_path)
+t_bool		save_file_lines(t_list **file_content, const char *file_path)
 {
 	t_list	*actual_line;
 	char	*aux;
@@ -67,10 +67,12 @@ t_bool		save_file_content(t_list **file_content, const char *file_path)
 }
 
 /*
-**			TODO:
+**			Iterates through the file lines searching for each element
+**			identifier, checking there are no repeated or wrong identifiers
+**			and saving their information
 */
 
-t_bool		check_file_content(t_list *line_elem,
+t_bool		read_file_lines(t_list *line_elem,
 t_program_params *program_params, t_info_id info_id, t_bool info_id_list[10])
 {
 	char	*line;

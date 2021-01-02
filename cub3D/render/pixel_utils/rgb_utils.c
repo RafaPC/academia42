@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 16:24:58 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/29 17:15:57 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 02:08:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,47 +15,38 @@
 **	and returns and int with each value taking 2 bytes
 */
 
-int	create_trgb(int t, int r, int g, int b)
+int		create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
 /*
-**	Receives and int with trgb values in it
-** and returns the opacity value (0 to 255)
+**		Receives and int with trgb values in it
+**		and returns the opacity value (0 to 255)
 */
 
-int	get_t(int trgb)
+int		get_transparency(int color)
 {
-	return ((trgb & (0xFF << 24)) >> 24);
+	return ((color & (0xFF << 24)) >> 24);
 }
 
 /*
-**	Receives and int with trgb values in it
-** and returns the red value (0 to 255)
+**		Receives a distance and a color and returns the color
+**		as darker as longer the distance
 */
 
-int	get_r(int trgb)
+int		add_shade(float distance, int color)
 {
-	return ((trgb & (0xFF << 16)) >> 16);
-}
+	int	r;
+	int	g;
+	int	b;
 
-/*
-**	Receives and int with trgb values in it
-** and returns the green value (0 to 255)
-*/
-
-int	get_g(int trgb)
-{
-	return ((trgb & (0xFF << 8)) >> 8);
-}
-
-/*
-**	Receives and int with trgb values in it
-** and returns the blue value (0 to 255)
-*/
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
+	r = (int)((color & (0xFF << 16)) >> 16);
+	g = (int)((color & (0xFF << 8)) >> 8);
+	b = (int)(color & 0xFF);
+	distance /= 30;
+	r = r - (r * distance);
+	g = g - (g * distance);
+	b = b - (b * distance);
+	return (create_trgb(get_transparency(color), r, g, b));
 }

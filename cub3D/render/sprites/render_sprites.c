@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 19:03:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/30 18:44:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 02:10:33 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	draw_sprite_column(t_vars vars, t_sprite sprite, int drawing_position)
 		(drawing_position - sprite.center_x +
 		sprite.size_half) / (float)sprite.size_half / 2,
 		y_position / ((float)sprite.size_half * 2));
-		if (get_t(pixel) != 255 && pixel != 0)
-			my_mlx_pixel_put(vars.mlx.img, drawing_position,
+		if (get_transparency(pixel) != 255 && pixel != 0)
+			put_pixel(vars.mlx.img, drawing_position,
 			y_draw_coord, pixel);
 		y_position++;
 		y_draw_coord++;

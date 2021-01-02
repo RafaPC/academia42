@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/08 12:42:02 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 17:36:05 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/01 18:27:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		main(int argc, char const *argv[])
 	initialice_program_params(&program_params);
 	if (check_arguments(&screenshot, argc, (char**)argv))
 	{
-		if (check_file(&program_params, argv[1]))
+		if (get_cub_data(&program_params, argv[1]))
 			start_game(program_params, screenshot);
 		else
 		{

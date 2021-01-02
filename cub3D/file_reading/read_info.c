@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_file_utils.c                                 :+:      :+:    :+:   */
+/*   read_info.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/12/31 12:42:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/01 19:37:20 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 /*
-**		Reads the window resolution definition
+**		Reads the window resolution definition and
+**		stores it in the program params
 */
 
 t_bool	read_resolution(char *line, t_program_params *program_params)
@@ -26,7 +27,7 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 	program_params->window_width = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
-	while (ft_isspace(*line))
+	while (*line == ' ')
 		line++;
 	program_params->window_height = ft_atoi(line);
 	while (ft_isdigit(*line))
@@ -37,7 +38,8 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 }
 
 /*
-**		Reads a path and checks the extension is .xpm or .XPM
+**		Reads a path, checks wether the extension is .xpm or .XPM and
+**		stores it in a pointer given as parameter
 */
 
 t_bool	read_path(char *line, char **path_to_texture)
@@ -59,27 +61,7 @@ t_bool	read_path(char *line, char **path_to_texture)
 }
 
 /*
-**		Checks there are only numbers and commas
-*/
-
-t_bool	check_color_characters(char *line)
-{
-	int commas;
-
-	commas = 0;
-	while (*line == ',' || ft_isdigit(*line))
-	{
-		if (*line == ',')
-			commas++;
-		line++;
-	}
-	if (*line || commas > 2)
-		return (false);
-	return (true);
-}
-
-/*
-**		Reads a color definition
+**		Reads a color definition and stores it formated in an int
 */
 
 t_bool	read_color(char *line, int *color)
@@ -102,5 +84,25 @@ t_bool	read_color(char *line, int *color)
 	if (colors[0] > 255 || colors[1] > 255 || colors[2] > 255)
 		return (print_error("Incorrect rgb values, max should be 255"));
 	*color = create_trgb(0, colors[0], colors[1], colors[2]);
+	return (true);
+}
+
+/*
+**		Checks there are only numbers and commas
+*/
+
+t_bool	check_color_characters(char *line)
+{
+	int commas;
+
+	commas = 0;
+	while (*line == ',' || ft_isdigit(*line))
+	{
+		if (*line == ',')
+			commas++;
+		line++;
+	}
+	if (*line || commas > 2)
+		return (false);
 	return (true);
 }
