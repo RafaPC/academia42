@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 12:07:12 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 12:58:10 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 20:36:57 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,23 @@
 
 void	free_and_close(t_vars *vars)
 {
-	free_textures(vars->mlx.mlx, vars->textures);
-	free_map(vars->map);
+	if (vars->mlx.mlx)
+		free_textures(vars->mlx.mlx, vars->textures);
+	if (vars->map)
+		free_map(vars->map);
 	if (vars->distances)
 		free(vars->distances);
 	ft_lstclear(&vars->sprite, free);
-	mlx_destroy_image(vars->mlx.mlx, vars->mlx.img->img);
+	if (vars->mlx.img)
+		mlx_destroy_image(vars->mlx.mlx, vars->mlx.img->img);
 	if (vars->mlx.img)
 		free(vars->mlx.img);
 	if (vars->mlx.win)
 		mlx_destroy_window(vars->mlx.mlx, vars->mlx.win);
 	if (vars->mlx.mlx)
 		mlx_destroy_display(vars->mlx.mlx);
-	free(vars->mlx.mlx);
+	if (vars->mlx.mlx)
+		free(vars->mlx.mlx);
 	exit(0);
 }
 

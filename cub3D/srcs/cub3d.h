@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 19:40:32 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 21:10:28 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,7 @@ t_bool			check_info_ids(t_bool info_id[8]);
 t_bool			print_error(const char *msg);
 t_bool			print_error_line(const char *msg, char *line);
 t_bool			print_error_map(const char *msg, int row, int col);
+t_bool			print_error_texture(const char *file);
 /*
 **				READ MAP
 */
@@ -271,13 +272,14 @@ int				get_map_height(t_list *line);
 */
 void			start_game(t_program_params program_params, t_bool save_img);
 void			set_hooks(t_vars *vars);
+void			set_window_size(t_vars *vars, int window_width,
+int window_height);
 /*
 **				INITIALICE GAME VARIABLES
 */
+void			init_to_null(t_vars *vars);
 t_bool			init_game_variables(t_vars *vars, t_program_params params);
 void			init_game_variables2(t_vars *vars, t_program_params params);
-void			set_window_size(t_vars *vars, int window_width,
-int window_height);
 t_bool			init_textures(void *mlx, t_textures
 *textures, t_program_params params);
 t_bool			init_texture(void *mlx, t_texture *text, char *file);

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 17:21:59 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 17:27:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 21:10:05 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,16 @@ t_bool	print_error_map(const char *msg, int row, int col)
 {
 	print_error(msg);
 	ft_printf("In the map row %i and col %i\n", row + 1, col + 1);
+	return (false);
+}
+
+/*
+**		Prints a texture error message and the texture that failed
+*/
+
+t_bool	print_error_texture(const char *file)
+{
+	print_error("Failed to initialice a texture");
+	ft_printf("Texture that failed: %s\n", file);
 	return (false);
 }

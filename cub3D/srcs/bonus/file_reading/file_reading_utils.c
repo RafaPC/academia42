@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 11:50:31 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 21:13:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,4 @@ t_bool	check_info_ids(t_bool info_id[10])
 			completed = false;
 	}
 	return (completed);
-}
-
-/*
-**		Receives a string and prints it with "Error\n" before it
-*/
-
-t_bool	print_error(const char *msg)
-{
-	ft_printf("Error\n%s\n", msg);
-	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 19:03:24 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 02:10:33 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 22:59:18 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	draw_sprite_column(t_vars vars, t_sprite sprite, int drawing_position)
 		y_position / ((float)sprite.size_half * 2));
 		if (get_transparency(pixel) != 255 && pixel != 0)
 			put_pixel(vars.mlx.img, drawing_position,
-			y_draw_coord, pixel);
+			y_draw_coord, add_shade(sprite.distance, pixel));
 		y_position++;
 		y_draw_coord++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 16:24:58 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 15:33:20 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 22:57:23 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int		add_shade(float distance, int color)
 	r = (int)((color & (0xFF << 16)) >> 16);
 	g = (int)((color & (0xFF << 8)) >> 8);
 	b = (int)(color & 0xFF);
-	distance /= 30;
+	distance /= 40;
+	if (distance > 0.9)
+		distance = 0.9;
 	r = r - (r * distance);
 	g = g - (g * distance);
 	b = b - (b * distance);
