@@ -6,18 +6,29 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2021/01/03 13:58:49 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/01/03 16:34:52 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D
 NAME_BONUS = cub3D_bonus
-CUB3D_A = cub3d.a
+#LOCAL LIBRARIES
+MLX_A = local_libs/mlx/libmlx.a
 LIBFT_A = libft.a
-LIB_DIR = libft
-INCLUDES = -Ilibft -Imlx -I../printf
+PRINTF_A = libftprintf.a
+#ALL LIBRARIES INTO ONE VARIABLE
+LIBS = ${MLX_A} ${LIBFT_A} ${PRINTF_A}
+#LIBRARIES DIRECTORIES
+LIB_DIR = local_libs/libft
+PRINTF_DIR = local_libs/printf
+#INCLUDES
+INCLUDES = -Ilocal_libs/libft -Ilocal_libs/mlx -Ilocal_libs/printf
+#EXTERNAL LIBRARIES (NOT LOCAL)
 LIBRARIES = -lXext -lX11 -lm
+#COMPILER AND FLAGS
 CC = gcc
+FLAGS = -Wall -Wextra -Werror
+#SOURCE FILES
 SRCS =	srcs/main.c								\
 		srcs/file_reading/check_file.c			\
 		srcs/file_reading/file_reading_utils.c 	\
@@ -38,6 +49,7 @@ SRCS =	srcs/main.c								\
 		srcs/game/movement.c					\
 		srcs/game/free_memory.c					\
 		srcs/game/screenshot.c
+#BONUS SOURCE FILES
 SRCS_BONUS = srcs/bonus/main.c							\
 		srcs/bonus/file_reading/check_file.c			\
 		srcs/bonus/file_reading/file_reading_utils.c	\
@@ -58,6 +70,7 @@ SRCS_BONUS = srcs/bonus/main.c							\
 		srcs/bonus/game/movement.c						\
 		srcs/bonus/game/free_memory.c					\
 		srcs/bonus/game/screenshot.c
+#OBJECT FILES
 OBJS =	objs/main.o					\
 		objs/check_file.o			\
 		objs/file_reading_utils.o	\
@@ -78,6 +91,7 @@ OBJS =	objs/main.o					\
 		objs/movement.o				\
 		objs/free_memory.o			\
 		objs/screenshot.o
+#BONUS OBJECT FILES
 OBJS_BONUS =	objs/bonus/main.o			\
 		objs/bonus/check_file.o				\
 		objs/bonus/file_reading_utils.o		\
@@ -98,43 +112,47 @@ OBJS_BONUS =	objs/bonus/main.o			\
 		objs/bonus/movement.o				\
 		objs/bonus/free_memory.o			\
 		objs/bonus/screenshot.o
-FLAGS = -Wall -Wextra -Werror
+
 
 all: ${NAME}
 
-${NAME}:	${OBJS}
-				make -C ../printf
-				cp ../printf/libftprintf.a .
-				make bonus -C ${LIB_DIR}
-				cp ${LIB_DIR}/${LIBFT_A} .
-				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} -Isrcs ${INCLUDES} ${OBJS} ${CUB3D_A} libftprintf.a mlx/libmlx.a ${LIBRARIES} -o ${NAME}
+${NAME}:	${OBJS} ${LIBFT_A} ${PRINTF_A}
+				${CC} ${FLAGS} -Isrcs ${INCLUDES} ${OBJS} ${LIBS} ${LIBRARIES} -o ${NAME}
+
 ${OBJS}: 	${SRCS}
 				${CC} ${FLAGS} -Isrcs ${INCLUDES} -c ${SRCS}
 				mv ./*.o objs/
+
 bonus:		${NAME_BONUS}
-${NAME_BONUS}:	${OBJS_BONUS}
-				make -C ../printf
-				cp ../printf/libftprintf.a .
-				make bonus -C ${LIB_DIR}
-				cp ${LIB_DIR}/${LIBFT_A} .
-				mv ${LIBFT_A} ${CUB3D_A}
-				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} ${OBJS_BONUS} ${CUB3D_A} libftprintf.a mlx/libmlx.a ${LIBRARIES} -o ${NAME_BONUS}
+
+${NAME_BONUS}:	${OBJS_BONUS} ${LIBFT_A} ${PRINTF_A}
+				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} ${OBJS_BONUS} ${LIBS} ${LIBRARIES} -o ${NAME_BONUS}
+
 ${OBJS_BONUS}:	${SRCS_BONUS}
 				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} -c ${SRCS_BONUS}
 				mv ./*.o objs/bonus/
+
+#HOW TO COMPILE LOCAL LIBRARIES (MLX ALREADY COMPILED)
+${LIBFT_A}:
+				make bonus -C ${LIB_DIR}
+				cp ${LIB_DIR}/${LIBFT_A} .
+${PRINTF_A}:
+				make -C ${PRINTF_DIR}
+				cp ${PRINTF_DIR}/${PRINTF_A} .
+
 clean:
 		rm -f ${OBJS}
 		rm -f ${OBJS_BONUS}
-		make -C ${LIB_DIR} clean
-		
+		rm -f ${LIBFT_A}
+		rm -f ${PRINTF_A}
+		make clean -C ${LIB_DIR}
+		make clean -C ${PRINTF_DIR}
+
 fclean: clean
 		rm -f ${NAME}
 		rm -f ${NAME_BONUS}
-		rm -f ${CUB3D_A}
-		rm -f ${LIBFT_A}
-		rm -f libftprintf.a
-		make -C ${LIB_DIR} fclean
+		make fclean -C ${LIB_DIR}
+		make fclean -C ${PRINTF_DIR}
 		
 re: fclean all
 

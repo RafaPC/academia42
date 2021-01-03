@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 15:56:05 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 16:39:03 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "libft.h"
 
 /*
-**		
+**		Calls the appropiate functions to render one frame
 */
 
 void	render_once(t_vars *vars)
