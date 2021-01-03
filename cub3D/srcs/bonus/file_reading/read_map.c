@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 11:46:25 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:36:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,25 @@ t_bool	read_map(t_list *line_elem, t_program_params *program_params)
 t_bool	check_map_characters(char **map, int y, int x,
 t_program_params *params)
 {
+	char c;
+
 	while (map[y])
 	{
-		x = 0;
-		while (map[y][x])
+		x = -1;
+		while (map[y][++x])
 		{
-			if (map[y][x] == 'N' || map[y][x] == 'S' ||
-			map[y][x] == 'E' || map[y][x] == 'W')
+			c = map[y][x];
+			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
-				if (!set_player_parameters(map[y][x], y, x, params))
-					return (print_error(
-						"At least two player character found (N, S, E, W)"));
+				if (!set_player_parameters(c, y, x, params))
+					return (print_error_map(
+					"At least two player character found (N, S, E, W)", y, x));
 			}
-			else if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != '2'
-			&& map[y][x] != '3' && map[y][x] != '4' && map[y][x] != ' ')
-				return (print_error("Wrong char found in the map"));
+			else if (c != '0' && c != '1' && c != '2'
+			&& c != '3' && c != '4' && c != ' ')
+				return (print_error_map("Wrong char found in the map", y, x));
 			if (!map_is_closed(map, y, x))
-				return (print_error("Map not closed by walls"));
-			x++;
+				return (print_error_map("Map not closed by walls", y, x));
 		}
 		y++;
 	}

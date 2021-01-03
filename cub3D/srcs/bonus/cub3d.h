@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 13:44:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 19:40:40 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,31 @@
 
 # include "libft.h"
 # define PI 3.141592
+
+/*
+**		 FIELD OF VIEW
+*/
 # define FOV 0.785398
+
+/*
+**	DISPLAY TEXT COLOR
+*/
 # define TEXT_COLOR 4294967295
 
 /*
 **	KEYBOARD DEFINES
 */
+
 # define ESC_KEY			65307
 # define ARROW_UP_KEY		65362
 # define ARROW_LEFT_KEY		65361
 # define ARROW_RIGHT_KEY	65363
 # define ARROW_DOWN_KEY		65364
 # define LEFT_CTRL_KEY		65507
+
+/*
+**		FILE READING ENUM
+*/
 
 typedef enum	e_info_id
 {
@@ -42,6 +55,9 @@ typedef enum	e_info_id
 	id_color_ceilling
 }				t_info_id;
 
+/*
+**		CUB PARAMETERS STRUCT
+*/
 typedef struct	s_program_params
 {
 	int			window_width;
@@ -61,6 +77,9 @@ typedef struct	s_program_params
 	char		**map;
 }				t_program_params;
 
+/*
+**		IMAGE DATA
+*/
 typedef struct	s_data
 {
 	void		*img;
@@ -70,6 +89,9 @@ typedef struct	s_data
 	int			endian;
 }				t_data;
 
+/*
+**		STRUCT TO GROUP THE KEYS
+*/
 typedef struct	s_keys
 {
 	t_bool		w;
@@ -83,10 +105,6 @@ typedef struct	s_keys
 	t_bool		left_ctrl;
 }				t_keys;
 
-/*
-**RAYCASTING
-*/
-
 typedef enum	e_wall_face
 {
 	north_face,
@@ -95,6 +113,9 @@ typedef enum	e_wall_face
 	west_face
 }				t_wall_face;
 
+/*
+**		TEXTURE INFO STRUCT
+*/
 typedef struct	s_texture
 {
 	int		width;
@@ -102,6 +123,9 @@ typedef struct	s_texture
 	t_data	data;
 }				t_texture;
 
+/*
+**		SPRITE INFO STRUCT
+*/
 typedef struct	s_sprite
 {
 	float			x;
@@ -113,6 +137,9 @@ typedef struct	s_sprite
 	t_texture		texture;
 }				t_sprite;
 
+/*
+**		MLX VARIABLES STRUCT
+*/
 typedef struct	s_mlx
 {
 	void		*mlx;
@@ -120,6 +147,9 @@ typedef struct	s_mlx
 	t_data		*img;
 }				t_mlx;
 
+/*
+**		PLAYER INFORMATION STRUCT
+*/
 typedef struct	s_player_vars
 {
 	float	x;
@@ -129,6 +159,9 @@ typedef struct	s_player_vars
 	float	angle;
 }				t_player_vars;
 
+/*
+**		STRUCT TO GROUP TEXTURES
+*/
 typedef struct	s_textures
 {
 	t_texture		wall_north;
@@ -139,6 +172,10 @@ typedef struct	s_textures
 	t_texture		sprite_2;
 	t_texture		sprite_3;
 }				t_textures;
+
+/*
+**		MAIN STRUCTURE
+*/
 
 typedef struct	s_vars
 {
@@ -161,12 +198,9 @@ typedef struct	s_vars
 	int				score;
 }				t_vars;
 
-typedef enum	e_ray_direction
-{
-	vertical,
-	horizontal
-}				t_ray_direction;
-
+/*
+**	STRUCT USED FOR DRAWING
+*/
 typedef struct	s_coords
 {
 	int			start_x;
@@ -174,9 +208,16 @@ typedef struct	s_coords
 	int			end_x;
 	int			end_y;
 }				t_coords;
+
 /*
-**	RAYCASTING
+**		RAYCASTING
 */
+typedef enum	e_ray_direction
+{
+	vertical,
+	horizontal
+}				t_ray_direction;
+
 typedef struct	s_ray
 {
 	float			tang;
@@ -196,11 +237,19 @@ typedef struct	s_ray
 }				t_ray;
 
 /*
-**			MAIN
+**			-------------------------------------------------
+**						FUNCTIONS PROTOTYPES
+**			-------------------------------------------------
+**
+**
+**				MAIN
 */
 t_bool			check_arguments(t_bool *save_img, int argc, char **argv);
 /*
-**			READ CUB FILE
+**			-------------------------------------------------
+**						FILE READING FUNCTIONS
+**			-------------------------------------------------
+**				CHECK FILE
 */
 t_bool			get_cub_data(t_program_params *program_params,
 const char *file_path);
@@ -211,21 +260,26 @@ t_bool			get_info(t_info_id info_id, char *line,
 t_program_params *params);
 t_info_id		search_identifier(char *line);
 /*
-**			READ INFO
+**				READ INFO
 */
 t_bool			read_resolution(char *line, t_program_params *program_params);
 t_bool			read_path(char *line, char **path_to_texture);
 t_bool			read_color(char *line, int *color);
 t_bool			check_color_characters(char *line);
 /*
-**			FILE READING UTILS
+**				FILE READING UTILS
 */
 void			initialice_program_params(t_program_params *program_params);
 void			initialice_info_ids(t_bool info_id[10]);
 t_bool			check_info_ids(t_bool info_id[10]);
-t_bool			print_error(const char *msg);
 /*
-**			READ MAP
+**				ERROR MESSAGES
+*/
+t_bool			print_error(const char *msg);
+t_bool			print_error_line(const char *msg, char *line);
+t_bool			print_error_map(const char *msg, int row, int col);
+/*
+**				READ MAP
 */
 t_bool			read_map(t_list *line, t_program_params *program_params);
 t_bool			check_map_characters(char **map, int y, int x,
@@ -235,12 +289,15 @@ t_bool			set_player_parameters(char angle_char, int y, int x,
 t_program_params *params);
 int				get_map_height(t_list *line);
 /*
-**			START GAME
+**			------------------------------------------------
+**							GAME FUNCTIONS
+**			------------------------------------------------
+**				START GAME
 */
 void			start_game(t_program_params program_params, t_bool save_img);
 void			set_hooks(t_vars *vars);
 /*
-**			INITIALICE GAME VARIABLES
+**				INITIALICE GAME VARIABLES
 */
 t_bool			init_game_variables(t_vars *vars, t_program_params params);
 void			init_game_variables2(t_vars *vars, t_program_params params);
@@ -250,37 +307,37 @@ t_bool			init_textures(void *mlx, t_textures
 *textures, t_program_params params);
 t_bool			init_texture(void *mlx, t_texture *text, char *file);
 /*
-**			RGB UTILS
+**				RGB UTILS
 */
 int				create_trgb(int t, int r, int g, int b);
 int				get_transparency(int color);
 int				add_shade(float distance, int color);
 /*
-**			DRAWING UTILS
+**				DRAWING UTILS
 */
 void			draw_square(t_coords coords, int color, t_data *img);
 t_coords		get_coords_struct(int x_start, int y_start, int x_end,
 int y_end);
 /*
-**			PIXEL UTILS
+**				PIXEL UTILS
 */
 void			put_pixel(t_data *data, int x, int y, int color);
 int				get_pixel(t_data image, int x, int y);
 /*
-**			TEXTURE UTILS
+**				TEXTURE UTILS
 */
 int				get_wall_color(t_textures textures, t_wall_face wall_face,
 float x, float y);
 int				get_image_color(t_texture texture, float x, float y);
 /*
-**			RENDER SPRITES
+**				RENDER SPRITES
 */
 void			render_sprites(t_vars *vars);
 void			draw_sprite(t_vars vars, t_sprite sprite);
 void			draw_sprite_column(t_vars vars, t_sprite sprite,
 int drawing_position);
 /*
-**			RENDER
+**				RENDER
 */
 void			render_once(t_vars *vars);
 int				render_screen(t_vars *vars);
@@ -289,7 +346,7 @@ int window_x);
 void			render_ceil_and_floor(t_vars *vars, int x_coord);
 void			display_score(t_vars vars);
 /*
-**			RAYCASTING
+**				RAYCASTING
 */
 void			raycast(t_vars *vars);
 float			get_distance_to_wall(t_vars *vars, float angle, int x_window,
@@ -298,7 +355,7 @@ void			init_ray_values(t_ray *ray, t_player_vars player, float angle);
 void			init_ray_values2(t_ray *ray, float angle);
 void			sum_distance(t_ray *ray, t_player_vars player);
 /*
-**			RAYCASTING UTILS
+**				RAYCASTING UTILS
 */
 float			get_x_intercept_length(t_ray ray, t_player_vars player);
 float			get_y_intercept_length(t_ray ray, t_player_vars player);
@@ -307,14 +364,14 @@ void			set_tile_crossed(t_ray *ray, char **map);
 void			check_sprite_crossed(t_ray ray, char tile_crossed,
 t_vars *vars);
 /*
-**			HOOKS
+**				HOOKS
 */
 int				on_key_pressed(int keycode, t_vars *vars);
 int				on_key_released(int keycode, t_vars *vars);
 int				on_window_focused(t_vars *vars);
 int				on_window_closed(t_vars *vars);
 /*
-**			MOVEMENT
+**				MOVEMENT
 */
 void			check_movement(t_vars *vars, t_keys keys);
 void			move(t_player_vars *player, char **map, float angle,
@@ -324,7 +381,7 @@ t_bool			is_moving(t_keys keys, t_vars vars);
 t_bool			blocks_movement(char c);
 
 /*
-**			SPRITE UTILS
+**				SPRITE UTILS
 */
 void			add_sprite_coords(float x, float y, t_vars *vars,
 t_texture texture);
@@ -332,14 +389,14 @@ void			order_sprites(t_list *sprite_list);
 void			calculate_sprite_info(t_sprite *sprite, t_player_vars player,
 t_vars vars);
 /*
-**			FREE MEMORY
+**				FREE MEMORY
 */
 void			free_and_close(t_vars *vars);
 void			free_textures(void *mlx, t_textures textures);
 void			free_map(char **map);
 void			free_program_params(t_program_params params);
 /*
-**			SCREENSHOT
+**				SCREENSHOT
 */
 void			take_screenshot(t_vars vars);
 void			save_image(t_data render, t_vars vars);

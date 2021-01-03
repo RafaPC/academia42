@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 13:24:39 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:50:17 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_bool		save_file_lines(t_list **file_content, const char *file_path)
 */
 
 t_bool		read_file_lines(t_list *line_elem,
-t_program_params *program_params, t_info_id info_id, t_bool info_id_list[10])
+t_program_params *program_params, t_info_id info_id, t_bool info_id_list[8])
 {
 	char	*line;
 
@@ -88,11 +88,11 @@ t_program_params *program_params, t_info_id info_id, t_bool info_id_list[10])
 			if ((info_id = search_identifier(line)))
 			{
 				if (info_id_list[info_id - 1] == true)
-					return (print_error("Parameter repeated"));
+					return (print_error_line("Parameter repeated", line));
 				info_id_list[info_id - 1] = true;
 			}
 			else
-				return (print_error("Wrong identifier"));
+				return (print_error_line("Wrong identifier", line));
 			if (!get_info(info_id, line, program_params))
 				return (false);
 		}

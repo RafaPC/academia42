@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2021/01/03 16:34:52 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/01/03 17:29:18 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ FLAGS = -Wall -Wextra -Werror
 SRCS =	srcs/main.c								\
 		srcs/file_reading/check_file.c			\
 		srcs/file_reading/file_reading_utils.c 	\
+		srcs/file_reading/error_messages.c		\
 		srcs/file_reading/read_info.c			\
 		srcs/file_reading/read_map.c			\
 		srcs/game/main_game.c					\
@@ -53,6 +54,7 @@ SRCS =	srcs/main.c								\
 SRCS_BONUS = srcs/bonus/main.c							\
 		srcs/bonus/file_reading/check_file.c			\
 		srcs/bonus/file_reading/file_reading_utils.c	\
+		srcs/bonus/file_reading/error_messages.c		\
 		srcs/bonus/file_reading/read_info.c				\
 		srcs/bonus/file_reading/read_map.c				\
 		srcs/bonus/game/main_game.c						\
@@ -74,6 +76,7 @@ SRCS_BONUS = srcs/bonus/main.c							\
 OBJS =	objs/main.o					\
 		objs/check_file.o			\
 		objs/file_reading_utils.o	\
+		objs/error_messages.o		\
 		objs/read_info.o			\
 		objs/read_map.o				\
 		objs/main_game.o			\
@@ -95,6 +98,7 @@ OBJS =	objs/main.o					\
 OBJS_BONUS =	objs/bonus/main.o			\
 		objs/bonus/check_file.o				\
 		objs/bonus/file_reading_utils.o		\
+		objs/bonus/error_messages.o			\
 		objs/bonus/read_info.o				\
 		objs/bonus/read_map.o				\
 		objs/bonus/main_game.o				\

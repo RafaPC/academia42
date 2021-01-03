@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:10:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 13:43:48 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:57:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 /*
 **		Moves the player in an angle with a determined velocity
-**		checking collisions TODO:
+**		checking collisions
 */
 
 void	move(t_player_vars *player, char **map, float angle, float velocity)
@@ -34,7 +34,7 @@ void	move(t_player_vars *player, char **map, float angle, float velocity)
 	if (!blocks_movement(map[new_y][new_x]))
 	{
 		player->x += pdx * (0.1 * velocity);
-		player->y -= pdy * (0.1 * velocity);	
+		player->y -= pdy * (0.1 * velocity);
 	}
 }
 

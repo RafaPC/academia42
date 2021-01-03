@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 15:33:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:50:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ t_program_params *program_params, t_info_id info_id, t_bool info_id_list[10])
 			if ((info_id = search_identifier(line)))
 			{
 				if (info_id_list[info_id - 1] == true)
-					return (print_error("Parameter repeated"));
+					return (print_error_line("Parameter repeated", line));
 				info_id_list[info_id - 1] = true;
 			}
 			else
-				return (print_error("Wrong identifier"));
+				return (print_error_line("Wrong identifier", line));
 			if (!get_info(info_id, line, program_params))
 				return (false);
 		}

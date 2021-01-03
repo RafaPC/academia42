@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:23:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 13:30:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 19:40:32 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,22 @@
 
 # include "libft.h"
 # define PI 3.141592
+
+/*
+**		 FIELD OF VIEW
+*/
 # define FOV 0.785398
 
 /*
-**	KEYBOARD DEFINES
+**		 KEYBOARD DEFINES
 */
 # define ESC_KEY			65307
 # define ARROW_LEFT_KEY		65361
 # define ARROW_RIGHT_KEY	65363
 
+/*
+**		FILE READING ENUM
+*/
 typedef enum	e_info_id
 {
 	id_resolution = 1,
@@ -36,6 +43,9 @@ typedef enum	e_info_id
 	id_color_ceilling
 }				t_info_id;
 
+/*
+**		CUB PARAMETERS STRUCT
+*/
 typedef struct	s_program_params
 {
 	int			window_width;
@@ -53,6 +63,9 @@ typedef struct	s_program_params
 	char		**map;
 }				t_program_params;
 
+/*
+**		IMAGE DATA
+*/
 typedef struct	s_data
 {
 	void		*img;
@@ -62,6 +75,9 @@ typedef struct	s_data
 	int			endian;
 }				t_data;
 
+/*
+**		STRUCT TO GROUP THE KEYS
+*/
 typedef struct	s_keys
 {
 	t_bool		w;
@@ -72,10 +88,6 @@ typedef struct	s_keys
 	t_bool		right_arrow;
 }				t_keys;
 
-/*
-**RAYCASTING
-*/
-
 typedef enum	e_wall_face
 {
 	north_face,
@@ -84,24 +96,32 @@ typedef enum	e_wall_face
 	west_face
 }				t_wall_face;
 
+/*
+**		TEXTURE INFO STRUCT
+*/
 typedef struct	s_texture
 {
-	int		width;
-	int		height;
-	t_data	data;
+	int			width;
+	int			height;
+	t_data		data;
 }				t_texture;
 
+/*
+**		SPRITE INFO STRUCT
+*/
 typedef struct	s_sprite
 {
-	float			x;
-	float			y;
-	float			distance;
-	int				size_half;
-	int				center_x;
-	int				center_y;
-	t_texture		texture;
+	float		x;
+	float		y;
+	float		distance;
+	int			size_half;
+	int			center_x;
+	int			center_y;
 }				t_sprite;
 
+/*
+**		MLX VARIABLES STRUCT
+*/
 typedef struct	s_mlx
 {
 	void		*mlx;
@@ -109,24 +129,33 @@ typedef struct	s_mlx
 	t_data		*img;
 }				t_mlx;
 
+/*
+**		PLAYER INFORMATION STRUCT
+*/
 typedef struct	s_player_vars
 {
-	float	x;
-	float	y;
-	float	dx;
-	float	dy;
-	float	angle;
+	float		x;
+	float		y;
+	float		dx;
+	float		dy;
+	float		angle;
 }				t_player_vars;
 
+/*
+**		STRUCT TO GROUP TEXTURES
+*/
 typedef struct	s_textures
 {
-	t_texture		wall_north;
-	t_texture		wall_south;
-	t_texture		wall_east;
-	t_texture		wall_west;
-	t_texture		sprite;
+	t_texture	wall_north;
+	t_texture	wall_south;
+	t_texture	wall_east;
+	t_texture	wall_west;
+	t_texture	sprite;
 }				t_textures;
 
+/*
+**		MAIN STRUCTURE
+*/
 typedef struct	s_vars
 {
 	t_mlx			mlx;
@@ -144,12 +173,9 @@ typedef struct	s_vars
 	int				max_col_height;
 }				t_vars;
 
-typedef enum	e_ray_direction
-{
-	vertical,
-	horizontal
-}				t_ray_direction;
-
+/*
+**		STRUCT USED FOR DRAWING
+*/
 typedef struct	s_coords
 {
 	int			start_x;
@@ -157,9 +183,16 @@ typedef struct	s_coords
 	int			end_x;
 	int			end_y;
 }				t_coords;
+
 /*
-**	RAYCASTING
+**		RAYCASTING
 */
+typedef enum	e_ray_direction
+{
+	vertical,
+	horizontal
+}				t_ray_direction;
+
 typedef struct	s_ray
 {
 	float			tang;
@@ -179,7 +212,12 @@ typedef struct	s_ray
 }				t_ray;
 
 /*
-**			MAIN
+**			-------------------------------------------------
+**							FUNCTIONS PROTOTYPES
+**			-------------------------------------------------
+**
+**
+**				MAIN
 */
 t_bool			check_arguments(t_bool *save_img, int argc, char **argv);
 /*
@@ -209,7 +247,12 @@ t_bool			check_color_characters(char *line);
 void			initialice_program_params(t_program_params *program_params);
 void			initialice_info_ids(t_bool info_id[8]);
 t_bool			check_info_ids(t_bool info_id[8]);
+/*
+**				ERROR MESSAGES
+*/
 t_bool			print_error(const char *msg);
+t_bool			print_error_line(const char *msg, char *line);
+t_bool			print_error_map(const char *msg, int row, int col);
 /*
 **				READ MAP
 */
@@ -245,7 +288,7 @@ int				create_trgb(int t, int r, int g, int b);
 int				get_transparency(int color);
 int				add_shade(float distance, int color);
 /*
-**			DRAWING UTILS
+**				DRAWING UTILS
 */
 void			draw_square(t_coords coords, int color, t_data *img);
 t_coords		get_coords_struct(int x_start, int y_start, int x_end,

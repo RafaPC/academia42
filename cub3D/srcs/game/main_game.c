@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:39:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 12:13:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:41:12 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	start_game(t_program_params params, t_bool screenshot)
 void	set_hooks(t_vars *vars)
 {
 	mlx_hook(vars->mlx.win, KeyPress, KeyPressMask, on_key_pressed, vars);
-	mlx_hook(vars->mlx.win, KeyRelease, KeyReleaseMask, on_key_released, &vars->keys_pressed);
+	mlx_hook(vars->mlx.win, KeyRelease, KeyReleaseMask, on_key_released,
+	&vars->keys_pressed);
 	mlx_hook(vars->mlx.win, FocusIn, FocusChangeMask, on_window_focused, vars);
 	mlx_hook(vars->mlx.win, ClientMessage, NoEventMask,
 		on_window_closed, vars);

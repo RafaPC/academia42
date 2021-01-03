@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:38:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 16:38:45 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 17:56:54 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	render_column(t_vars *vars, float distance, float wall_x, int window_x)
 
 	column_height = (int)(vars->max_col_height / distance);
 	render_ceil_and_floor(vars, window_x);
-	y_start = vars->window_height / 2 - column_height / 2;;
+	y_start = vars->window_height / 2 - column_height / 2;
 	y = y_start < 0 ? -y_start : 0;
 	while (y < column_height && y_start + y < vars->window_height)
 	{
@@ -68,7 +68,6 @@ void	render_column(t_vars *vars, float distance, float wall_x, int window_x)
 
 /*
 **		Renders the ceil and floor for one column of the window
-**		TODO: coger el tamaño de columna
 */
 
 void	render_ceil_and_floor(t_vars *vars, int x_coord)
