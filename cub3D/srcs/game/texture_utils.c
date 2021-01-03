@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 10:16:04 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 11:44:50 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/02 23:25:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ float x, float y)
 	else if (wall_face == east_face)
 		texture = textures.wall_east;
 	else if (wall_face == west_face)
-		texture = textures.wall_east;
+		texture = textures.wall_west;
 	return (get_image_color(texture, x, y));
 }
 

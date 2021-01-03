@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 16:24:58 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/02 11:45:21 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 01:51:38 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,4 @@ int		create_trgb(int t, int r, int g, int b)
 int		get_transparency(int color)
 {
 	return ((color & (0xFF << 24)) >> 24);
-}
-
-/*
-**		Receives a distance and a color and returns the color
-**		as darker as longer the distance
-*/
-
-int		add_shade(float distance, int color)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	r = (int)((color & (0xFF << 16)) >> 16);
-	g = (int)((color & (0xFF << 8)) >> 8);
-	b = (int)(color & 0xFF);
-	distance /= 30;
-	r = r - (r * distance);
-	g = g - (g * distance);
-	b = b - (b * distance);
-	return (create_trgb(get_transparency(color), r, g, b));
 }
