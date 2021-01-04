@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/17 15:36:35 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 17:50:17 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/03 23:31:49 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_program_params *program_params, t_info_id info_id, t_bool info_id_list[8])
 		}
 		line_elem = line_elem->next;
 	}
-	if (!check_info_ids(info_id_list))
+	if (!check_info_ids(info_id_list) || !line_elem)
 		return (print_error("Missing parameter in .cub file"));
 	return (read_map(line_elem, program_params));
 }

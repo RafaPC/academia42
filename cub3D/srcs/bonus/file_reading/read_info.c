@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 12:56:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/01 19:37:20 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/04 00:17:01 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,17 @@ t_bool	read_resolution(char *line, t_program_params *program_params)
 	while (*line == ' ')
 		line++;
 	program_params->window_width = ft_atoi(line);
+	if (!program_params->window_width)
+		return (print_error("Window width must be greater than 0"));
 	while (ft_isdigit(*line))
 		line++;
 	while (*line == ' ')
 		line++;
+	if (!(ft_isdigit(*line) && *(line - 1) == ' '))
+		return (print_error("Only one number defined in resolution"));
 	program_params->window_height = ft_atoi(line);
+	if (!program_params->window_height)
+		return (print_error("Window height must be greather than 0"));
 	while (ft_isdigit(*line))
 		line++;
 	if (!(ft_isdigit(*(line - 1)) && *line == '\0'))
@@ -56,7 +62,7 @@ t_bool	read_path(char *line, char **path_to_texture)
 	ft_strlcpy(*path_to_texture, line, path_length + 1);
 	if (ft_strncmp("XPM", &(*path_to_texture)[path_length - 3], 3)
 	&& ft_strncmp("xpm", &(*path_to_texture)[path_length - 3], 3))
-		return (print_error("Wrong extension of file"));
+		return (print_error_line("Wrong extension of file", line));
 	return (correct);
 }
 
@@ -71,7 +77,7 @@ t_bool	read_color(char *line, int *color)
 	while (*line == ' ')
 		line++;
 	if (!check_color_characters(line))
-		return (print_error("Invalid character in color definition"));
+		return (print_error_line("Invalid char in color definition", line));
 	colors[0] = ft_atoi(line);
 	while (ft_isdigit(*line))
 		line++;
@@ -102,7 +108,7 @@ t_bool	check_color_characters(char *line)
 			commas++;
 		line++;
 	}
-	if (*line || commas > 2)
+	if (*line || commas > 2 || !ft_isdigit(*(line - 1)))
 		return (false);
 	return (true);
 }
