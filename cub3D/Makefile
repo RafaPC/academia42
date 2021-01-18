@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2021/01/03 17:29:18 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/01/04 02:35:18 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MLX_A = local_libs/mlx/libmlx.a
 LIBFT_A = libft.a
 PRINTF_A = libftprintf.a
 #ALL LIBRARIES INTO ONE VARIABLE
-LIBS = ${MLX_A} ${LIBFT_A} ${PRINTF_A}
+LOCAL_LIBS = ${MLX_A} ${LIBFT_A} ${PRINTF_A}
 #LIBRARIES DIRECTORIES
 LIB_DIR = local_libs/libft
 PRINTF_DIR = local_libs/printf
@@ -121,19 +121,21 @@ OBJS_BONUS =	objs/bonus/main.o			\
 all: ${NAME}
 
 ${NAME}:	${OBJS} ${LIBFT_A} ${PRINTF_A}
-				${CC} ${FLAGS} -Isrcs ${INCLUDES} ${OBJS} ${LIBS} ${LIBRARIES} -o ${NAME}
+				${CC} ${FLAGS} -Isrcs ${INCLUDES} ${OBJS} ${LOCAL_LIBS} ${LIBRARIES} -o ${NAME}
 
 ${OBJS}: 	${SRCS}
 				${CC} ${FLAGS} -Isrcs ${INCLUDES} -c ${SRCS}
+				mkdir --parents ./objs/
 				mv ./*.o objs/
 
 bonus:		${NAME_BONUS}
 
 ${NAME_BONUS}:	${OBJS_BONUS} ${LIBFT_A} ${PRINTF_A}
-				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} ${OBJS_BONUS} ${LIBS} ${LIBRARIES} -o ${NAME_BONUS}
+				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} ${OBJS_BONUS} ${LOCAL_LIBS} ${LIBRARIES} -o ${NAME_BONUS}
 
 ${OBJS_BONUS}:	${SRCS_BONUS}
 				${CC} ${FLAGS} -Isrcs/bonus ${INCLUDES} -c ${SRCS_BONUS}
+				mkdir --parents ./objs/bonus/
 				mv ./*.o objs/bonus/
 
 #HOW TO COMPILE LOCAL LIBRARIES (MLX ALREADY COMPILED)
@@ -145,10 +147,9 @@ ${PRINTF_A}:
 				cp ${PRINTF_DIR}/${PRINTF_A} .
 
 clean:
-		rm -f ${OBJS}
-		rm -f ${OBJS_BONUS}
 		rm -f ${LIBFT_A}
 		rm -f ${PRINTF_A}
+		rm -rf ./objs/
 		make clean -C ${LIB_DIR}
 		make clean -C ${PRINTF_DIR}
 

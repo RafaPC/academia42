@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 12:17:17 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/01/03 23:32:55 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/01/18 01:41:45 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_bool	read_map(t_list *line_elem, t_program_params *program_params)
 	if (line_elem == NULL)
 		return (print_error("There is no map"));
 	else if (search_identifier(line))
-		return (print_error("Información repetida"));
+		return (print_error("Repeated information"));
 	program_params->map = (char**)ft_calloc(
 		get_map_height(line_elem) + 1, sizeof(char*));
 	map = program_params->map;
