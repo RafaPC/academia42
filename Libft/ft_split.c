@@ -77,7 +77,6 @@ char			**ft_split(char const *s, char c)
 		word_size = word_length((char*)s, index, c);
 		if (!(word = ft_substr(s, index, word_size)))
 			return (NULL);
-		word = ft_substr(s, index, word_size);
 		index += word_size;
 		phrase[word_index++] = word;
 	}
