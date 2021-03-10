@@ -1,9 +1,11 @@
 server {
 	listen 80;
 	listen 443 ssl;
+
 	ssl_certificate /etc/ssl/certs/ft_server.crt;
 	ssl_certificate_key /etc/ssl/private/ft_server.key;
-    server_name ft_server;
+
+	server_name ft_server;
 	root /var/www/html;
 	server_tokens off;
     index index.html index.php;
@@ -16,9 +18,5 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-	}
-
-	location ~ /\.ht {
-		deny all;
 	}
 }
