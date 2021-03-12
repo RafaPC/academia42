@@ -8,4 +8,4 @@ FLUSH PRIVILEGES;
 MYSQL_SCRIPT
 mysql wordpress -u wordpress -ppassword < /wordpress.sql
 rm /wordpress.sql
-service nginx start
+nginx -g 'daemon off;'
