@@ -8,4 +8,8 @@ FLUSH PRIVILEGES;
 MYSQL_SCRIPT
 mysql wordpress -u wordpress -ppassword < /wordpress.sql
 rm /wordpress.sql
+if [ "$AUTOINDEX" = "on" ]
+        then cp /server_confs/ft_server_autoindex_on /etc/nginx/sites-available/ft_server
+        else cp /server_confs/ft_server_autoindex_off /etc/nginx/sites-available/ft_server
+fi
 nginx -g 'daemon off;'
