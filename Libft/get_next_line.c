@@ -3,136 +3,134 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/11 15:26:21 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/17 14:56:12 by rprieto-         ###   ########.fr       */
+/*   Created: 2020/06/29 10:18:19 by user42            #+#    #+#             */
+/*   Updated: 2021/03/31 09:29:14 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 #include "libft.h"
 
-int				get_next_line(int fd, char **line)
+static t_gnl	*find_struct(t_gnl *str, int fd)
 {
-	char			*buffer;
-	static t_file	*files[1];
-	int				bytes_read;
-	char			*aux;
-	t_file			*file_buffer;
+	t_gnl	*temp;
 
-	if (fd == -1 || line == NULL || BUFFER_SIZE <= 0 ||
-	!(buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (-1);
-	if (!(file_buffer = get_file_buffer(fd, files)))
-		return (-1);
-	bytes_read = 1;
-	if (fill_buffer(file_buffer, &bytes_read, buffer) == -1)
-		return (-1);
-	if (bytes_read == 0)
-		return (last_line(file_buffer, line, files));
-	bytes_read = ft_get_index_of(file_buffer->buffer, '\n');
-	*line = ft_substr(file_buffer->buffer, 0, bytes_read);
-	aux = file_buffer->buffer;
-	if (!(file_buffer->buffer = ft_substr(file_buffer->buffer, bytes_read + 1,
-	ft_strlen(file_buffer->buffer) - bytes_read)))
-		return (-1);
-	free(aux);
-	return (1);
+	temp = 0;
+	if (str)
+	{
+		while (str && str->fd != fd)
+		{
+			temp = str;
+			str = str->next;
+		}
+	}
+	if (!str)
+	{
+		str = malloc(sizeof(t_gnl));
+		if (!str)
+			return (0);
+		str->fd = fd;
+		str->next = 0;
+		str->line = 0;
+		if (temp)
+			temp->next = str;
+	}
+	return (str);
 }
 
-static int		fill_buffer(t_file *file_buffer, int *bytes_read, char *buffer)
+static int	free_struct(t_gnl **str, t_gnl *ptr)
 {
-	char	*aux;
+	t_gnl	*str_temp;
 
-	while (ft_get_index_of(file_buffer->buffer, '\n') == -1 && *bytes_read)
+	str_temp = *str;
+	if (str_temp == 0 || ptr == 0)
+		return (-1);
+	if (str_temp != ptr)
 	{
-		*bytes_read = read(file_buffer->fd, buffer, BUFFER_SIZE);
-		if (*bytes_read == -1)
-		{
-			free(buffer);
+		while (str_temp->next != ptr)
+			str_temp = str_temp->next;
+		str_temp->next = ptr->next;
+	}
+	else if (str_temp->next)
+		*str = str_temp->next;
+	if (ptr->line)
+		free(ptr->line);
+	free(ptr);
+	if (ptr == *str)
+		*str = 0;
+	return (-1);
+}
+
+static int	create_line(char **line, t_gnl **str, int bytes_read, int fd)
+{
+	char	*p;
+	t_gnl	*str_pt;
+
+	str_pt = find_struct(*str, fd);
+	if (bytes_read == -1)
+		return (free_struct(str, str_pt));
+	p = ft_strchr(str_pt->line, 10);
+	if (p)
+	{
+		*line = ft_strncat_in(0, str_pt->line, p - (char *)str_pt->line);
+		if (!(*line))
 			return (-1);
-		}
-		else if (*bytes_read)
-		{
-			buffer[*bytes_read] = '\0';
-			aux = file_buffer->buffer;
-			if (!(file_buffer->buffer =
-			ft_strjoin(file_buffer->buffer, buffer)))
-			{
-				free(aux);
-				return (-1);
-			}
-			free(aux);
-		}
-	}
-	free(buffer);
-	return (1);
-}
-
-static t_file	*get_file_buffer(int fd, t_file **files)
-{
-	t_file	*aux;
-
-	aux = *files;
-	while (*files != NULL && aux->fd != fd && aux->next != NULL)
-		aux = aux->next;
-	if (!(aux != 0 && aux->fd == fd) && (*files == NULL || aux->next == NULL))
-	{
-		if (*files != NULL)
-		{
-			if (!(aux->next = (t_file *)malloc(sizeof(t_file))))
-				return (NULL);
-			aux = aux->next;
-		}
-		else
-		{
-			if (!(*files = (t_file *)malloc(sizeof(t_file))))
-				return (NULL);
-			aux = *files;
-		}
-		aux->fd = fd;
-		aux->next = NULL;
-		if (!(aux->buffer = ft_strdup("")))
-			return (NULL);
-	}
-	return (aux);
-}
-
-static int		last_line(t_file *file_buffer, char **line, t_file *files[1])
-{
-	if (ft_strlen(file_buffer->buffer))
-	{
-		*line = ft_substr(file_buffer->buffer, 0,
-		ft_strlen(file_buffer->buffer));
-		delete_file_struct(file_buffer->fd, files);
+		p = ft_strncat_in(p + 1, 0, 0);
+		if (!p)
+			return (-1);
+		free(str_pt->line);
+		str_pt->line = p;
 	}
 	else
 	{
-		*line = ft_strdup("");
-		delete_file_struct(file_buffer->fd, files);
+		*line = ft_strncat_in(str_pt->line, 0, 0);
+		free_struct(str, str_pt);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
-static void		delete_file_struct(int fd, t_file *files[1])
+static int	read_line(t_gnl **str, int fd)
 {
-	t_file			*aux;
-	t_file			*iter;
+	int			bytes_read;
+	char		aux[BUFFER_SIZE + 1];
+	t_gnl		*str_temp;
+	char		*p;
 
-	if (files[0]->fd == fd)
+	while (true)
 	{
-		free(files[0]->buffer);
-		aux = files[0]->next;
-		free(files[0]);
-		files[0] = aux;
-		return ;
+		bytes_read = read(fd, aux, BUFFER_SIZE);
+		if (bytes_read == 0)
+			break ;
+		aux[bytes_read] = 0;
+		if (*str == 0)
+			*str = find_struct(*str, fd);
+		str_temp = find_struct(*str, fd);
+		p = ft_strncat_in(str_temp->line, aux, bytes_read);
+		if (!p)
+			return (-1);
+		if (str_temp->line)
+			free(str_temp->line);
+		str_temp->line = p;
+		if (ft_strchr(aux, 10))
+			break ;
 	}
-	iter = files[0];
-	while (iter->next->fd != fd)
-		iter = iter->next;
-	aux = iter->next;
-	free(iter->next->buffer);
-	iter->next = aux->next;
-	free(aux);
+	return (bytes_read);
+}
+
+int	get_next_line(int fd, char **line)
+{
+	int				bytes_read;
+	static t_gnl	*str = 0;
+
+	if (fd < 0 || !line)
+		return (-1);
+	bytes_read = read_line(&str, fd);
+	if (bytes_read == 0 && !str)
+	{
+		*line = ft_strncat_in(0, 0, 0);
+		return (0);
+	}
+	return (create_line(line, &str, bytes_read, fd));
 }

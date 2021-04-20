@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 11:15:03 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/28 11:08:18 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/03/31 09:38:16 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ unsigned int	get_word_count(char *string, char delimiter)
 
 unsigned int	word_length(char *string, unsigned int index, char delimiter)
 {
-	unsigned int word_length;
+	unsigned int	word_length;
 
 	word_length = 0;
 	while (string[index] && string[(index)++] != delimiter)
@@ -45,8 +45,11 @@ unsigned int	word_length(char *string, unsigned int index, char delimiter)
 	return (word_length);
 }
 
-void			go_next_word(char *string, unsigned int *index, char delimiter)
+char	*get_next_word(char *string, unsigned int *index,
+	char delimiter, unsigned int *word_size)
 {
+	char	*word;
+
 	if (!(*index == 0 && string[*index] != delimiter))
 	{
 		while (string[*index] != delimiter)
@@ -54,9 +57,12 @@ void			go_next_word(char *string, unsigned int *index, char delimiter)
 		while (string[*index] == delimiter)
 			(*index)++;
 	}
+	*word_size = word_length((char *)string, *index, delimiter);
+	word = ft_substr(string, *index, *word_size);
+	return (word);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char			**phrase;
 	char			*word;
@@ -68,14 +74,14 @@ char			**ft_split(char const *s, char c)
 	word_index = 0;
 	if (!s)
 		return (NULL);
-	if (!(phrase = (char**)malloc((get_word_count((char*)s, c) + 1)
-		* sizeof(char*))))
+	phrase = (char **)malloc((get_word_count((char *)s, c) + 1)
+			* sizeof(char *));
+	if (!phrase)
 		return (NULL);
-	while (word_index < get_word_count((char*)s, c))
+	while (word_index < get_word_count((char *)s, c))
 	{
-		go_next_word((char*)s, &index, c);
-		word_size = word_length((char*)s, index, c);
-		if (!(word = ft_substr(s, index, word_size)))
+		word = get_next_word((char *)s, &index, c, &word_size);
+		if (!word)
 			return (NULL);
 		index += word_size;
 		phrase[word_index++] = word;

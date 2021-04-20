@@ -6,11 +6,14 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:17:51 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/12 12:15:06 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:18:53 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_tolower(int c)
+int	ft_tolower(int c)
 {
-	return (c >= 'A' && c <= 'Z') ? (c + 32) : (c);
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	else
+		return (c);
 }

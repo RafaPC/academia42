@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_str_checkset.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:02 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/02/24 11:57:54 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/30 21:40:15 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool	ft_isprint(int c)
+t_bool	ft_str_checkset(char *string, char *set)
 {
-	if (c >= 32 && c <= 126)
-		return (true);
-	else
-		return (false);
+	if (string)
+	{
+		while (*string)
+		{
+			if (ft_checkchar(*string, set))
+				return (true);
+			string++;
+		}
+	}
+	return (false);
 }

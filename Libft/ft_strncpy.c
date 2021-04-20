@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/21 11:46:41 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 17:56:41 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/02/13 10:52:50 by aiglesia          #+#    #+#             */
+/*   Updated: 2021/03/30 21:59:23 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_lstsize(t_list *lst)
+char	*ft_strncpy(char *s2, int n)
 {
-	int		size;
+	char	*s;
 
-	size = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		size++;
-	}
-	return (size);
+	if (!s2)
+		return (ft_strdup(""));
+	s = malloc(n + 1);
+	if (!s)
+		return (0);
+	ft_strlcpy(s, s2, n + 1);
+	return (s);
 }

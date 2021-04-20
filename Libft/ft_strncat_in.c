@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strncat_in.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 13:38:41 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/03/30 21:58:53 by aiglesia         ###   ########.fr       */
+/*   Created: 2020/09/16 10:05:42 by user42            #+#    #+#             */
+/*   Updated: 2021/03/30 21:58:40 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strncat_in(char *s1, char *s2, int n)
 {
-	unsigned int	i;
+	size_t	dstsize;
+	int		i;
+	char	*s;
 
 	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
+	dstsize = ft_strlen(s1) + n + 1;
+	s = malloc(dstsize);
+	if (!s)
+		return (0);
+	if (!s1 && !s2)
+		s[0] = 0;
+	if (s1)
+		i = ft_strlcpy(s, s1, ft_strlen(s1) + 1);
+	if (s2)
+		ft_strlcpy(s + i, s2, n + 1);
+	return (s);
 }

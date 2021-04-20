@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:26:38 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 12:09:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:13:50 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,8 @@
 
 t_bool	ft_isascii(int c)
 {
-	return (c >= 0 && c <= 127) ? true : false;
+	if (c >= 0 && c <= 127)
+		return (true);
+	else
+		return (false);
 }

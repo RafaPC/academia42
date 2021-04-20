@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:02 by rprieto-         ###   ########.fr       */
+/*   Created: 2019/11/21 16:55:50 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/31 10:05:15 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool	ft_isprint(int c)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	if (c >= 32 && c <= 126)
-		return (true);
-	else
-		return (false);
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

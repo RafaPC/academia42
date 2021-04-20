@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_lstdbl_new.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 13:38:41 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/03/30 21:58:53 by aiglesia         ###   ########.fr       */
+/*   Created: 2021/03/20 00:35:41 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/30 21:02:17 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+t_list_dbl	*ft_lstdbl_new(void *content)
 {
-	unsigned int	i;
+	t_list_dbl	*new_elem;
 
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
+	if (!content)
+		return (NULL);
+	new_elem = (t_list_dbl *)malloc(sizeof(t_list_dbl));
+	if (new_elem == NULL)
 	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
+		free(content);
+		return (NULL);
 	}
-	return (0);
+	new_elem->content = (void *)content;
+	new_elem->next = NULL;
+	new_elem->prev = NULL;
+	return (new_elem);
 }

@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_lstdbl_add_front.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:02 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/03/20 00:38:45 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/20 00:38:55 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool	ft_isprint(int c)
+void	ft_lstdbl_add_front(t_list_dbl **lst, t_list_dbl *new)
 {
-	if (c >= 32 && c <= 126)
-		return (true);
-	else
-		return (false);
+	new->next = *lst;
+	if (*lst)
+		(*lst)->prev = new;
+	*lst = new;
 }

@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_lstdbl_size.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:02 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/03/20 00:36:48 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/30 21:02:36 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool	ft_isprint(int c)
+int	ft_lstdbl_size(t_list_dbl *lst)
 {
-	if (c >= 32 && c <= 126)
-		return (true);
-	else
-		return (false);
+	int	size;
+
+	size = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		size++;
+	}
+	return (size);
 }

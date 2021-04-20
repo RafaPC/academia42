@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:28:47 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/25 11:39:03 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:16:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ char	*ft_strchr(const char *s, int c)
 	char	*string;
 
 	i = 0;
-	string = (char*)s;
+	string = (char *)s;
 	while (string[i])
 	{
 		if (string[i] == c)
 			return (&string[i]);
 		i++;
 	}
-	return (c == '\0') ? (&string[i]) : NULL;
+	if (c == '\0')
+		return (&string[i]);
+	else
+		return (NULL);
 }

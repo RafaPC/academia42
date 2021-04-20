@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 17:21:58 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 10:28:31 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/03/30 21:45:17 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	unsigned int	i;
 
 	i = 0;
-	source = (char*)src;
+	source = (char *)src;
 	if (dstsize == 0)
 		return (ft_strlen(source));
 	if (!dst || !src)

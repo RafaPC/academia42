@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:52:18 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/15 12:09:54 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:14:07 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 t_bool	ft_isspace(int c)
 {
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' ||
-	c == '\r' || c == ' ') ? true : false;
+	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == ' ')
+		return (true);
+	else
+		return (false);
 }

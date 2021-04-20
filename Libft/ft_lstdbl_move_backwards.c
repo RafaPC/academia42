@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_lstdbl_move_backwards.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 10:38:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:02 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/03/20 00:37:25 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/30 21:04:05 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool	ft_isprint(int c)
+void	ft_lstdbl_move_backwards(t_list_dbl *lst)
 {
-	if (c >= 32 && c <= 126)
-		return (true);
-	else
-		return (false);
+	void	*aux;
+
+	if (lst->next)
+	{
+		aux = lst->content;
+		lst->content = lst->next->content;
+		lst->next->content = aux;
+	}
 }

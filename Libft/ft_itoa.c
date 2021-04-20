@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 12:24:49 by rprieto-          #+#    #+#             */
-/*   Updated: 2020/10/14 18:47:34 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/03/30 21:00:52 by aiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		fill_nbr(char *string, unsigned int index, long int number)
+static void	fill_nbr(char *string, unsigned int index, long int number)
 {
 	if (number >= 10)
 	{
@@ -23,7 +23,7 @@ static void		fill_nbr(char *string, unsigned int index, long int number)
 		string[index] = number + 48;
 }
 
-char			*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char			*string;
 	long int		n_copy;
@@ -35,7 +35,8 @@ char			*ft_itoa(int n)
 	digits = ft_nbrlen(n);
 	n_copy = n;
 	index = digits - 1;
-	if (!(string = (char*)malloc((digits + 1) * sizeof(char))))
+	string = (char *)malloc((digits + 1) * sizeof(char));
+	if (!string)
 		return (NULL);
 	if (n_copy < 0)
 	{

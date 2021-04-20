@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstdbl_last.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/10 18:40:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2019/11/26 12:58:53 by rprieto-         ###   ########.fr       */
+/*   Created: 2021/03/20 00:38:21 by rprieto-          #+#    #+#             */
+/*   Updated: 2021/03/20 00:38:31 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list		*ft_lstnew(void const *content)
+t_list_dbl	*ft_lstdbl_last(t_list_dbl *lst)
 {
-	t_list *new_elem;
-
-	if (!(new_elem = (t_list*)malloc(sizeof(t_list))))
-		return (NULL);
-	new_elem->content = (void*)content;
-	new_elem->next = NULL;
-	return (new_elem);
+	if (lst == 0)
+		return (lst);
+	else
+		while (lst->next != 0)
+			lst = lst->next;
+	return (lst);
 }
