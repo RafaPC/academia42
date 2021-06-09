@@ -6,8 +6,7 @@
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-                "${fileDirname}/*.c",
-                "${fileDirname}/libftprintf.a",
+                "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
@@ -28,6 +27,27 @@
                 // "${fileDirname}/cub3d.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
+        },
+		{
+            "type": "shell",
+            "label": "gcc build push_swap",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+				"-I${fileDirname}/libft",
+                "${fileDirname}/libft/*.c",
+				"${fileDirname}/libft/ft_printf/*.c",
+				"${fileDirname}/checker_operations.c",
+				"${fileDirname}/checker_utils.c",
+				"${fileDirname}/input_utils.c",
+				"${fileDirname}/push_swap.c",
+				"${fileDirname}/sort.c",
+                "-o",
+                "${fileDirname}/push_swap_debug.out"
             ],
             "options": {
                 "cwd": "/usr/bin"

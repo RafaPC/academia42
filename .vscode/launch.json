@@ -42,6 +42,21 @@
 			"externalConsole": false,
 			"MIMode": "lldb",
 			"preLaunchTask": "make active project"
+		},
+		{
+			"name": "debug push_swap",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${fileDirname}/push_swap_debug.out",
+			"args": [
+				"27", "58", "87", "69", "52", "72", "80", "44", "93", "67", "54", "97", "18", "79", "70", "82", "34", "26", "6", "43", "50", "39", "2"
+			],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb",
+			"preLaunchTask": "gcc build push_swap"
 		}
 	]
 }
