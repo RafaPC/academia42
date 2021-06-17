@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 11:42:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/06 23:11:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/17 22:27:08 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,62 +35,98 @@ void	pop_smaller_number(t_stack *stack_dst, t_stack *stack_src)
 		i++;
 	}
 	while (j--)
-		rotate(stack_src, rotate_b);
-	push(stack_dst, stack_src, push_a);
+		rotate(stack_src);
+	push(stack_dst, stack_src);
 }
 
 /*
 **		Saca los dos números más pequeños, ordena los que quedan como 3, y vuelve a meter los que había sacado
 */
-void	sort_5(t_stack *stack_a, t_stack *stack_b)
+void	sort_5(t_stack *stack_dst, t_stack *stack_aux)
 {
-	pop_smaller_number(stack_a, stack_b);
-	pop_smaller_number(stack_a, stack_b);
-	print_stacks(5, *stack_a, *stack_b);
-	sort_3(stack_a);
-	print_stacks(5, *stack_a, *stack_b);
-	push(stack_b, stack_a, push_b);
-	push(stack_b, stack_a, push_b);
+	pop_smaller_number(stack_dst, stack_aux);
+	pop_smaller_number(stack_dst, stack_aux);
+	print_stacks(*stack_dst, *stack_aux);
+	sort_3_ascending(stack_dst);
+	print_stacks(*stack_dst, *stack_aux);
+	push(stack_dst, stack_aux); //FIXME: esto supone que stack_dst es A y stack_aux B
+	push(stack_dst, stack_aux);
 }
 
 /*
 **		Receives the 2 stacks, the stack_b having only 3 numbers
 **		and sorts the stack_b
 */
-void	sort_3(t_stack *stack)
+// void	sort_3_ascending(t_stack *stack)
+// {
+// 	if (stack->numbers[0] > stack->numbers[1]
+// 		&& stack->numbers[0] > stack->numbers[2])
+// 	{
+// 		//321 y 312
+// 		//rb sb y rb
+// 		//así siempre se hace rotate de b y si n2 > n3 entonces también se hace un swap de b
+// 		if (stack->numbers[1] > stack->numbers[2])
+// 		{
+// 			rotate(stack, rotate_a);
+// 			swap(stack, swap_a);
+// 		}
+// 		else
+// 			rotate(stack, rotate_a);
+// 	}
+// 	else if (stack->numbers[0] < stack->numbers[1] && stack->numbers[0] < stack->numbers[2]
+// 			&& stack->numbers[1] > stack->numbers[2])
+// 	{
+// 		// swap rotate
+// 		swap(stack, swap_a);
+// 		rotate(stack, rotate_a);
+// 	}
+// 	else if (stack->numbers[0] > stack->numbers[1] || stack->numbers[0] > stack->numbers[2])
+// 	{
+// 		if (stack->numbers[1] > stack->numbers[2]) // rrb
+// 			reverse_rotate(stack, reverse_rotate_a);
+// 		else //sb
+// 			swap(stack, swap_a);
+// 	}
+// }
+
+/*
+**		Receives the 2 stacks, the stack_b having only 3 numbers
+**		and sorts the stack_b TODO:
+*/
+void	sort_3_descending(t_stack *stack)
 {
-	if (stack->numbers[0] > stack->numbers[1]
-		&& stack->numbers[0] > stack->numbers[2])
-	{
-		//321 y 312
-		//rb sb y rb
-		//así siempre se hace rotate de b y si n2 > n3 entonces también se hace un swap de b
-		if (stack->numbers[1] > stack->numbers[2])
-		{
-			rotate(stack, rotate_a);
-			swap(stack, swap_a);
-		}
-		else
-			rotate(stack, rotate_a);
-	}
-	else if (stack->numbers[0] < stack->numbers[1] && stack->numbers[0] < stack->numbers[2]
-			&& stack->numbers[1] > stack->numbers[2])
-	{
-		// swap rotate
-		swap(stack, swap_a);
-		rotate(stack, rotate_a);
-	}
-	else if (stack->numbers[0] > stack->numbers[1] || stack->numbers[0] > stack->numbers[2])
-	{
-		if (stack->numbers[1] > stack->numbers[2]) // rrb
-			reverse_rotate(stack, reverse_rotate_a);
-		else //sb
-			swap(stack, swap_a);
-	}
+	if (stack->numbers[0] < stack->numbers[1])
+		swap(stack);
+	if (stack->numbers[0] > stack->numbers[1] && stack->numbers[0] > stack->numbers[2]
+	&& stack->numbers[2] < stack->numbers[0] && stack->numbers[2] < stack->numbers[1])
+		return ;
+	rotate(stack);
+	swap(stack);
+	reverse_rotate(stack);
+	if (stack->numbers[0] < stack->numbers[1])
+		swap(stack);
 }
 
 /*
-**
+**		Receives the 2 stacks, the stack_b having only 3 numbers
+**		and sorts the stack_b TODO:
+*/
+void	sort_3_ascending(t_stack *stack)
+{
+	if (stack->numbers[0] > stack->numbers[1])
+		swap(stack);
+	if (stack->numbers[0] < stack->numbers[1] && stack->numbers[0] < stack->numbers[2]
+	&& stack->numbers[2] > stack->numbers[0] && stack->numbers[2] > stack->numbers[1])
+		return ;
+	rotate(stack);
+	swap(stack);
+	reverse_rotate(stack);
+	if (stack->numbers[0] > stack->numbers[1])
+		swap(stack);
+}
+
+/*
+**	TODO:
 */
 int		get_pivot(int *numbers, int start, int end)
 {

@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 16:42:23 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/08 12:20:22 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/17 13:36:21 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 /*
 **	Prints both stacks
 */
-void	print_stacks(int length, t_stack stack_a, t_stack stack_b)
+void	print_stacks(t_stack stack_a, t_stack stack_b)
 {
 	int		i;
 	int		number_a;
 	int		number_b;
-
+	int		length = stack_a.length + stack_b.length;
 	return ; //FIXME:
 	i = 0;
 	ft_putstr_fd("--------------------------------\n", STDOUT_FILENO);

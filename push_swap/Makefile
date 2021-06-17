@@ -6,7 +6,7 @@
 #    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/21 18:09:12 by rprieto-          #+#    #+#              #
-#    Updated: 2021/06/05 13:11:31 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/06/16 23:17:08 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,9 @@ SRCS =	checker_read_instructions.c	\
 		checker_operations.c		\
 		checker_utils.c				\
 		input_utils.c				\
-		sort.c
+		sort.c						\
+		push_swap2.c				\
+		push_swap2a.c
 OBJS = ${SRCS:.c=.o};
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra

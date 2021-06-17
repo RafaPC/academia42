@@ -45,6 +45,8 @@
 				"${fileDirname}/checker_utils.c",
 				"${fileDirname}/input_utils.c",
 				"${fileDirname}/push_swap.c",
+				"${fileDirname}/push_swap2.c",
+				"${fileDirname}/push_swap2a.c",
 				"${fileDirname}/sort.c",
                 "-o",
                 "${fileDirname}/push_swap_debug.out"
