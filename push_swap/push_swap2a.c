@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 13:18:40 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/17 18:55:42 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/18 18:43:25 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	juggle_sort_a(t_stack *stack_a, t_stack *stack_b, int group_length, int rot
 	{
 		push_reverse_rotate_a(stack_a, stack_b, &group_length, rotated_times, &pushed_times);
 		rotated_times = 0;
-	}	
+	}
 	if (group_length > 3)
 		juggle_sort_a(stack_a, stack_b, group_length, rotated_times);
 	else

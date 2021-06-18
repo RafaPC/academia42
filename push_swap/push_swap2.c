@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 13:18:40 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/17 23:16:53 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/18 19:31:45 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	push_rotate_b(t_stack *stack_a, t_stack *stack_b, int *group_length, int *pu
 		{
 			push(stack_a, stack_b);
 			(*pushed_times)++;
-			(*group_length)--;
 		}
 		else
 		{
@@ -39,6 +38,7 @@ int	push_rotate_b(t_stack *stack_a, t_stack *stack_b, int *group_length, int *pu
 		}
 		i++;
 	}
+	(*group_length) -= *pushed_times;
 	return (rotated_times);
 }
 

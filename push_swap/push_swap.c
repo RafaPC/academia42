@@ -6,48 +6,49 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 12:12:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/17 22:22:23 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/18 19:31:48 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int main(int argc, char *argv[])
+/*
+** Initialices the stacks variables and checks if malloc() returns NULL pointers
+*/
+int	initialice_stacks(t_stack *stack_a, t_stack *stack_b, int length)
+{
+	stack_a->numbers = (int *)malloc(length * sizeof(int));
+	if (!stack_a->numbers)
+		return (0);
+	stack_b->numbers = (int *)malloc(length * sizeof(int));
+	if (!stack_b->numbers)
+		return (0);
+	stack_a->length = length;
+	stack_b->length = 0;
+	stack_a->id = id_a;
+	stack_b->id = id_b;
+	return (1);
+}
+
+int	main(int argc, char *argv[])
 {
 	t_stack		stack_a;
 	t_stack		stack_b;
-	int			stack_length;
 
-	stack_a.length = argc - 1;
-	stack_a.numbers = NULL;
-	stack_a.id = id_a;
-	stack_b.numbers = NULL;
-	stack_b.id = id_b;
-	if (argc == 1 || argc == 2)
-		ft_printf(STDOUT_FILENO, "Hacen falta minimo dos numeros\n");
-	else
+	if (initialice_stacks(&stack_a, &stack_b, argc - 1)
+		&& get_stack(argc - 1, (char **)(&argv[1]), stack_a.numbers))
 	{
-		if (ft_strncmp("-g", argv[1], 3) == 0)
+		if (argc - 1 == 5)
+			sort_5_todo(&stack_a, &stack_b);
+		else if (argc - 1 == 3)
+			sort_3_ascending_todo(&stack_a);
+		else if (argc - 1 == 2)
 		{
-			stack_length = ft_atoi(argv[2]);
-			ft_putnbr_fd(stack_length, STDOUT_FILENO);
-			//TODO:
-		}
-		else if (get_stack(argc - 1, (char **)(&argv[1]), &stack_a.numbers))
-		{
-			if (argc - 1 == 2)
+			if (stack_a.numbers[0] > stack_a.numbers[1])
 				swap(&stack_a);
-			else if (argc - 1 == 3)
-				sort_3_ascending(&stack_a);
-			else
-			{
-				stack_b.numbers = (int *)malloc(sizeof(int) * argc - 1);
-				stack_b.length = 0;
-				print_stacks(stack_a, stack_b);
-				main_sort_stack(&stack_a, &stack_b, stack_a.length);
-				print_stacks(stack_a, stack_b);
-			}
 		}
+		else if (argc - 1 > 3)
+			main_sort_stack(&stack_a, &stack_b, stack_a.length);
 	}
 	if (stack_a.numbers)
 		free(stack_a.numbers);
@@ -56,9 +57,11 @@ int main(int argc, char *argv[])
 	return (0);
 }
 
+/*
+**	TODO:
+*/
 void	main_sort_stack(t_stack *stack_a, t_stack *stack_b, int length)
 {
-	print_stacks(*stack_a, *stack_b);
 	int	push_counter;
 	int	pivot;
 	int	i;
@@ -81,56 +84,5 @@ void	main_sort_stack(t_stack *stack_a, t_stack *stack_b, int length)
 		sort_3_ascending(stack_a);
 	else
 		main_sort_stack(stack_a, stack_b, stack_a->length);
-	print_stacks(*stack_a, *stack_b);
 	juggle_sort_b(stack_a, stack_b, push_counter);
-}
-
-void	push_b_to_a_in_order(t_stack *stack_a, t_stack *stack_b, int push_counter)
-{
-	int	first_elem_index;
-	int	biggest_number_index;
-	int rotated_times = 0;
-
-	while (push_counter > 0)
-	{
-		if (push_counter <= 3)
-		{
-			push(stack_a, stack_b);
-			push(stack_a, stack_b);
-			push(stack_a, stack_b);
-			sort_3_ascending(stack_a);
-			return ;
-		}
-		if (rotated_times < 0 || rotated_times > stack_b->length)
-			rotated_times = 0;
-		first_elem_index = (rotated_times) ? stack_b->length - rotated_times : 0;
-		biggest_number_index = first_elem_index;
-		for (int push_counter_cp = push_counter; push_counter_cp > 0; push_counter_cp--)
-		{
-			if (stack_b->numbers[first_elem_index] > stack_b->numbers[biggest_number_index])
-				biggest_number_index = first_elem_index;
-			first_elem_index++;
-			if (first_elem_index == stack_b->length)
-				first_elem_index = 0;
-		}
-		int index_to_push = biggest_number_index;
-		if (index_to_push < stack_b->length - index_to_push)
-		{
-			while (index_to_push-- > 0)
-			{
-				rotate(stack_b);
-				rotated_times++;
-			}
-		}
-		else
-		{
-			while (index_to_push++ < stack_b->length)
-			{
-				reverse_rotate(stack_b);
-				rotated_times--;
-			}
-		}
-		push(stack_a, stack_b);
-		push_counter--;
-	}
 }

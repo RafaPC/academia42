@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
 int		ft_atoi(const char *str);
 
@@ -12,10 +13,16 @@ int main(int argc, char **argv)
 		length = ft_atoi(argv[1]);
 	
 	int array[length];
-	srand(time(NULL));
+
+	//Gets time in milliseconds
+	struct timeval  tv;
+	gettimeofday(&tv, NULL);
+	double time_in_mill = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 ;
+	srand(time_in_mill);
+	
 	for (int i = 0; i < length;)
 	{
-		int number = rand() % length + 1;
+		int number = rand() % 1000 + 1;
 		array[i] = number;
 		repeated_number = 0;
 		for (int j = 0; j < i; j++)

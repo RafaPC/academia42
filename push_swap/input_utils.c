@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 13:05:39 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/05 13:07:26 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/18 17:42:19 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,15 @@ t_bool	check_stack(int length, int *stack)
 /*
 ** TODO:
 */
-t_bool	get_stack(int length, char **argv, int **stack_a)
+t_bool	get_stack(int length, char **argv, int *stack_a)
 {
 	int		i;
 	int		error_code;
 
 	i = 0;
-	*stack_a = (int *)malloc(sizeof(int) * length);
 	while (i < length)
 	{
-		error_code = ft_custom_atoi(argv[i], &((*stack_a)[i]), 0, 1);
+		error_code = ft_custom_atoi(argv[i], &(stack_a[i]), 0, 1);
 		if (error_code == -1)
 			ft_printf(STDERR_FILENO, "Error\nNumber %s out of int bounds\n",
 				argv[i]);
@@ -80,11 +79,7 @@ t_bool	get_stack(int length, char **argv, int **stack_a)
 			return (false);
 		i++;
 	}
-	if (!check_stack(length, *stack_a))
-	{
-		free(*stack_a);
-		*stack_a = NULL;
+	if (!check_stack(length, stack_a))
 		return (false);
-	}
 	return (true);
 }
