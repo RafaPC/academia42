@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 11:42:25 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/18 18:21:56 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/20 13:01:52 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,25 @@ int	pop_smaller_number(t_stack *stack_dst, t_stack *stack_src)
 /*
 **		Saca los dos números más pequeños, ordena los que quedan como 3, y vuelve a meter los que había sacado
 */
-void	sort_5_todo(t_stack *stack_dst, t_stack *stack_aux)
+void	sort_5_todo(t_stack *stack_dst, t_stack *stack_aux, int length)
 {
 	int rotated_times;
 
 	rotated_times =  pop_smaller_number(stack_aux, stack_dst);
-	rotated_times += pop_smaller_number(stack_aux, stack_dst);
-	sort_3_ascending(stack_dst);
-	// if (stack_dst->length > 3)
-	// {
-	// 	while (rotated_times--)
-	// 		reverse_rotate(stack_dst);
-	// }
+	if (length == 5)
+		rotated_times += pop_smaller_number(stack_aux, stack_dst);
+	if (stack_dst->length > 3)
+	{
+		while (rotated_times--)
+			reverse_rotate(stack_dst);
+	}
+	if (stack_dst->length == 3)
+		sort_3_ascending_todo(stack_dst);
+	else
+		sort_3_ascending(stack_dst, 3);
 	push(stack_dst, stack_aux); //FIXME: esto supone que stack_dst es A y stack_aux B
-	push(stack_dst, stack_aux);
+	if (length == 5)
+		push(stack_dst, stack_aux);
 }
 
 /*
@@ -67,6 +72,12 @@ void	sort_5_todo(t_stack *stack_dst, t_stack *stack_aux)
 */
 void	sort_3_ascending_todo(t_stack *stack)
 {
+	if (stack->length == 2)
+	{
+		if (stack->numbers[0] > stack->numbers[1])
+			swap(stack);
+		return ;
+	}
 	if (stack->numbers[0] > stack->numbers[1]
 		&& stack->numbers[0] > stack->numbers[2])
 	{
@@ -101,10 +112,12 @@ void	sort_3_ascending_todo(t_stack *stack)
 **		Receives the 2 stacks, the stack_b having only 3 numbers
 **		and sorts the stack_b TODO:
 */
-void	sort_3_descending(t_stack *stack)
+void	sort_3_descending(t_stack *stack, int length)
 {
 	if (stack->numbers[0] < stack->numbers[1])
 		swap(stack);
+	if (length == 2)
+		return ;
 	if (stack->numbers[0] > stack->numbers[1] && stack->numbers[0] > stack->numbers[2]
 	&& stack->numbers[2] < stack->numbers[0] && stack->numbers[2] < stack->numbers[1])
 		return ;
@@ -119,10 +132,12 @@ void	sort_3_descending(t_stack *stack)
 **		Receives the 2 stacks, the stack_b having only 3 numbers
 **		and sorts the stack_b TODO:
 */
-void	sort_3_ascending(t_stack *stack)
+void	sort_3_ascending(t_stack *stack, int length)
 {
 	if (stack->numbers[0] > stack->numbers[1])
 		swap(stack);
+	if (length == 2)
+		return ;
 	if (stack->numbers[0] < stack->numbers[1] && stack->numbers[0] < stack->numbers[2]
 	&& stack->numbers[2] > stack->numbers[0] && stack->numbers[2] > stack->numbers[1])
 		return ;

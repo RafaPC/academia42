@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 12:12:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/18 19:31:48 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/20 13:03:41 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	main(int argc, char *argv[])
 	if (initialice_stacks(&stack_a, &stack_b, argc - 1)
 		&& get_stack(argc - 1, (char **)(&argv[1]), stack_a.numbers))
 	{
-		if (argc - 1 == 5)
-			sort_5_todo(&stack_a, &stack_b);
+		if (argc - 1 == 5 || argc -1 == 4)
+			sort_5_todo(&stack_a, &stack_b, stack_a.length);
 		else if (argc - 1 == 3)
 			sort_3_ascending_todo(&stack_a);
 		else if (argc - 1 == 2)
@@ -81,7 +81,7 @@ void	main_sort_stack(t_stack *stack_a, t_stack *stack_b, int length)
 		i++;
 	}
 	if (stack_a->length <= 3)
-		sort_3_ascending(stack_a);
+		sort_3_ascending(stack_a, stack_a->length);
 	else
 		main_sort_stack(stack_a, stack_b, stack_a->length);
 	juggle_sort_b(stack_a, stack_b, push_counter);

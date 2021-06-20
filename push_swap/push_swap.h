@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 12:12:46 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/18 18:19:04 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/20 13:03:37 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int		ft_custom_atoi(const char *str, int *nbr, int i, int sign);
 /*
 **		SORT
 */
-void	sort_3_ascending(t_stack *stack);
-void	sort_5_todo(t_stack *stack_a, t_stack *stack_b);
+void	sort_3_ascending(t_stack *stack, int length);
+void	sort_5_todo(t_stack *stack_a, t_stack *stack_b, int length);
 int		pop_smaller_number(t_stack *stack_dst, t_stack *stack_src);
 int		get_pivot(int *numbers, int start, int end);
 
@@ -81,7 +81,7 @@ void	push_b_to_a_in_order(t_stack *stack_a, t_stack *stack_b,
 void	juggle_sort_b(t_stack *stack_a, t_stack *stack_b, int group_length);
 void	juggle_sort_a(t_stack *stack_a, t_stack *stack_b, int group_length,
 			int rotated_times);
-void	sort_3_descending(t_stack *stack);
+void	sort_3_descending(t_stack *stack, int length);
 void	sort_3_ascending_todo(t_stack *stack);
 
 #endif
