@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 13:05:39 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/18 17:42:19 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/07/01 19:52:11 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdio.h>
 #include "libft.h"
+#include <limits.h>
 
 /*
 **	Recibe un string y checkea si es un número o no
@@ -31,9 +29,10 @@ t_bool	check_number(char *number)
 }
 
 /*
-**	Checks for repeated numbers
+**	Iterates over the stack taking every number and comparing it
+**	with every each other checking if there is one repeated
 */
-t_bool	check_stack(int length, int *stack)
+t_bool	stack_is_correct(const int length, const int *stack)
 {
 	int		i;
 	int		j;
@@ -45,11 +44,7 @@ t_bool	check_stack(int length, int *stack)
 		while (i + j < length)
 		{
 			if (stack[i] == stack[i + j])
-			{
-				ft_printf(STDERR_FILENO,
-					"Error\nNumber %i is repeated\n", stack[i]);
 				return (false);
-			}
 			j++;
 		}
 		i++;
@@ -58,28 +53,51 @@ t_bool	check_stack(int length, int *stack)
 }
 
 /*
-** TODO:
+**	Iterates over the arguments from the second element to the last
+**	It sends every string to the atoi that inserts the number into the array
+**	At the end the stack is iterated through to check if any number is repeated
 */
-t_bool	get_stack(int length, char **argv, int *stack_a)
+t_bool	get_stack(const int length, const char **argv, int *numbers_a)
 {
 	int		i;
-	int		error_code;
 
 	i = 0;
 	while (i < length)
 	{
-		error_code = ft_custom_atoi(argv[i], &(stack_a[i]), 0, 1);
-		if (error_code == -1)
-			ft_printf(STDERR_FILENO, "Error\nNumber %s out of int bounds\n",
-				argv[i]);
-		else if (error_code == -2)
-			ft_printf(STDERR_FILENO, "Error\nInvalid character found in '%s'\n",
-				argv[i]);
-		if (error_code)
+		if (!ft_custom_atoi(argv[i], &(numbers_a[i]), 0, 1))
 			return (false);
 		i++;
 	}
-	if (!check_stack(length, stack_a))
+	return (stack_is_correct(length, numbers_a));
+}
+
+/*
+**	atoi() that sets a variable to false if the number is bigger than an int
+*/
+t_bool	ft_custom_atoi(const char *str, int *nbr, int i, int sign)
+{
+	long int	number;
+
+	number = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+		sign = -1;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		if (number == 0)
+			number = str[i] - 48;
+		else
+			number = number * 10 + str[i] - 48;
+		i++;
+		if ((sign == 1 && number > INT_MAX)
+			|| (sign == -1 && number * -1 < INT_MIN))
+			return (false);
+	}
+	if (str[i] && !ft_isdigit(str[i]) && str[i] != '+' && str[i] != '-')
 		return (false);
+	*nbr = number * sign;
 	return (true);
 }

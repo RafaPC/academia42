@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker_operations.c                               :+:      :+:    :+:   */
+/*   instructions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 17:10:22 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/06/17 19:19:43 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/06/29 11:40:30 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	pop(t_stack *stack)
 /*
 **	Pushes an element to the stack
 */
-void	push(t_stack *stack_dst, t_stack *stack_src)
+void	push(t_stack *stack_dst, t_stack *stack_src, const t_bool print_instruction)
 {
 	int	i;
 
@@ -51,34 +51,40 @@ void	push(t_stack *stack_dst, t_stack *stack_src)
 	}
 	stack_dst->numbers[0] = pop(stack_src);
 	stack_dst->length++;
+	if (print_instruction)
+	{
 	if (stack_dst->id == id_a)
 		write(STDOUT_FILENO, "pa\n", 3);
 	else
 		write(STDOUT_FILENO, "pb\n", 3);
+	}
 }
 
 /*
 **	Swaps the first to elements at the top of stack a, b, or both
 **	Which stack swaps depends on the mode
 */
-void	swap(t_stack *stack)
+void	swap(t_stack *stack, const t_bool print_instruction)
 {
 	int		aux;
 
 	aux = stack->numbers[0];
 	stack->numbers[0] = stack->numbers[1];
 	stack->numbers[1] = aux;
-	if (stack->id == id_a)
-		write(STDOUT_FILENO, "sa\n", 3);
-	else
-		write(STDOUT_FILENO, "sb\n", 3);
+	if (print_instruction)
+	{
+		if (stack->id == id_a)
+			write(STDOUT_FILENO, "sa\n", 3);
+		else
+			write(STDOUT_FILENO, "sb\n", 3);
+	}
 }
 
 /*
 **	Shift up all elements of the stack by 1.
 **	The first element becomes the last one.
 */
-void	rotate(t_stack *stack)
+void	rotate(t_stack *stack, const t_bool print_instruction)
 {
 	int		aux;
 	int		i;
@@ -94,34 +100,36 @@ void	rotate(t_stack *stack)
 		}
 		stack->numbers[stack->length - 1] = aux;
 	}
-	if (stack->id == id_a)
-		write(STDOUT_FILENO, "ra\n", 3);
-	else
-		write(STDOUT_FILENO, "rb\n", 3);
+	if (print_instruction)
+	{
+		if (stack->id == id_a)
+			write(STDOUT_FILENO, "ra\n", 3);
+		else
+			write(STDOUT_FILENO, "rb\n", 3);
+	}
 }
 
 /*
 **	Shift down all elements of the stack by 1.
 **	The last element becomes the first one.
 */
-void	reverse_rotate(t_stack *stack)
+void	reverse_rotate(t_stack *stack, const t_bool print_instruction)
 {
-	int		aux;
-	int		i;
+	const int	aux = stack->numbers[stack->length - 1];
+	int			i;
 
 	i = stack->length - 1;
-	if (stack->length > 1)
+	while (i > 0)
 	{
-		aux = stack->numbers[stack->length - 1];
-		while (i > 0)
-		{
-			stack->numbers[i] = stack->numbers[i - 1];
-			i--;
-		}
-		stack->numbers[0] = aux;
+		stack->numbers[i] = stack->numbers[i - 1];
+		i--;
 	}
-	if (stack->id == id_a)
-		write(STDOUT_FILENO, "rra\n", 4);
-	else
-		write(STDOUT_FILENO, "rrb\n", 4);
+	stack->numbers[0] = aux;
+	if (print_instruction)
+	{
+		if (stack->id == id_a)
+			write(STDOUT_FILENO, "rra\n", 4);
+		else
+			write(STDOUT_FILENO, "rrb\n", 4);
+	}
 }
