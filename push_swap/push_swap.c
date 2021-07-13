@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 12:12:16 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/07/05 16:36:47 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/07/13 17:32:47 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,22 @@ int	main(int argc, const char *argv[])
 
 	stacks.sorted_numbers_a = 0;
 	if (initialice_stacks(&stacks.a, &stacks.b, argc - 1)
-		&& get_stack(argc - 1, &argv[1], stacks.a.numbers)
-		&& !is_ascending_order(stacks.a))
+		&& get_stack(argc - 1, &argv[1], stacks.a.numbers))
 	{
-		if (argc - 1 == 5 || argc - 1 == 4)
-			sort_5_todo(&stacks.a, &stacks.b, stacks.a.length);
-		else if (argc - 1 == 3)
-			sort_3_ascending_todo(&stacks.a, stacks.a.numbers);
-		else if (argc - 1 == 2)
+		if (!is_ascending_ordered(stacks.a))
 		{
-			if (stacks.a.numbers[0] > stacks.a.numbers[1])
+			if (argc - 1 == 5 || argc - 1 == 4)
+				sort_5_numbers(&stacks.a, &stacks.b, stacks.a.length);
+			else if (argc - 1 == 3)
+				sort_3_length_stack(&stacks.a, stacks.a.numbers);
+			else if (argc - 1 == 2 && stacks.a.numbers[0] > stacks.a.numbers[1])
 				swap(&stacks.a, true);
+			else if (argc - 1 > 3)
+				sort_stack_a(&stacks, 0);
 		}
-		else if (argc - 1 > 3)
-			juggle_sort_a(&stacks, 0);
 	}
+	else
+		ft_putstr_fd("Error\n", STDERR_FILENO);
 	if (stacks.a.numbers)
 		free(stacks.a.numbers);
 	if (stacks.b.numbers)

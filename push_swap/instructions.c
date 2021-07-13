@@ -18,14 +18,12 @@
 */
 static int	pop(t_stack *stack)
 {
-	int		number_on_top;
-	int		i;
+	const int	number_on_top = stack->numbers[0];
+	int			i;
 
-	number_on_top = 0;
 	i = 0;
 	if (stack->length > 0)
 	{
-		number_on_top = stack->numbers[0];
 		while (i < stack->length - 1)
 		{
 			stack->numbers[i] = stack->numbers[i + 1];
@@ -37,9 +35,11 @@ static int	pop(t_stack *stack)
 }
 
 /*
-**	Pushes an element to the stack
+**	Pops the first element from the source stack and pushes it to the
+**	destinations stack
 */
-void	push(t_stack *stack_dst, t_stack *stack_src, const t_bool print_instruction)
+void	push(t_stack *stack_dst, t_stack *stack_src,
+const t_bool print_instruction)
 {
 	int	i;
 
@@ -53,16 +53,15 @@ void	push(t_stack *stack_dst, t_stack *stack_src, const t_bool print_instruction
 	stack_dst->length++;
 	if (print_instruction)
 	{
-	if (stack_dst->id == id_a)
-		write(STDOUT_FILENO, "pa\n", 3);
-	else
-		write(STDOUT_FILENO, "pb\n", 3);
+		if (stack_dst->id == id_a)
+			write(STDOUT_FILENO, "pa\n", 3);
+		else
+			write(STDOUT_FILENO, "pb\n", 3);
 	}
 }
 
 /*
-**	Swaps the first to elements at the top of stack a, b, or both
-**	Which stack swaps depends on the mode
+**	Swaps the first to elements at the top of stack
 */
 void	swap(t_stack *stack, const t_bool print_instruction)
 {
@@ -81,18 +80,17 @@ void	swap(t_stack *stack, const t_bool print_instruction)
 }
 
 /*
-**	Shift up all elements of the stack by 1.
-**	The first element becomes the last one.
+**	Shift up all elements of the stack by 1
+**	The first element becomes the last one
 */
 void	rotate(t_stack *stack, const t_bool print_instruction)
 {
-	int		aux;
-	int		i;
+	const int	aux = stack->numbers[0];
+	int			i;
 
 	i = 0;
 	if (stack->length > 1)
 	{
-		aux = stack->numbers[0];
 		while (i < stack->length - 1)
 		{
 			stack->numbers[i] = stack->numbers[i + 1];
@@ -110,8 +108,8 @@ void	rotate(t_stack *stack, const t_bool print_instruction)
 }
 
 /*
-**	Shift down all elements of the stack by 1.
-**	The last element becomes the first one.
+**	Shift down all elements of the stack by 1
+**	The last element becomes the first one
 */
 void	reverse_rotate(t_stack *stack, const t_bool print_instruction)
 {

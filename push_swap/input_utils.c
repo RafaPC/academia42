@@ -6,7 +6,7 @@
 /*   By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 13:05:39 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/07/01 19:52:11 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/07/13 17:47:42 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,10 @@
 #include <limits.h>
 
 /*
-**	Recibe un string y checkea si es un número o no
-*/
-t_bool	check_number(char *number)
-{
-	while (*number)
-	{
-		if (!ft_isdigit(*number) && *number != '+' && *number != '-')
-			return (false);
-		number++;
-	}
-	return (true);
-}
-
-/*
 **	Iterates over the stack taking every number and comparing it
 **	with every each other checking if there is one repeated
 */
-t_bool	stack_is_correct(const int length, const int *stack)
+t_bool	has_repeated_numbers(const int length, const int *numbers)
 {
 	int		i;
 	int		j;
@@ -43,38 +29,20 @@ t_bool	stack_is_correct(const int length, const int *stack)
 		j = 1;
 		while (i + j < length)
 		{
-			if (stack[i] == stack[i + j])
-				return (false);
+			if (numbers[i] == numbers[i + j])
+				return (true);
 			j++;
 		}
 		i++;
 	}
-	return (true);
+	return (false);
 }
 
 /*
-**	Iterates over the arguments from the second element to the last
-**	It sends every string to the atoi that inserts the number into the array
-**	At the end the stack is iterated through to check if any number is repeated
+**	atoi() that returns false wether the number exceeds the int limits or
+**	the string has doesn't end with a digit
 */
-t_bool	get_stack(const int length, const char **argv, int *numbers_a)
-{
-	int		i;
-
-	i = 0;
-	while (i < length)
-	{
-		if (!ft_custom_atoi(argv[i], &(numbers_a[i]), 0, 1))
-			return (false);
-		i++;
-	}
-	return (stack_is_correct(length, numbers_a));
-}
-
-/*
-**	atoi() that sets a variable to false if the number is bigger than an int
-*/
-t_bool	ft_custom_atoi(const char *str, int *nbr, int i, int sign)
+static t_bool	atoi_check_number(const char *str, int *nbr, int i, int sign)
 {
 	long int	number;
 
@@ -96,8 +64,27 @@ t_bool	ft_custom_atoi(const char *str, int *nbr, int i, int sign)
 			|| (sign == -1 && number * -1 < INT_MIN))
 			return (false);
 	}
-	if (str[i] && !ft_isdigit(str[i]) && str[i] != '+' && str[i] != '-')
+	if (str[i] && !ft_isdigit(str[i]))
 		return (false);
 	*nbr = number * sign;
 	return (true);
+}
+
+/*
+**	Iterates over the arguments from the second element to the last
+**	It sends every string to the atoi that inserts the number into the array
+**	At the end the stack is iterated through to check if any number is repeated
+*/
+t_bool	get_stack(const int length, const char **argv, int *numbers)
+{
+	int		i;
+
+	i = 0;
+	while (i < length)
+	{
+		if (!atoi_check_number(argv[i], &(numbers[i]), 0, 1))
+			return (false);
+		i++;
+	}
+	return (!has_repeated_numbers(length, numbers));
 }

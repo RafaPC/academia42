@@ -71,25 +71,23 @@ int rotated_times)
 }
 
 /*
-**	The function receives both stakcs, the length of the group of numbers is
-**	working with and a number indicating how many times the group of numbers
-**	is rotated (if it is)
+**	The function receives both stacks, how many numbers are ordered in stack A
+**	and a number indicating how many times A has been rotated
 **	Wether they are rotated or not, the pivot is taken from the group of
 **	numbers and the stack A will be moved (by rotates if it's not rotated or
 **	reverse_rotates if it is) and the numbers greater than the
 **	pivot (pivot included) will be pushed into the stack B
-**	The number of how many times the stack has been pushed and rotated is
-**	returned by the functions
-**	Then if the remaining group of numbers is <= than 3, then they are ordered,
-**	if not, the same function will be called again to divide the group of numbers
-**	At last, juggle_sort_b is called to order the numbers in the stack B
+**	Then if there are more than 3 not ordered numbers
+**	the same function will be called again, if not the remaining
+**	not ordered numbers will be ordered by sort_3_top_numbers() 
+**	At last, sort_stack_b is called to order the numbers in the stack B
 */
-void	juggle_sort_a(t_stacks_info *stacks, int rotated_times)
+void	sort_stack_a(t_stacks_info *stacks, int rotated_times)
 {
 	int	pushed_times;
 
 	pushed_times = 0;
-	if (stacks->a.length > stacks->sorted_numbers_a + 3 || rotated_times)
+	if (stacks->a.length - stacks->sorted_numbers_a > 3 || rotated_times)
 	{
 		if (rotated_times == 0)
 			pushed_times = push_rotate(stacks, &rotated_times);
@@ -99,14 +97,14 @@ void	juggle_sort_a(t_stacks_info *stacks, int rotated_times)
 			rotated_times = 0;
 		}
 	}
-	if ((stacks->a.length > stacks->sorted_numbers_a + 3) || rotated_times)
-		juggle_sort_a(stacks, rotated_times);
+	if ((stacks->a.length - stacks->sorted_numbers_a > 3) || rotated_times)
+		sort_stack_a(stacks, rotated_times);
 	else
 	{
-		sort_3_ascending(&stacks->a,
+		sort_top_3_numbers(&stacks->a,
 			stacks->a.length - stacks->sorted_numbers_a);
 		stacks->sorted_numbers_a += stacks->a.length - stacks->sorted_numbers_a;
 	}
 	if (pushed_times > 0)
-		juggle_sort_b(stacks, pushed_times);
+		sort_stack_b(stacks, pushed_times);
 }

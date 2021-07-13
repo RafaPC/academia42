@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   special_permutations.c                             :+:      :+:    :+:   */
+/*   move_biggest_number_to_a.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 13:46:48 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/07/05 11:42:27 by rprieto-         ###   ########.fr       */
+/*   Updated: 2021/07/13 20:52:46 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ static int	get_biggest_num(const int *numbers, const int start, const int end)
 }
 
 /*
-**	TODO:
+**	Checks where is the biggest number and execute the instructions to
+**	move it to the start of the stack and push it to A
 */
-t_bool	check_sortedness(t_stacks_info *stacks, int *group_length,
+t_bool	move_biggest_number(t_stacks_info *stacks, int *group_length,
 int *rotated_times, int *i)
 {
 	const int	biggest_num = get_biggest_num(stacks->b.numbers, 0,
@@ -63,11 +64,11 @@ int *rotated_times, int *i)
 }
 
 /*
-**	TODO:
+**	Calculates wether the biggest number from B is easy to push to A
 */
-t_bool	can_sort_a(t_stacks_info *stacks, int group_length, int i)
+t_bool	can_insert_next_number(t_stacks_info *stacks, int group_length, int i)
 {
-	const int	smallest_number_a = get_smallest_number(stacks->a.numbers, 
+	const int	smallest_number_a = get_smallest_number(stacks->a.numbers,
 			stacks->a.length - stacks->sorted_numbers_a);
 	const int	biggest_number_b_tail = get_biggest_num(stacks->b.numbers,
 		stacks->b.length - i - 1, stacks->b.length);
@@ -81,20 +82,29 @@ t_bool	can_sort_a(t_stacks_info *stacks, int group_length, int i)
 }
 
 /*
-**	TODO:
+**	The first time it checks if the biggest number can be moved easily to A
+**	If it can, calls sort_stack_a() and enters a while, if not, returns false
+**	Then it iterates until there are no numbers in the group
+**	In each iteration tries to move the biggest number from B to
+**	the top of the stack or push it to A
+**	When the biggest number is no longer easy to move the function ends
 */
-t_bool	check_special_permutations(t_stacks_info *stacks, int *group_length,
+t_bool	move_biggest_number_to_a(t_stacks_info *stacks, int *group_length,
 int *rotated_times, int *i)
 {
 	t_bool	done;
 
 	done = false;
-	if (can_sort_a(stacks, *group_length, *rotated_times))
+	if (can_insert_next_number(stacks, *group_length, *rotated_times))
 	{
-		juggle_sort_a(stacks, 0);
-		while (*group_length > 0
-			&& check_sortedness(stacks, group_length, rotated_times, i))
-			done = true;
+		sort_stack_a(stacks, 0);
+		while (*group_length > 0)
+		{
+			if (move_biggest_number(stacks, group_length, rotated_times, i))
+				done = true;
+			else
+				return (done);
+		}
 	}
 	return (done);
 }

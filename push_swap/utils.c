@@ -15,7 +15,7 @@
 /*
 **	Checks if the stack is in ascending order
 */
-t_bool	is_ascending_order(const t_stack stack)
+t_bool	is_ascending_ordered(const t_stack stack)
 {
 	int		i;
 
@@ -38,14 +38,79 @@ t_bool	is_ascending_order(const t_stack stack)
 t_bool	initialice_stacks(t_stack *stack_a, t_stack *stack_b, const int length)
 {
 	stack_a->numbers = (int *)malloc(length * sizeof(int));
-	if (!stack_a->numbers)
-		return (false);
 	stack_b->numbers = (int *)malloc(length * sizeof(int));
-	if (!stack_b->numbers)
+	if (!stack_a->numbers || !stack_b->numbers)
 		return (false);
 	stack_a->length = length;
 	stack_b->length = 0;
 	stack_a->id = id_a;
 	stack_b->id = id_b;
 	return (true);
+}
+
+/*
+**	Given an array of numbers and the start and end it returns the median
+*/
+int	get_median(const int *numbers, const int start, const int end)
+{
+	const int	mean_num_of_swaps = ((end - start) / 2);
+	int			swaps;
+	int			index;
+	int			median;
+	int			i;
+
+	index = start;
+	swaps = 0;
+	median = numbers[index];
+	while (swaps != mean_num_of_swaps)
+	{
+		median = numbers[index++];
+		swaps = 0;
+		i = start;
+		while (i < end)
+		{
+			if (numbers[i++] <= median)
+				swaps++;
+		}
+		swaps = end - start - swaps;
+		if (swaps < 0)
+			swaps *= -1;
+	}
+	return (median);
+}
+
+/*
+**	Checks if the set of numbers could be returned to the start of the stack
+**	with less instructions by rotating instead of reverse rotating
+*/
+t_bool	stack_is_overrotated(t_stack *stack, int rotated_times)
+{
+	if (rotated_times > stack->length - rotated_times)
+	{
+		while (rotated_times++ < stack->length)
+			rotate(stack, true);
+		return (true);
+	}
+	else
+		return (false);
+}
+
+/*
+**	Receives an array of numbers and a length and iterates
+**	as many times as length, then returns the smallest number
+*/
+int	get_smallest_number(const int *numbers, const int length)
+{
+	int	num;
+	int	i;
+
+	i = 0;
+	num = numbers[0];
+	while (i < length)
+	{
+		if (numbers[i] < num)
+			num = numbers[i];
+		i++;
+	}
+	return (num);
 }
