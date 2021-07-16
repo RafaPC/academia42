@@ -3,6 +3,7 @@ CFLAGS = -Wall -Werror -Wextra
 RM = rm -rf
 SRCS =	philo/main.c		\
 		philo/philosopher.c	\
+		philo/utils.c		\
 		read_parameters.c
 
 all:philo
