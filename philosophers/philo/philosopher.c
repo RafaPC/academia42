@@ -3,6 +3,49 @@
 #include <unistd.h>	// usleep()
 #include "philosophers.h"
 
+
+/*
+** TODO:
+*/
+t_bool	eat(int id, pthread_mutex_t *philo_forks[2], int *last_time_eat)
+{
+	pthread_mutex_lock(philo_forks[0]);
+	printf("%ld %d has taken a fork\n", get_current_timestamp(), id + 1);
+	if (should_die(*last_time_eat, g_info.time_to_die))
+	{
+		die(id, 1, philo_forks);
+		return (0);
+	}
+	pthread_mutex_lock(philo_forks[1]);
+	printf("%ld %d has taken a fork\n", get_current_timestamp(), id + 1);
+	if (should_die(*last_time_eat, g_info.time_to_die))
+	{
+		die(id, 2, philo_forks);
+		return (0);
+	}
+	printf("%ld %d is eating\n", get_current_timestamp(), id + 1);
+	if (get_current_timestamp() - *last_time_eat + g_info.time_to_eat > g_info.time_to_die) //FIXME: aqui checkear el tiempo que ha pasado desde la ultima comida
+	{
+		if ((get_current_timestamp() - *last_time_eat) < g_info.time_to_die)
+			usleep((g_info.time_to_die - get_current_timestamp() - *last_time_eat) * 1000);
+		die(id, 2, philo_forks);
+		return (false);
+	}
+	*last_time_eat = get_current_timestamp();
+	usleep(g_info.time_to_eat * 1000);
+	pthread_mutex_unlock(philo_forks[0]);
+	pthread_mutex_unlock(philo_forks[1]);
+	g_philosophers_meals[id]++;
+	if (g_info.max_eating_times != -1)
+	{
+		if (all_have_eaten())
+		{
+			die(id, 0, philo_forks);
+			return (0);
+		}
+	}
+}
+
 /*
 **	Returns true if all the philosophers have eat at least eaten n times
 */
@@ -78,34 +121,8 @@ void	*philosopher_routine(void *param)
 			die(id, 0, philo_forks);
 			return (0);
 		}
-		pthread_mutex_lock(philo_forks[0]);
-		printf("%ld %d has taken a fork\n", get_current_timestamp(), id + 1);
-		if (should_die(last_time_eat, g_info.time_to_die))
-		{
-			die(id, 1, philo_forks);
+		if (!eat(id, philo_forks, &last_time_eat))
 			return (0);
-		}
-		pthread_mutex_lock(philo_forks[1]);
-		printf("%ld %d has taken a fork\n", get_current_timestamp(), id + 1);
-		if (should_die(last_time_eat, g_info.time_to_die))
-		{
-			die(id, 2, philo_forks);
-			return (0);
-		}
-		printf("%ld %d is eating\n", get_current_timestamp(), id + 1);
-		last_time_eat = get_current_timestamp();
-		usleep(g_info.time_to_eat * 1000);
-		pthread_mutex_unlock(philo_forks[0]);
-		pthread_mutex_unlock(philo_forks[1]);
-		g_philosophers_meals[id]++;
-		if (g_info.max_eating_times != -1)
-		{
-			if (all_have_eaten())
-			{
-				die(id, 0, philo_forks);
-				return (0);
-			}
-		}
 		if (should_die(last_time_eat, g_info.time_to_die))
 		{
 			die(id, 0, philo_forks);

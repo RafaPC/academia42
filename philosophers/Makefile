@@ -6,7 +6,7 @@ SRCS =	philo/main.c		\
 		philo/utils.c		\
 		read_parameters.c
 
-all:philo
+all:philo/philo
 
-philo: ${SRCS}
+philo/philo: ${SRCS}
 		${CC} ${CFLAGS} -lpthread -I. ${SRCS} -o philo/philo
