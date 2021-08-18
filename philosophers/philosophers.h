@@ -4,6 +4,7 @@
 #include <pthread.h>
 pthread_mutex_t		*g_forks;
 int					*g_philosophers_meals;
+pthread_mutex_t		g_print_mutex;
 
 typedef enum e_bool
 {
@@ -18,6 +19,7 @@ typedef struct s_philosophers_info
 	int		time_to_eat;
 	int		time_to_sleep;
 	int		max_eating_times;
+	long	starting_time;
 }				t_philosophers_info;
 
 t_bool				g_dead;
@@ -36,7 +38,7 @@ long	get_current_timestamp(void);
 
 void	*philosopher_routine(void *param);
 t_bool	should_die(long last_time_eat, int time_to_die);
-void	die(int id, int option, pthread_mutex_t	*philo_forks[2]);
+t_bool	die(int id, int option, pthread_mutex_t	*philo_forks[2]);
 t_bool	all_have_eaten(void);
 
 /*
@@ -44,5 +46,5 @@ t_bool	all_have_eaten(void);
 */
 
 long	get_current_timestamp(void);
-
+long	get_pretty_timestamp(long starting_time);
 #endif
