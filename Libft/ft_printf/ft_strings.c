@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strings.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aiglesia <aiglesia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 11:28:57 by rprieto-          #+#    #+#             */
-/*   Updated: 2021/03/31 09:48:08 by aiglesia         ###   ########.fr       */
+/*   Updated: 2021/08/28 12:55:09 by rprieto-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ void	handle_string(char *string, t_modifiers modifiers, int *char_sum)
 
 /*
 **	This function prints a string received according to the modifiers
-*/
-
-/*
-** TODO: DOUBLE check the i++ thing
 */
 
 void	print_string(char *string, t_modifiers modifiers, int *char_sum)
