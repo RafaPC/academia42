@@ -4,7 +4,10 @@
 #include "philosophers.h"
 
 /*
-** TODO:
+**	Both fork mutexes are locked, a message is printed after each one
+**	Then the time for the last meal is updated, it waits as much time as it
+**	was given by the parameters and then the counter for the number of meals
+**	is updated, in case it has to
 */
 void	eat(int id, pthread_mutex_t *philo_forks[2])
 {
@@ -24,10 +27,29 @@ void	eat(int id, pthread_mutex_t *philo_forks[2])
 		get_pretty_timestamp(g_info.starting_time), id + 1);
 	pthread_mutex_unlock(&g_print_mutex);
 	usleep(g_info.time_to_eat * 1000);
-	if (g_info.max_eating_times != -1)
+	if (g_info.min_eating_times != -1)
 		g_philosophers_meals[id]++;
 }
 
+/*
+**	Puts a philosopher to sleep, prints the message and unlocks his forks
+*/
+t_bool	philo_sleep(int id, pthread_mutex_t *philo_forks[2])
+{
+	pthread_mutex_lock(&g_print_mutex);
+	printf("%ld %d is sleeping\n",
+		get_pretty_timestamp(g_info.starting_time), id + 1);
+	pthread_mutex_unlock(&g_print_mutex);
+	pthread_mutex_unlock(philo_forks[0]);
+	pthread_mutex_unlock(philo_forks[1]);
+	usleep(g_info.time_to_sleep * 1000);
+	return (true);
+}
+
+/*
+**	Asigns the 2 forks (left and right) to the philosopher based on
+**	its position on the table
+*/
 void	asign_forks(int id, pthread_mutex_t	*philo_forks[2])
 {
 	if (id == 0)
@@ -48,22 +70,10 @@ void	asign_forks(int id, pthread_mutex_t	*philo_forks[2])
 }
 
 /*
-**	TODO: TRIES TO SLEEP CHECKING THE TIME
-*/
-t_bool	philo_sleep(int id, pthread_mutex_t *philo_forks[2])
-{
-	pthread_mutex_lock(&g_print_mutex);
-	printf("%ld %d is sleeping\n",
-		get_pretty_timestamp(g_info.starting_time), id + 1);
-	pthread_mutex_unlock(&g_print_mutex);
-	pthread_mutex_unlock(philo_forks[0]);
-	pthread_mutex_unlock(philo_forks[1]);
-	usleep(g_info.time_to_sleep * 1000);
-	return (true);
-}
-
-/*
-**	Según empieza intenta coger los dos tenedores, come, duerme, repite
+**	Sets the time of the last meal to the current time, asign the forks and
+**	starts an infinite loop
+**	In the loop, the functions eat() and philo_sleep() are called, then
+**	is printed that the philosopher is thinking and then the loop is repeated
 */
 void	*philosopher_routine(void *param)
 {
