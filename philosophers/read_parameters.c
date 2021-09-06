@@ -1,3 +1,4 @@
+#include <stdio.h>	// printf()
 #include "philosophers.h"
 
 /*
@@ -35,7 +36,10 @@ static int	no_symbol_atoi(const char *str)
 t_bool	read_parameters(const int argc, char const *argv[])
 {
 	if (argc != 5 && argc != 6)
+	{
+		printf("Error: Invalid number of arguments, must be 4 or 5 arguments\n");
 		return (false);
+	}
 	g_info.philo_size = no_symbol_atoi(argv[1]);
 	g_info.time_to_die = no_symbol_atoi(argv[2]);
 	g_info.time_to_eat = no_symbol_atoi(argv[3]);
