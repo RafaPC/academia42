@@ -31,10 +31,10 @@ Account::Account(int initial_deposit)
 	this->_amount = initial_deposit;
 	this->_nbDeposits = 0;
 	this->_nbWithdrawals = 0;
-	Account::_displayTimestamp();
-	std::cout << "index:" << this->_accountIndex << ";amount:" << this->_amount<< ";created\n"; 
 	this->_totalAmount += initial_deposit;
 	this->_nbAccounts++;
+	Account::_displayTimestamp();
+	std::cout << "index:" << this->_accountIndex << ";amount:" << initial_deposit << ";created\n";
 }
 
 // DESTRUCTOR
@@ -43,6 +43,10 @@ Account::~Account( void )
 	Account::_displayTimestamp();
 	std::cout << "index:" << this->_accountIndex << ";amount:" << this->_amount
 	<< ";closed\n";
+	this->_nbAccounts--;
+	this->_totalAmount -= this->_amount;
+	this->_totalNbDeposits -= this->_nbDeposits;
+	this->_totalNbWithdrawals -= this->_nbWithdrawals;
 }
 
 // METHODS
@@ -57,7 +61,6 @@ void	Account::makeDeposit(int deposit)
 	Account::_totalNbDeposits++;
 	Account::_totalAmount += deposit;
 }
-
 
 bool	Account::makeWithdrawal( int withdrawal )
 {
