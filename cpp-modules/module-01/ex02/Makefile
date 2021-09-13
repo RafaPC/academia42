@@ -1,5 +1,5 @@
-NAME = account_tests
-SRCS = Account.cpp tests.cpp
+NAME = hithisisbrain
+SRCS = main.cpp
 
 all: $(NAME)
 $(NAME):	$(SRCS)

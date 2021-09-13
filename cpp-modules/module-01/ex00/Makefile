@@ -1,5 +1,5 @@
-NAME = account_tests
-SRCS = Account.cpp tests.cpp
+NAME = moarbrainz
+SRCS = main.cpp Zombie.cpp newZombie.cpp randomChump.cpp
 
 all: $(NAME)
 $(NAME):	$(SRCS)

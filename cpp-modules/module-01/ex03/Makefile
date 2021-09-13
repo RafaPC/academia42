@@ -1,5 +1,5 @@
-NAME = account_tests
-SRCS = Account.cpp tests.cpp
+NAME = unnecesary_violence
+SRCS = HumanA.cpp HumanB.cpp Weapon.cpp main.cpp
 
 all: $(NAME)
 $(NAME):	$(SRCS)

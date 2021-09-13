@@ -1,5 +1,5 @@
-NAME = account_tests
-SRCS = Account.cpp tests.cpp
+NAME = karenFilter
+SRCS = main.cpp Karen.cpp
 
 all: $(NAME)
 $(NAME):	$(SRCS)
