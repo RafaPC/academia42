@@ -57,6 +57,19 @@
 			"externalConsole": false,
 			"MIMode": "lldb",
 			"preLaunchTask": "gcc build push_swap"
-		}
+		},
+		{
+			"name": "clang++ debug c++",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${fileDirname}/a.out",
+			"args": ["file.txt", "hola", "adios"],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb",
+			"preLaunchTask": "clang++ compile c++ file",
+		},
 	]
 }

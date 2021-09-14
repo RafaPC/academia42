@@ -66,6 +66,20 @@
             "options": {
                 "cwd": "/usr/bin"
             }
+        },
+		{
+            "type": "shell",
+            "label": "clang++ compile c++ file",
+            "command": "/usr/bin/clang++",
+            "args": [
+				"-g",
+                "${fileDirname}/*.cpp",
+				"-o",
+				"${fileDirname}/a.out"
+			],
+            "options": {
+                "cwd": "/usr/bin"
+            }
         }
     ],
     "version": "2.0.0"
