@@ -16,27 +16,24 @@ Fixed::Fixed ( const int integer_value )
 	std::cout << "Int constructor called\n";
 	this->value = integer_value << fractional_bits;
 	if (integer_value < 0)
-	{
-		for (int bit_index = 31; bit_index >= 32 - fractional_bits; bit_index--)
-			this->value |= 1U << bit_index;
-	}
+		this->value |= 1U << 31;
 }
 
 Fixed::Fixed( const float float_value )
 {
 	std::cout << "Float constructor called\n";
 	float	rounded_value = std::roundf(float_value);
+
 	// roundf rounds up from 0.5, here I fix it
 	if (float_value > 0.0f && rounded_value > float_value)
 		rounded_value -= 1.0f;
 	else if (float_value < 0.0f && rounded_value < float_value)
 		rounded_value += 1.0f;
 
-	rounded_value = (rounded_value < 0) ? -rounded_value : rounded_value;	
 	this->value = (int)rounded_value << fractional_bits;
 
 	float	divider = 2.0f;
-	float	point_value = float_value - rounded_value;
+	float	point_value = (float_value < 0) ? -float_value + rounded_value : float_value - rounded_value;
 	float	acummulator = 0.0f;
 	for (int bit_index = fractional_bits - 1; bit_index >= 0; bit_index--, divider *= 2.0f)
 	{
@@ -96,6 +93,7 @@ float			Fixed::toFloat( void ) const
 {
 	float	float_value = (float)this->toInt();
 	float	divider = 2.0f;
+
 	for (int i = fractional_bits - 1; i >= 0; i--, divider *= 2.0)
 	{
 		if ((this->value >> i) & 1U && float_value >= 0)
@@ -108,14 +106,7 @@ float			Fixed::toFloat( void ) const
 
 int				Fixed::toInt( void ) const
 {
-	int	integer_value = this->value >> fractional_bits;
-	// checks the first bit of the stored value
-	if ((this->value >> 31) & 1U)
-	{
-		for (int i = 31; i >= 32 - fractional_bits; i--)
-			integer_value |= 1UL << i;
-	}
-	return (integer_value);
+	return (this->value >> fractional_bits);
 }
 
 //	OVERLOADS

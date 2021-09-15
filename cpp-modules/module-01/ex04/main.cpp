@@ -5,11 +5,12 @@ void	replace_strings(std::string& buffer, std::string string1, std::string strin
 
 int main(int argc, char const *argv[])
 {
+	// if more or less than 3 arguments, exits
 	if (argc != 4)
 		return (1);
-	std::string	filename_input = argv[1];
-	std::string	buffer;
-	std::fstream fstream;
+	std::string		filename_input = argv[1];
+	std::string		buffer;
+	std::fstream	fstream;
 	fstream.open(filename_input, std::fstream::in);
 	// Stores the whole file into buffer
 	buffer.assign(	(std::istreambuf_iterator<char>(fstream)), 
