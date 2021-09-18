@@ -1,8 +1,9 @@
-#include <sys/time.h> // gettimeofday()
+#include <sys/time.h>	// gettimeofday()
+#include <stdio.h>		// printf()
 #include "philosophers.h"
 
 /*
-**	Gets the current timestamp in milliseconds
+**	Returns the current timestamp in milliseconds
 */
 long	get_current_timestamp(void)
 {
@@ -15,21 +16,7 @@ long	get_current_timestamp(void)
 }
 
 /*
-**	Returns the number of miliseconds that has passed
-**	since the start of the program
-*/
-long	get_pretty_timestamp(long starting_time)
-{
-	struct timeval	tv;
-	long			time_in_ms;
-
-	gettimeofday(&tv, NULL);
-	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (time_in_ms - starting_time);
-}
-
-/*
-**	Returns true if every philosopher have eaten at least n times
+**	Returns true if every philosopher has eaten at least n times
 */
 t_bool	all_have_eaten(void)
 {
@@ -38,9 +25,33 @@ t_bool	all_have_eaten(void)
 	i = 0;
 	while (i < g_info.philo_size)
 	{
-		if (g_philosophers_meals[i] < g_info.min_eating_times)
+		if (g_meals[i] < g_info.min_eating_times)
 			return (false);
 		i++;
 	}
 	return (true);
+}
+
+/*
+**	Prints a message showing the miliseconds passed since the start,
+**	the id of the philo and the action
+**	If g_end (variable set when the program is ending) is set to true
+**	it returns inmediatly and doesn't print he message
+*/
+void	print_status_message(int philo_id, t_message_type message_type)
+{
+	const long	current_time = get_current_timestamp() - g_info.starting_time;
+
+	if (g_end)
+		return ;
+	pthread_mutex_lock(&g_print_mutex);
+	if (message_type == fork_taken)
+		printf("%ld %d has taken a fork\n", current_time, philo_id);
+	else if (message_type == eating)
+		printf("%ld %d is eating\n", current_time, philo_id);
+	else if (message_type == sleeping)
+		printf("%ld %d is sleeping\n", current_time, philo_id);
+	else if (message_type == thinking)
+		printf("%ld %d is thinking\n", current_time, philo_id);
+	pthread_mutex_unlock(&g_print_mutex);
 }
