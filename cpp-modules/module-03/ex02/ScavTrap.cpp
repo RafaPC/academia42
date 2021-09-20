@@ -11,7 +11,7 @@ ScavTrap::ScavTrap( void )
 	std::cout << "ScravTrap's default constructor has been called\n";
 }
 
-ScavTrap::ScavTrap(std::string name): ClapTrap(name)
+ScavTrap::ScavTrap( std::string name ): ClapTrap(name)
 {
 	this->_name = name;
 	this->_hitpoints = 100;
@@ -25,7 +25,7 @@ ScavTrap::~ScavTrap()
 	std::cout << "Scavtrap " << this->_name << " was destroyed\n";
 }
 
-ScavTrap&	ScavTrap::operator =( ScavTrap &scavtrap )
+ScavTrap&	ScavTrap::operator =( const ScavTrap &scavtrap )
 {
 	std::cout << "ScavTrap " << scavtrap._name << " duplicated!!!";
 	this->_name = scavtrap._name;
@@ -40,7 +40,7 @@ void	ScavTrap::guardGate( void )
 	std::cout << "ScavTrap " << this->_name << " has entered Gate keeper mode\n";
 }
 
-void	ScavTrap::attack(std::string const &target)
+void	ScavTrap::attack( std::string const &target )
 {
 	std::cout << "ScavTrap " << this->_name << " yeeted " << target << ""
 	" causing it " << this->_attack_damage << " points of damage\n";

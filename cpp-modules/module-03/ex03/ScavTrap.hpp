@@ -8,11 +8,11 @@ class ScavTrap: public virtual ClapTrap
 {
 public:
 	ScavTrap( void );
-	ScavTrap(std::string name);
+	ScavTrap( std::string name );
 	~ScavTrap();
-	ScavTrap&	operator =( ScavTrap &scavtrap );
+	ScavTrap&	operator =( const ScavTrap &scavtrap );
 	void	guardGate( void );
-	void	attack(std::string const &target);
+	void	attack( std::string const &target );
 };
 
 #endif

@@ -15,11 +15,11 @@ public:
 	ClapTrap( std::string _name );
 	ClapTrap( ClapTrap& obj );
 	~ClapTrap();
-	ClapTrap&	operator =( ClapTrap &claptrap );
+	ClapTrap&	operator =( const ClapTrap &claptrap );
 
 	void	attack(std::string const &target);
-	void	takeDamage(unsigned int amount);
-	void	beRepaired(unsigned int amount);
+	void	takeDamage( unsigned int amount );
+	void	beRepaired( unsigned int amount );
 };
 
 #endif

@@ -11,7 +11,7 @@ FragTrap::FragTrap( void )
 	std::cout << "FragTrap's default constructor has been called\n";
 }
 
-FragTrap::FragTrap(std::string _name): ClapTrap(_name)
+FragTrap::FragTrap( std::string _name ): ClapTrap(_name)
 {
 	this->_hitpoints = 100;
 	this->_energy_points = 100;
@@ -24,7 +24,7 @@ FragTrap::~FragTrap()
 	std::cout << "FragTrap " << this->_name << " was destroyed\n";
 }
 
-FragTrap&	FragTrap::operator =( FragTrap &scavtrap )
+FragTrap&	FragTrap::operator =( const FragTrap &scavtrap )
 {
 	std::cout << "Scavtrap " << scavtrap._name << " duplicated!!!";
 	this->_name = scavtrap._name;

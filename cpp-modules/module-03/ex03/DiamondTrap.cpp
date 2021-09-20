@@ -9,7 +9,7 @@ DiamondTrap::DiamondTrap( void )
 	std::cout << this->_name << " evolved to a DiamondTrap!\n";
 }
 
-DiamondTrap::DiamondTrap(std::string name): ClapTrap(name + "_clap_name"), _name(name)
+DiamondTrap::DiamondTrap( std::string name ): ClapTrap(name + "_clap_name"), _name(name)
 {
 	this->ClapTrap::_name = name + "_clap_name";
 	std::cout << name << " evolved to a DiamondTrap!\n";
@@ -20,7 +20,7 @@ DiamondTrap::~DiamondTrap()
 	std::cout << "DiamondTrap " << this->_name << " was destroyed\n";
 }
 
-DiamondTrap&	DiamondTrap::operator =( DiamondTrap &scavtrap )
+DiamondTrap&	DiamondTrap::operator =( const DiamondTrap &scavtrap )
 {
 	std::cout << "DiamondTrap " << scavtrap._name << " duplicated!!!";
 	this->ClapTrap::_name = scavtrap.ClapTrap::_name;

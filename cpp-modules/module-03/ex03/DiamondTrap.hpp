@@ -11,9 +11,9 @@ private:
 	std::string	_name;
 public:
 	DiamondTrap( void );
-	DiamondTrap(std::string name);
+	DiamondTrap( std::string name );
 	~DiamondTrap();
-	DiamondTrap&	operator =( DiamondTrap &diamondtrap );
+	DiamondTrap&	operator =( const DiamondTrap &diamondtrap );
 	using	FragTrap::_hitpoints;
 	using	ScavTrap::_energy_points;
 	using	FragTrap::_attack_damage;
