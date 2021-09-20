@@ -67,12 +67,12 @@ void	safe_sleep(int	miliseconds)
 {
 	while (miliseconds > 0)
 	{
+		if (g_end)
+			return ;
 		if (miliseconds > 100)
 			usleep(100000);
 		else
 			usleep(miliseconds * 1000);
 		miliseconds -= 100;
-		if (g_end)
-			return ;
 	}
 }

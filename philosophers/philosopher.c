@@ -22,7 +22,7 @@ void	*philosopher_routine(void *param)
 	if (g_info.philo_size == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		safe_sleep(g_info.time_to_die);
+		usleep(g_info.time_to_die * 1000);
 		return (NULL);
 	}
 	asign_forks(id, philo_forks);
