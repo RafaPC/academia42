@@ -22,7 +22,7 @@ void	*philosopher_routine(void *param)
 	if (g_info.philo_size == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		usleep(g_info.time_to_die * 1000);
+		safe_sleep(g_info.time_to_die);
 		return (NULL);
 	}
 	asign_forks(id, philo_forks);
@@ -74,7 +74,7 @@ static void	philo_eat(int id, pthread_mutex_t *philo_forks[2])
 	print_status_message(id + 1, fork_taken);
 	g_time_last_meal[id] = get_current_timestamp();
 	print_status_message(id + 1, eating);
-	usleep(g_info.time_to_eat * 1000);
+	safe_sleep(g_info.time_to_eat);
 	g_meals[id]++;
 }
 
@@ -86,5 +86,5 @@ static void	philo_sleep(int id, pthread_mutex_t *philo_forks[2])
 	print_status_message(id + 1, sleeping);
 	pthread_mutex_unlock(philo_forks[0]);
 	pthread_mutex_unlock(philo_forks[1]);
-	usleep(g_info.time_to_sleep * 1000);
+	safe_sleep(g_info.time_to_sleep);
 }

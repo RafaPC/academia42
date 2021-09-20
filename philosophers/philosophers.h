@@ -40,7 +40,7 @@ t_philosophers_info	g_info;
 t_bool	read_parameters(const int argc, char const *argv[]);
 
 /*
-**		PHILOSOPHER ACTIONS
+**		PHILOSOPHER ROUTINE
 */
 void	*philosopher_routine(void *param);
 
@@ -50,4 +50,5 @@ void	*philosopher_routine(void *param);
 long	get_current_timestamp(void);
 t_bool	all_have_eaten(void);
 void	print_status_message(int philo_id, t_message_type message_type);
+void	safe_sleep(int	miliseconds);
 #endif
