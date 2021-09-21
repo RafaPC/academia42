@@ -22,6 +22,7 @@ int	main(int argc, char const *argv[])
 	if (!read_parameters(argc, argv))
 		return (0);
 	if (initialice_variables(&ids, &philosophers_threads)
+		&& g_info.min_eating_times != 0 && g_info.philo_size > 0
 		&& create_philosophers(ids, philosophers_threads))
 		manage_philosophers_lifes();
 	free_variables(ids, philosophers_threads);
