@@ -1,6 +1,6 @@
-#include <pthread.h>
-#include <stdio.h>	// printf()
-#include <unistd.h>	// usleep()
+#include <pthread.h>	// gettimeofday()
+#include <stdio.h>		// printf()
+#include <unistd.h>		// usleep()
 #include "philosophers.h"
 
 static void	asign_forks(int id, pthread_mutex_t	*philo_forks[2]);

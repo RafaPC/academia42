@@ -63,16 +63,19 @@ void	print_status_message(int philo_id, t_message_type message_type)
 **	This is because before ending the program, the main thread waits for every
 **	philosopher thread to end
 */
-void	safe_sleep(int	miliseconds)
+void	safe_sleep(int miliseconds)
 {
-	while (miliseconds > 0)
+	const long	start = get_current_timestamp();
+	const long	end = start + miliseconds;
+	long		current;
+
+	current = start;
+	while (!g_end && current < end)
 	{
-		if (g_end)
-			return ;
-		if (miliseconds > 100)
+		if (end - current > 100)
 			usleep(100000);
 		else
-			usleep(miliseconds * 1000);
-		miliseconds -= 100;
+			usleep((end - current) * 1000);
+		current = get_current_timestamp();
 	}
 }
