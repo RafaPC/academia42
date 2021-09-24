@@ -9,9 +9,9 @@ int main( void )
 	diamondtrap.beRepaired(3);
 	diamondtrap.attack("another bandit");
 	diamondtrap.takeDamage(30);
-	diamondtrap.highFivesGuys();
 	diamondtrap.attack("a badass bandit");
 	diamondtrap.takeDamage(80);
+	diamondtrap.highFivesGuys();
 	diamondtrap.guardGate();
 	diamondtrap.whoAmI();
 	return 0;

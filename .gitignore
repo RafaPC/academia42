@@ -4,3 +4,4 @@
 *.a
 *.exe
 */pft/
+.DS_Store

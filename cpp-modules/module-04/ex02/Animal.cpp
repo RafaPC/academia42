@@ -39,11 +39,6 @@ std::string	Animal::getType( void ) const
 	return (this->type);
 }
 
-void	Animal::makeSound( void ) const
-{
-	std::cout << "Very strange sound\n";
-}
-
 std::string	Animal::getIdea( const int index ) const
 {
 	if (this->brain == NULL)

@@ -1,9 +1,17 @@
-NAME = animals
-SRCS = main.cpp Animal.cpp Cat.cpp Dog.cpp Brain.cpp
+NAME	= animals
+SRCS	= main.cpp Animal.cpp Dog.cpp Cat.cpp Brain.cpp WrongCat.cpp
+OBJS	= $(SRCS:.cpp=.o)
+CXX		= clang++
+CPPFLAGS	= -Wall -Werror -Wextra
 
 all: $(NAME)
-$(NAME):	$(SRCS)
-	clang++ -Wall -Wextra -Werror $(SRCS) -o $(NAME)
 
-fclean:
+$(NAME):	$(OBJS)
+	$(CXX) $(CPPFLAGS) $(OBJS) -o $(NAME)
+
+clean:
+	rm -f $(OBJS)
+fclean: clean
 	rm -f $(NAME)
+
+re:	fclean all

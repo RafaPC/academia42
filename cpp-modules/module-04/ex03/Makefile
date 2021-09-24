@@ -1,5 +1,5 @@
-NAME	= fragtrap
-SRCS	= main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp
+NAME	= materias
+SRCS	= main.cpp AMateria.cpp Ice.cpp Cure.cpp MateriaSource.cpp Character.cpp
 OBJS	= $(SRCS:.cpp=.o)
 CXX		= clang++
 CPPFLAGS	= -Wall -Werror -Wextra

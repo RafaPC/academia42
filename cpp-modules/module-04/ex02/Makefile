@@ -1,5 +1,5 @@
-NAME	= fragtrap
-SRCS	= main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp
+NAME	= animals
+SRCS	= main.cpp Animal.cpp Dog.cpp Cat.cpp Brain.cpp
 OBJS	= $(SRCS:.cpp=.o)
 CXX		= clang++
 CPPFLAGS	= -Wall -Werror -Wextra
