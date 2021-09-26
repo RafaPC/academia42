@@ -8,7 +8,7 @@ Brain::Brain( void )
 {
 	std::cout << "Brain was constructed\n";
 	for (int i = 0; i < 100; i++)
-		this->ideas[i] = "idea";
+		this->ideas[i] = "no idea";
 }
 
 Brain::Brain( const Brain & src )
@@ -39,23 +39,4 @@ Brain&				Brain::operator=( Brain const &brain )
 	return *this;
 }
 
-
-/*
-** --------------------------------- METHODS ----------------------------------
-*/
-
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
-std::string	Brain::getIdea( void ) const
-{
-	return (this->ideas[0]);
-}
-
-void		Brain::changeIdea( const std::string idea)
-{
-	this->ideas[0] = idea;
-}
 /* ************************************************************************** */

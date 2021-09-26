@@ -2,7 +2,6 @@
 #include "Cat.hpp"
 #include "Dog.hpp"
 #include "Animal.hpp"
-#include "WrongCat.hpp"
 #include <unistd.h>
 
 int main( void )
@@ -12,15 +11,16 @@ int main( void )
 		zoo[i] = new Dog();
 	for (int i = 25; i < 50; i++)
 		zoo[i] = new Cat();
-	std::cout << "\n**** Dog and cat ideas: ****\n";
-	for (int i = 0; i < 50; i++)
-		std::cout << zoo[i]->getIdea() << '\n';
 	std::cout << "\nBrain deep copy test:\n";
-	zoo[0]->getIdea();
-	Dog doggo = *((Dog*)(zoo[0]));
-	std::cout << "Dog idea: " << zoo[0]->getIdea() << " - Other dog idea: " << doggo.getIdea() << '\n';
-	zoo[0]->changeIdea("different food");
-	std::cout << "Dog idea: " << zoo[0]->getIdea() << " - Other dog idea: " << doggo.getIdea() << "\n\n";
+	// creates new dog
+	Dog *dog = new Dog();
+	dog->getIdea(0);
+	// creates copy of new dog
+	Dog doggo = *dog;
+	std::cout << "Dog idea: " << dog->getIdea(0) << " - Other dog idea: " << doggo.getIdea(0) << '\n';
+	dog->changeIdea(0, "different food");
+	std::cout << "Dog idea: " << dog->getIdea(0) << " - Other dog idea: " << doggo.getIdea(0) << "\n\n";
+	delete dog;
 	for (int i = 0; i < 50; i++)
 		delete zoo[i];
 	return (0);

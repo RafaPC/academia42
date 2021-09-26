@@ -12,12 +12,7 @@ class Brain
 		Brain( void );
 		Brain( Brain const & src );
 		~Brain();
-
 		Brain&		operator=( Brain const &brain );
-		std::string	getIdea( void ) const;
-		void		changeIdea( const std::string );
-	private:
-
 };
 
 #endif /* *********************************************************** BRAIN_H */
