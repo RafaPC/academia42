@@ -4,44 +4,53 @@
 
 ScavTrap::ScavTrap( void )
 {
-	this->_name.assign("Unnamed");
-	this->_hitpoints = 100;
-	this->_energy_points = 50;
-	this->_attack_damage = 20;
+	_name = "Unnamed";
+	_hitpoints = 100;
+	_energy_points = 50;
+	_attack_damage = 20;
 	std::cout << "ScravTrap's default constructor has been called\n";
 }
 
 ScavTrap::ScavTrap( std::string name ): ClapTrap(name)
 {
-	this->_name = name;
-	this->_hitpoints = 100;
-	this->_energy_points = 50;
-	this->_attack_damage = 20;
+	_hitpoints = 100;
+	_energy_points = 50;
+	_attack_damage = 20;
 	std::cout << name << " evolved to a ScavTrap!\n";
 }
 
 ScavTrap::~ScavTrap()
 {
-	std::cout << "Scavtrap " << this->_name << " was destroyed\n";
+	std::cout << "Scavtrap " << _name << " was destroyed\n";
 }
 
 ScavTrap&	ScavTrap::operator =( const ScavTrap &scavtrap )
 {
 	std::cout << "ScavTrap " << scavtrap._name << " duplicated!!!";
-	this->_name = scavtrap._name;
-	this->_attack_damage = scavtrap._attack_damage;
-	this->_hitpoints = scavtrap._hitpoints;
-	this->_energy_points = scavtrap._energy_points;
+	_name = scavtrap._name;
+	_attack_damage = scavtrap._attack_damage;
+	_hitpoints = scavtrap._hitpoints;
+	_energy_points = scavtrap._energy_points;
 	return (*this);
 }
 
 void	ScavTrap::guardGate( void )
 {
-	std::cout << "ScavTrap" << this->_name << " has entered Gate keeper mode\n";
+	std::cout << "ScavTrap " << _name << " has entered Gate keeper mode\n";
 }
 
 void	ScavTrap::attack( std::string const &target )
 {
-	std::cout << "ScavTrap " << this->_name << " yeeted " << target << ""
-	" causing it " << this->_attack_damage << " points of damage\n";
+	if (_energy_points > 4)
+	{
+		std::cout << "ScavTrap " << _name << " yeets " << target << ""
+		" causing it " << _attack_damage << " points of damage\n";
+	}
+	else
+	{
+		_energy_points -= 4;
+		std::cout << "ScavTrap " << _name << " tries to yeet " << target << ""
+		" but doesn't have enough energy.\n";
+	}
+	
 }
