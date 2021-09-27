@@ -4,20 +4,20 @@
 
 Animal::Animal( void )
 {
-	this->type = "";
 	std::cout << "Animal was created by default constructor\n";
+	this->type = "";
 }
 
 Animal::Animal( const Animal &animal )
 {
+	std::cout << "Animal was created by copy constructor\n";
 	*this = animal;
-	std::cout << "Animal was created by reference constructor\n";
 }
 
 Animal&	Animal::operator= ( const Animal &animal )
 {
+	std::cout << "Animal was created by asignment operator";
 	this->type = animal.type;
-	std::cout << "Animal was created by = asignator\n";
 	return (*this);
 }
 

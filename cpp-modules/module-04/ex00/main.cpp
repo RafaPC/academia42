@@ -7,14 +7,15 @@
 int main( void )
 {
 	const Animal*	meta = new Animal();
-	const Animal*	cat = new Cat();
 	const Animal*	dog = new Dog();
-	const WrongCat	*wrongcat = new WrongCat();
+	const Animal*	cat = new Cat();
+	const WrongCat*	wrongcat = new WrongCat();
 
 	std::cout << "\nTypes:\n";
-	std::cout << cat->getType() << " \n";
-	std::cout << dog->getType() << " \n";
-	std::cout << wrongcat->getType() << " \n\n";
+	std::cout << "Animal type: " << meta->getType() << " \n";
+	std::cout << "Cat type: " << cat->getType() << " \n";
+	std::cout << "Dog type: " << dog->getType() << " \n";
+	std::cout << "Wrongcat type: " << wrongcat->getType() << " \n\n";
 
 	std::cout << "Sounds of animal, cat, dog and wrongcat\n";
 	meta->makeSound();

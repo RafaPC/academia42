@@ -6,10 +6,10 @@
 
 int main( void )
 {
-	Animal* zoo[50];
-	for (int i = 0; i < 25; i++)
+	Animal* zoo[4];
+	for (int i = 0; i < 2; i++)
 		zoo[i] = new Dog();
-	for (int i = 25; i < 50; i++)
+	for (int i = 2; i < 4; i++)
 		zoo[i] = new Cat();
 	std::cout << "\nBrain deep copy test:\n";
 	// creates new dog
@@ -21,7 +21,8 @@ int main( void )
 	dog->changeIdea(0, "different food");
 	std::cout << "Dog idea: " << dog->getIdea(0) << " - Other dog idea: " << doggo.getIdea(0) << "\n\n";
 	delete dog;
-	for (int i = 0; i < 50; i++)
+	// delete the array of animals
+	for (int i = 0; i < 4; i++)
 		delete zoo[i];
 	return (0);
 }
