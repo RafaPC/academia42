@@ -54,7 +54,7 @@ Character &				Character::operator=( Character const &character )
 
 void	Character::use(int idx, ICharacter& target)
 {
-	if (idx >= 0 && idx < MAX_LEARNED_MATERIA_CAPACITY)
+	if (idx >= 0 && idx < _learned_materias_length)
 		this->inventory[idx]->use(target);
 }
 
@@ -73,9 +73,12 @@ void	Character::unequip(int idx)
 	{
 		inventory[idx] = NULL;
 		_learned_materias_length--;
-		for (int i = idx; i < _learned_materias_length; i++)
-			inventory[i] = inventory[i + 1];
-		inventory[_learned_materias_length + 1] = NULL;
+		if (_learned_materias_length)
+		{
+			for (int i = idx; i < _learned_materias_length; i++)
+				inventory[i] = inventory[i + 1];
+			inventory[_learned_materias_length + 1] = NULL;
+		}
 	}
 }
 

@@ -13,15 +13,18 @@ int main()
 	materia_source->learnMateria(new Ice());
 	materia_source->learnMateria(new Cure());
 	// create character
-	ICharacter* me = new Character("me");
+	ICharacter*	me = new Character("me");
+
 	// creates materia pointer to store created materias
-	AMateria* temp_materia;
+	AMateria*	temp_materia1;
 	// creates materia and stores it in temp_materia, then equips into the character
-	temp_materia = materia_source->createMateria("ice");
-	me->equip(temp_materia);
+	temp_materia1 = materia_source->createMateria("ice");
+	me->equip(temp_materia1);
 	// the same but with another materia
-	temp_materia = materia_source->createMateria("cure");
-	me->equip(temp_materia);
+	AMateria*	temp_materia2;
+	temp_materia2 = materia_source->createMateria("cure");
+	me->equip(temp_materia2);
+
 	// creates another character on which to use the materias
 	ICharacter* bob = new Character("bob");
 	me->use(0, *bob);
@@ -34,5 +37,6 @@ int main()
 	delete bob;
 	delete me;
 	delete materia_source;
+	delete temp_materia1;
 	return 0;
 }
