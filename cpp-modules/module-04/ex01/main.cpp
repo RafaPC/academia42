@@ -3,7 +3,6 @@
 #include "Dog.hpp"
 #include "Animal.hpp"
 #include "WrongCat.hpp"
-#include <unistd.h>
 
 int main( void )
 {
