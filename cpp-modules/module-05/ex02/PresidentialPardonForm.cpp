@@ -31,10 +31,6 @@ PresidentialPardonForm::~PresidentialPardonForm()
 PresidentialPardonForm &				PresidentialPardonForm::operator=( PresidentialPardonForm const & rhs )
 {
 	(void)rhs;
-	//if ( this != &rhs )
-	//{
-		//this->_value = rhs.getValue();
-	//}
 	return *this;
 }
 
@@ -46,10 +42,5 @@ void				PresidentialPardonForm::executeAction( void ) const
 {
 	std::cout << getTarget() << " has been pardoned by Zafod Beeblebrox\n";
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
 
 /* ************************************************************************** */

@@ -22,7 +22,6 @@ Bureaucrat::Bureaucrat( const Bureaucrat & other ): _name(other._name)
 		this->_grade = other._grade;
 }
 
-
 /*
 ** -------------------------------- DESTRUCTOR --------------------------------
 */

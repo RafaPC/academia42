@@ -4,8 +4,8 @@
 
 int main( void )
 {
-	Bureaucrat	bureaucrat1("Boss", 27);
-	Bureaucrat	bureaucrat2("Peasant", 52);
+	Bureaucrat	bureaucrat1("Bureaucrat1", 27);
+	Bureaucrat	bureaucrat2("Bureaucrat2", 52);
 	Form		form("form", 27, 50);
 
 	std::cout << bureaucrat1 << bureaucrat2 << form << '\n';

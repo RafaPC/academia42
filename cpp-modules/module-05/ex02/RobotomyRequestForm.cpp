@@ -32,10 +32,6 @@ RobotomyRequestForm::~RobotomyRequestForm()
 RobotomyRequestForm &				RobotomyRequestForm::operator=( RobotomyRequestForm const & rhs )
 {
 	(void)rhs;
-	//if ( this != &rhs )
-	//{
-		//this->_value = rhs.getValue();
-	//}
 	return *this;
 }
 
@@ -52,10 +48,5 @@ void				RobotomyRequestForm::executeAction( void ) const
 	else
 		std::cout << getTarget() << " robotomy was a failure\n";
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
 
 /* ************************************************************************** */

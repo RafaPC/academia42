@@ -32,10 +32,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 ShrubberyCreationForm &				ShrubberyCreationForm::operator=( ShrubberyCreationForm const & rhs )
 {
-	//if ( this != &rhs )
-	//{
-		//this->_value = rhs.getValue();
-	//}
+
 	(void)rhs;
 	return *this;
 }
@@ -59,10 +56,5 @@ void				ShrubberyCreationForm::executeAction( void ) const
 			"____|||____        ____|||____\n";
 	file.close();
 }
-
-/*
-** --------------------------------- ACCESSOR ---------------------------------
-*/
-
 
 /* ************************************************************************** */
