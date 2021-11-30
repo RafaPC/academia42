@@ -47,7 +47,7 @@ namespace ft
 			}
 			VectorIterator operator++(int)
 			{
-				VectorIterator tmp(this->_pointer);
+				VectorIterator tmp(_pointer);
 				++_pointer;
 				return (tmp);
 			}
@@ -58,7 +58,7 @@ namespace ft
 			}
 			VectorIterator operator--(int)
 			{
-				VectorIterator tmp(this->_pointer);
+				VectorIterator tmp(_pointer);
 				--_pointer;
 				return (tmp);
 			}
@@ -95,31 +95,31 @@ namespace ft
 			VectorIterator operator-(pointer n) const
 			{
 				VectorIterator aux(*this);
-				this->_pointer = this->_pointer - n;
+				_pointer = _pointer - n;
 				return (aux);
 			}
 			difference_type operator-(VectorIterator<T> n) const
 			{
 				// VectorIterator<T> aux(*this);
 				// aux._pointer = reinterpret_cast<pointer>(aux._pointer - n._pointer);
-				return (reinterpret_cast<difference_type>(this->_pointer - n._pointer));
+				return (reinterpret_cast<difference_type>(_pointer - n._pointer));
 			}
 			//FIXME: *it = *(it - 1);
 			VectorIterator operator-(int n) const
 			{
 				VectorIterator aux;
-				aux._pointer = this->_pointer - n;
+				aux._pointer = _pointer - n;
 				return (aux);
 			}
 
 			VectorIterator &operator+=(int n)
 			{
-				this->_pointer += n;
+				_pointer += n;
 				return (*this);
 			}
 			VectorIterator &operator-=(int n)
 			{
-				this->_pointer -= n;
+				_pointer -= n;
 				return (*this);
 			}
 			//TODO:
@@ -130,11 +130,11 @@ namespace ft
 			// }
 			value_type &operator[](int n)
 			{
-				return (*(this->_pointer + n));
+				return (*(_pointer + n));
 			}
 			value_type operator[](int n) const
 			{
-				return (*(this->_pointer + n));
+				return (*(_pointer + n));
 			}
 
 			private:

@@ -46,7 +46,7 @@ namespace ft {
 		struct is_integral<long int> : public true_type {};
 	//and so on...
 
-	template<typename T>
+	template<typename T> //FIXME: creo que no lo utilizo
 	struct	has_iterator_category {
 		typedef char yes[1];
 		typedef char no[2];
@@ -116,14 +116,13 @@ namespace ft {
 
 				//copy
 				// The underlying iterator is initialized with that of other.
-				// This overload participates inoverload resolution only if U is not
+				// This overload participates in overload resolution only if U is not
 				// the same type as Iter and std::convertible_to<const U&, Iter> is modeled (since C++20)
 				//TODO: añadir cositas de tipos al compilar
 				template <class Iter>
 					reverse_iterator (const reverse_iterator<Iter>& rev_it)
-					{
-						
-					}
+					: current(rev_it.current) {}
+
 				iterator_type base() const { return (current + 1); }
 				reference operator*() const
 				{
@@ -156,34 +155,18 @@ namespace ft {
 					++current;
 					return (temp);
 				}
-				// TODO: version si es random...
-				// reverse_iterator operator+ (difference_type n) const
-				// {
-				// 	return (reverse_iterator(current - n));
-				// }
 				reverse_iterator operator+ (difference_type n) const
 				{
-					reverse_iterator temp(current);
-					while (n--)
-						++temp;
-					return (temp);
+					return (reverse_iterator(current - n));
 				}
 				reverse_iterator& operator+=( difference_type n )
 				{
 					*this = *this + n;
 					return (*this);
 				}
-				// TODO: version si es random...
-				// reverse_iterator operator- (difference_type n) const
-				// {
-				// 	return (reverse_iterator(current + n));
-				// }
 				reverse_iterator operator- (difference_type n) const
 				{
-					reverse_iterator temp(current);
-					while (n--)
-						--temp;
-					return (temp);
+					return (reverse_iterator(current + n));
 				}
 				reverse_iterator& operator-=( difference_type n )
 				{
