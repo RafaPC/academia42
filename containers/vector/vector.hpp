@@ -50,6 +50,13 @@ class vector
 				throw std::out_of_range(exception_message.str());
 			}
 		}
+
+		void	_shift_elements(size_type until_index, size_type shift_length)
+		{
+			for (size_type i = _size - 1; i >= until_index; --i)
+				_data[i] = _data[i - shift_length];
+		}
+
 	public:
 
 		//	CONSTRUCTORS
@@ -186,7 +193,12 @@ class vector
 		void		reserve(size_type new_capacity)
 		{
 			if (new_capacity > max_size())
-				throw std::length_error("size requested is greater than maximum size");
+			{
+				std::stringstream exception_message;
+				exception_message << "vector::reserve: new_capacity (" << new_capacity << ""
+				") requested is greater than maximum capacity (" << max_size() << ")";
+				throw std::length_error(exception_message.str());
+			}
 			else if (new_capacity > _capacity)
 			{
 				pointer new_data = _allocator.allocate(new_capacity, _data);
@@ -245,40 +257,39 @@ class vector
 			return (this->_data[this->_size - 1]);
 		}
 
+		// TODO: if InputIterator is not at least of a forward iterator category 
+		// (i.e., it is just an input iterator) the new capacity cannot be determined
+		// beforehand and the operation incurs in additional logarithmic complexity
+		// in the new size (reallocations while growing).
 		template <class InputIterator>
 			void	assign(InputIterator first, InputIterator last,
 			typename enable_if<is_convertible<typename InputIterator::iterator_category, std::input_iterator_tag>::value, void>::type* = NULL)
 			{
 				const size_type	new_size = std::distance(first, last);
-				if (new_size > _capacity)
-					reserve(new_size);
-				else
-					clear();
+				clear();
+				reserve(new_size);
+				_size = new_size;
 				for (size_type i = 0; first != last; ++i, ++first)
 					_allocator.construct(&_data[i], *first);
 			}
 
 		void assign (size_type n, const value_type& val)
 		{
-			if (n > _capacity)
-				reserve(n);
+			reserve(n);
 			_size = n;
-			while (n--)
+			while (--n)
 				_allocator.construct(&_data[n], val);
 		}
 
 		void push_back (const value_type& val)
 		{
-			if (_size == _capacity)
-				reserve(_capacity + 1);
-			_allocator.construct(&_data[_size], val);
-			_size++;
+			reserve(++_size);
+			_allocator.construct(&_data[_size - 1], val);
 		}
 
 		void pop_back()
 		{
-			_allocator.destroy(&_data[_size - 1]);
-			_size--;
+			_allocator.destroy(&_data[--_size]);
 		}
 
 		//TODO: con insertes y asignes, checkear que si la posicion es el primer elemento
@@ -286,31 +297,24 @@ class vector
 		iterator	insert (iterator position, const value_type& val)
 		{
 			const size_type position_index = std::distance(begin(), position);
-			if (_size == _capacity)
-			{
-				reserve(_capacity + 1);
-				position = &_data[position_index];
-			}
-			++_size;
+			reserve(++_size);
 			// it sets each position value by its previous one from end to the position
 			// of the inserted element
-			for (size_type i = _size - 1; i && i >= position_index; --i)
-				_data[i] = _data[i - 1];
+			_shift_elements(position_index + 1, 1);
 
 			_allocator.construct(&_data[position_index], val);
-			return (position);
+			return (&_data[position_index]);
 		}
 
 		void	insert (iterator position, size_type n, const value_type& val)
 		{
+			if (n == 0)
+				return;
 			const size_type distance = std::distance(begin(), position);
-			const size_type added_capacity = _size + n - _capacity;
-			if (added_capacity > 0)
-				reserve(_capacity + added_capacity);
+			reserve(_size + n);
 			_size += n;
 
-			for (size_type i = _size - 1; i && i >= distance + n; --i)
-				_data[i] = _data[i - n];
+			_shift_elements(distance + n, n);
 			for (size_type i = 0; i < n; ++i)
 				_allocator.construct(&_data[distance + i], val);
 		}
@@ -323,17 +327,15 @@ class vector
 		typename enable_if<is_convertible<typename InputIterator::iterator_category, std::input_iterator_tag>::value, void>::type* = NULL)
 		{
 			const size_type		new_elements_size = std::distance(first, last);
-			const size_type		new_size = _size + new_elements_size;
+			if (new_elements_size == 0)
+				return;
 			size_type			insert_index = std::distance(begin(), position);
 
-			if (new_size > _capacity)
-				reserve(_size + new_elements_size);
-			_size = new_size;
+			reserve(_size + new_elements_size);
+			_size += new_elements_size;
 			// Elements from position are moved new_elements_size to the right
 			// in reverse order so that no elements are removed
-			for (size_type i = _size - 1; i && i >= insert_index + new_elements_size; --i)
-				_data[i] = _data[i - new_elements_size];
-
+			_shift_elements(insert_index + new_elements_size, new_elements_size);
 			// New elements are inserted
 			for (; first != last; ++insert_index, ++first)
 				_allocator.construct(&_data[insert_index], *first);
