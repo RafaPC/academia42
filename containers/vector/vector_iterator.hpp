@@ -1,6 +1,6 @@
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
-#include <iterator>
+
 #include "utils.hpp"
 
 namespace ft
@@ -16,22 +16,20 @@ namespace ft
 				typedef T*									pointer;
 				typedef T&									reference;
 
-				VectorIterator() {}
-				// VectorIterator(int n) { _pointer = n; } //FIXME:
+				VectorIterator(void) : _pointer(NULL) {}
 				VectorIterator(pointer ptr) : _pointer(ptr) {}
-			VectorIterator &operator=(const VectorIterator &other)
-			{
-				_pointer = other._pointer;
-				return (*this);
-			};
-			//FIXME:
-			// VectorIterator &operator=(const pointer &other)
-			// {
-			// 	_pointer = other;
-			// 	return (*this);
-			// };
-
-			
+				VectorIterator(VectorIterator const &other) : _pointer(other._pointer) {}
+				VectorIterator &operator=(const VectorIterator &other)
+				{
+					_pointer = other._pointer;
+					return (*this);
+				};
+				// conversion operator to const VectorIterator
+				// just constructs a VectorIterator of const T
+				operator	VectorIterator<const T>(void) const
+				{
+					return (VectorIterator<const T>(_pointer));
+				}
 			reference operator*() const
 			{
 				return (*_pointer);
@@ -47,9 +45,9 @@ namespace ft
 			}
 			VectorIterator operator++(int)
 			{
-				VectorIterator tmp(_pointer);
+				VectorIterator temp(_pointer);
 				++_pointer;
-				return (tmp);
+				return (temp);
 			}
 			VectorIterator &operator--()
 			{
@@ -58,10 +56,12 @@ namespace ft
 			}
 			VectorIterator operator--(int)
 			{
-				VectorIterator tmp(_pointer);
+				VectorIterator temp(_pointer);
 				--_pointer;
-				return (tmp);
+				return (temp);
 			}
+			
+			// RELATIONAL OPERATORS
 			bool operator== (const VectorIterator &x) const
 			{
 				return (_pointer == x._pointer);
@@ -86,53 +86,42 @@ namespace ft
 			{
 				return (_pointer <= x._pointer);
 			}
-			VectorIterator operator+(int n) const
+			
+			// ARITHMETIC OPERATIONS
+			VectorIterator operator+(difference_type n) const
 			{
-				VectorIterator aux(*this);
-				aux += n;
-				return (aux);
-			}
-			VectorIterator operator-(pointer n) const
-			{
-				VectorIterator aux(*this);
-				_pointer = _pointer - n;
-				return (aux);
-			}
-			difference_type operator-(VectorIterator<T> n) const
-			{
-				// VectorIterator<T> aux(*this);
-				// aux._pointer = reinterpret_cast<pointer>(aux._pointer - n._pointer);
-				return (reinterpret_cast<difference_type>(_pointer - n._pointer));
-			}
-			//FIXME: *it = *(it - 1);
-			VectorIterator operator-(int n) const
-			{
-				VectorIterator aux;
-				aux._pointer = _pointer - n;
-				return (aux);
+				return (VectorIterator(_pointer + n));
 			}
 
-			VectorIterator &operator+=(int n)
+			VectorIterator &operator+=(difference_type n)
 			{
 				_pointer += n;
 				return (*this);
 			}
-			VectorIterator &operator-=(int n)
+
+			difference_type operator-(VectorIterator<T> n) const
+			{
+				return (reinterpret_cast<difference_type>(_pointer - n._pointer));
+			}
+			
+			VectorIterator operator-(difference_type n) const
+			{
+				return (VectorIterator(_pointer - n));
+			}
+
+			VectorIterator &operator-=(difference_type n)
 			{
 				_pointer -= n;
 				return (*this);
 			}
-			//TODO:
-			// VectorIterator &operator-=(VectorIterator n)
-			// {
-			// 	this->_pointer = this->_pointer - n._pointer;
-			// 	return (*this);
-			// }
-			value_type &operator[](int n)
+
+			// OFFSET DEFERENCE OPERATOR
+			value_type &operator[](difference_type n)
 			{
 				return (*(_pointer + n));
 			}
-			value_type operator[](int n) const
+
+			value_type operator[](difference_type n) const
 			{
 				return (*(_pointer + n));
 			}

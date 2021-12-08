@@ -51,7 +51,7 @@ class vector
 			}
 		}
 
-		void	_shift_elements(size_type until_index, size_type shift_length)
+		void	_right_shift_elements(size_type until_index, size_type shift_length)
 		{
 			for (size_type i = _size - 1; i >= until_index; --i)
 				_data[i] = _data[i - shift_length];
@@ -131,22 +131,22 @@ class vector
 		
 		iterator				end()
 		{
-			return (iterator(&_data[_size]));
+			return (iterator(_data + _size));
 		}
 		
 		const_iterator			end() const
 		{
-			return (iterator(&_data[_size]));
+			return (const_iterator(_data + _size));
 		}
 		
 		reverse_iterator		rbegin()
 		{
-			return (reverse_iterator(&_data[_size]));
+			return (reverse_iterator(_data + _size));
 		}
 		
 		const_reverse_iterator	rbegin() const
 		{
-			return (const_reverse_iterator(&_data[_size]));
+			return (const_reverse_iterator(_data + _size));
 		}
 		
 		reverse_iterator		rend()
@@ -175,14 +175,19 @@ class vector
 			return (this->_capacity);
 		}
 		
+		/*
+		**	If the new size is smaller than the current one, calls pop_back() as many times the difference
+		**	If the new size is greater than the current one, reserves the needed capacity
+		**	and pushes as many values as needed
+		*/
 		void		resize(size_type new_size, value_type val = value_type())
 		{
-			while (new_size > _size)
+			while (new_size < _size)
 				pop_back();
-			while (new_size > _size)
-				push_back(val);
 			if (new_size > _capacity)
 				reserve(new_size);
+			while (new_size > _size)
+				push_back(val);
 		}
 		
 		bool		empty() const
@@ -219,42 +224,42 @@ class vector
 		{
 			return (_data[n]);
 		}
-		
+
 		const_reference operator[] (size_type n) const
 		{
-			return (_data[n]);
+			return (_data + n);
 		}
-		
+
 		reference 		at (size_type n)
 		{
 			_range_check(n);
 			return (_data[n]);
 		}
-		
+
 		const_reference at (size_type n) const
 		{
 			_range_check(n);
 			return (_data[n]);
 		}
-		
+
 		reference 		front()
 		{
-			return (_data[0]);
+			return (_data);
 		}
-		
+
 		const_reference front() const
 		{
-			return (_data[0]);
+			return (_data);
 		}
-		
+
 		reference 		back()
 		{
 			return (_data[_size - 1]);
 		}
-		
+
 		const_reference back() const
 		{
-			return (this->_data[this->_size - 1]);
+			return (_data[_size - 1]);
 		}
 
 		// TODO: if InputIterator is not at least of a forward iterator category 
@@ -275,6 +280,7 @@ class vector
 
 		void assign (size_type n, const value_type& val)
 		{
+			clear();
 			reserve(n);
 			_size = n;
 			while (--n)
@@ -283,8 +289,8 @@ class vector
 
 		void push_back (const value_type& val)
 		{
-			reserve(++_size);
-			_allocator.construct(&_data[_size - 1], val);
+			reserve(_size + 1);
+			_allocator.construct(&_data[_size++], val);
 		}
 
 		void pop_back()
@@ -292,15 +298,14 @@ class vector
 			_allocator.destroy(&_data[--_size]);
 		}
 
-		//TODO: con insertes y asignes, checkear que si la posicion es el primer elemento
-		// no haga cosas raras con el 0, tipo _data[0] = _data[0 - 1]
 		iterator	insert (iterator position, const value_type& val)
 		{
-			const size_type position_index = std::distance(begin(), position);
-			reserve(++_size);
+			const size_type position_index = position - begin();
+			reserve(_size + 1);
+			++_size;
 			// it sets each position value by its previous one from end to the position
 			// of the inserted element
-			_shift_elements(position_index + 1, 1);
+			_right_shift_elements(position_index + 1, 1);
 
 			_allocator.construct(&_data[position_index], val);
 			return (&_data[position_index]);
@@ -310,13 +315,13 @@ class vector
 		{
 			if (n == 0)
 				return;
-			const size_type distance = std::distance(begin(), position);
+			const size_type start_index = position - begin();
 			reserve(_size + n);
 			_size += n;
 
-			_shift_elements(distance + n, n);
+			_right_shift_elements(start_index + n, n);
 			for (size_type i = 0; i < n; ++i)
-				_allocator.construct(&_data[distance + i], val);
+				_allocator.construct(&_data[start_index + i], val);
 		}
 
 		// TODO: Additionally, if InputIterator in the range insert (3) is not at least of a forward
@@ -335,44 +340,44 @@ class vector
 			_size += new_elements_size;
 			// Elements from position are moved new_elements_size to the right
 			// in reverse order so that no elements are removed
-			_shift_elements(insert_index + new_elements_size, new_elements_size);
+			_right_shift_elements(insert_index + new_elements_size, new_elements_size);
 			// New elements are inserted
 			for (; first != last; ++insert_index, ++first)
 				_allocator.construct(&_data[insert_index], *first);
 		};
 
+		/*
+		**	Destroys the element at position
+		**	Then left shifts every element from position + 1 to the end
+		**	Then pops_back the last element because it's duplicated
+		*/
 		iterator erase (iterator position)
 		{
-			size_type	position_index = std::distance(begin(), position);
-			_allocator.destroy(&_data[position_index]);
-			--_size;
-			if (position != end())
-			{
-				for (size_type i = position_index + 1; i < _size; ++i)
-					_data[i - 1] = _data[i];
-			}
+			_allocator.destroy(&*position);
+			for (iterator it = position, end = this->end(); it + 1 != end; ++it)
+				*it = *(it + 1);
+			pop_back();
 			return (position);
 		}
 
-		// TODO: chequiar lo del deference iterator as rvalue y eso
+		/*
+		**	Destroys elements from first to last
+		**	Shifts left erase_size positions each element from last to the end of the vector
+		**	Then pops_back the remaining duplicated elements
+		*/
 		iterator erase (iterator first, iterator last)
 		{
-			const size_type	distance = std::distance(first, last);
-			_size -= distance;
+			const size_type	erase_size = last - first;
 
-			iterator		it = first;
-			iterator		end = this->end();
-			while (it != last)
-			{
+			for (iterator it = first; it != last; ++it)
 				_allocator.destroy(&*it);
-				++it;
-			}
-			while (first != end)
-			{
-				*first = *(first + distance);
-				++first;
-			}
-			return (last);
+
+			for (iterator end = this->end(); first + erase_size != end; ++first)
+				*first = *(first + erase_size);
+
+			for (size_type i = 0; i < erase_size; ++i)
+				pop_back();
+			return (last - erase_size);
 		}
 
 		void swap (vector<T, Allocator>& x)
@@ -394,54 +399,52 @@ class vector
 			return (_allocator);
 		}
 
-		// template <class T, class Allocator>
-			bool operator== (const vector<T,Allocator>& rhs)
-			{
-				if (_size != rhs._size)
-					return (false);
-				for (size_type i = 0; i < _size; ++i)
-				{
-					if ((*this)[i] != rhs[i])
-						return (false);
-				}
-				return (true);
-			}
-		// template <class T, class Alloc>
-			bool operator!= (const vector<T,Allocator>& rhs)
-			{
-				return (!(*this == rhs));
-			}
-		// template <class T, class Alloc>
-			bool operator< (const vector<T, Allocator>& rhs) //FIXME: a<b y b<a
-			{
-				for (size_type i = 0; i < _size && i < rhs._size; ++i)
-				{
-					if ((*this)[i] >= rhs[i])
-						return (false);
-				}
-				return (true);
-			}
-		// template <class T, class Alloc>
-			bool operator<= (const vector<T,Allocator>& rhs)
-			{
-				return (!(rhs < *this));
-			}
-		// template <class T, class Alloc>
-			bool operator> (const vector<T,Allocator>& rhs)
-			{
-				return (rhs < *this);
-			}
-		// template <class T, class Alloc>
-			bool operator>= (const vector<T,Allocator>& rhs)
-			{
-				return (!(*this < rhs));
-			}
-
-		// template <class T, class Alloc>
-			void swap (vector<T,Allocator>& x, vector<T,Allocator>& y)
-			{
-				x.swap(y);
-			}
 };
+
+template <class T, class Allocator>
+	bool operator== (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	{
+		if (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+			return (true);
+		else
+			return (false);
+	};
+
+template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	};
+
+template <class T, class Alloc>
+	bool operator< (const vector<T,Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	};
+
+template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(rhs < lhs));
+	};
+
+template <class T, class Alloc>
+	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	};
+
+template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	};
+
+template <class T, class Alloc>
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	};
 }
+
 #endif

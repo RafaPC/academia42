@@ -92,11 +92,6 @@ namespace ft {
 	template <class Iterator>
 		class reverse_iterator
 		{
-			//TODO: a ver, igual que para el iterador normal, el + y el - si es random_access se hace
-			// con la suma y la resta directamente, se puede hacer que siempre sea a base de unos
-			// cuantos ++'s y --'s pero lo suyo es hacer la sobrecarga con el checkeo de tipos en compilacion
-			// comprobar si el tipo es convertible a std::random_access.... y si lo es, hacerlo con
-			// suma y resta directamente
 			public:
 				typedef Iterator iterator_type;
 				typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
@@ -108,22 +103,18 @@ namespace ft {
 				iterator_type	current;
 			public:
 				//default
-				reverse_iterator();
+				reverse_iterator(void) : current(Iterator()) {}
 
 				//initialization
 				explicit	reverse_iterator (iterator_type it)
 				:current(it) {}
 
 				//copy
-				// The underlying iterator is initialized with that of other.
-				// This overload participates in overload resolution only if U is not
-				// the same type as Iter and std::convertible_to<const U&, Iter> is modeled (since C++20)
-				//TODO: añadir cositas de tipos al compilar
 				template <class Iter>
-					reverse_iterator (const reverse_iterator<Iter>& rev_it)
-					: current(rev_it.current) {}
+					reverse_iterator (const reverse_iterator<Iter>& other)
+					: current(other.current) {}
 
-				iterator_type base() const { return (current + 1); }
+				iterator_type base() const { return (current); }
 				reference operator*() const
 				{
 					iterator_type temp = current;
@@ -198,6 +189,30 @@ namespace ft {
 					return (current >= x.current);
 				}
 		};
+	template <class InputIterator1, class InputIterator2>
+		bool	equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+		{
+			while (first1 != last1)
+			{
+				if (!(*first1 == *first2))
+					return (false);
+				++first1; ++first2;
+			}
+		}
+	template< class InputIterator1, class InputIterator2 >
+		bool	lexicographical_compare( InputIterator1 first1, InputIterator1 last1,
+									InputIterator2 first2, InputIterator2 last2 )
+		{
+			while (first1 != last1)
+			{
+				if (first2 == last2 || *first2 < *first1)
+					return (false);
+				else if (*first1 < *first2)
+					return (true);
+				++first1; ++first2;
+			}
+			return (first2 != last2);
+		}
 }
 
 #endif
