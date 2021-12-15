@@ -1,6 +1,8 @@
 #ifndef UTILS_HPP
 # define UTILS_HPP
 
+#include <cstdlib>
+
 namespace ft {
 
 	template < bool Cond, class T = void >
@@ -234,13 +236,7 @@ namespace ft {
 	
 		// initialization
 		pair (const first_type& a, const second_type& b): first(first_type(a)), second(second_type(b)) {}
-	
-		//operator = constructor
-		pair& operator= (const pair& pr)
-		{
-			*this = pair(pr);
-			return *this;
-		}
+
 	};
 	
 	template <class T1, class T2>
