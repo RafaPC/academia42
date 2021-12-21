@@ -81,14 +81,33 @@ namespace ft {
 		{ };
 
 	template <class Iterator>
-		class iterator_traits
+		struct iterator_traits
 		{
-			public:
-				typedef typename Iterator::difference_type		difference_type;
-				typedef typename Iterator::value_type			value_type;
-				typedef typename Iterator::pointer				pointer;
-				typedef typename Iterator::reference			reference;
-				typedef typename Iterator::iterator_category	iterator_category;
+			typedef typename Iterator::difference_type		difference_type;
+			typedef typename Iterator::value_type			value_type;
+			typedef typename Iterator::pointer				pointer;
+			typedef typename Iterator::reference			reference;
+			typedef typename Iterator::iterator_category	iterator_category;
+		};
+	// POITNER SPECIALIZATION
+	template<typename _Tp>
+		struct iterator_traits<_Tp*>
+		{
+			typedef std::random_access_iterator_tag	iterator_category;
+			typedef _Tp								value_type;
+			typedef std::ptrdiff_t					difference_type;
+			typedef _Tp*							pointer;
+			typedef _Tp&							reference;
+		};
+	// CONST SPECIALIZATION
+	template<typename _Tp>
+		struct iterator_traits<const _Tp*>
+		{
+			typedef std::random_access_iterator_tag	iterator_category;
+			typedef _Tp								value_type;
+			typedef std::ptrdiff_t					difference_type;
+			typedef const _Tp*							pointer;
+			typedef const _Tp&							reference;
 		};
 
 	template <class Iterator>

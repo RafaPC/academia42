@@ -40,23 +40,6 @@ class vector
 		size_type	_capacity;
 		Allocator	_allocator;
 
-		void	_range_check(size_type n) const
-		{
-			if (n >= _size)
-			{
-				std::stringstream exception_message;
-				exception_message << "vector::_range_check: n (which is " << n << ""
-				") >= this->size() (which is " << _size << ")";
-				throw std::out_of_range(exception_message.str());
-			}
-		}
-
-		void	_right_shift_elements(size_type until_index, size_type shift_length)
-		{
-			for (size_type i = _size - 1; i >= until_index; --i)
-				_data[i] = _data[i - shift_length];
-		}
-
 	public:
 
 		//	CONSTRUCTORS
@@ -74,14 +57,12 @@ class vector
 		
 		template <typename InputIterator>
 		vector (InputIterator first, InputIterator last,
-			const allocator_type& alloc = allocator_type(),
-			typename enable_if<is_convertible<typename InputIterator::iterator_category, std::input_iterator_tag>::value, void>::type* = NULL)
-			: _size(std::distance(first, last)), _capacity(_size), _allocator(alloc)
+			const allocator_type& alloc = allocator_type()): _allocator(alloc)
 			{
-				_data = _allocator.allocate(_capacity);
-				for (size_type i = 0; first != last; ++i, ++first)
-					_allocator.construct(_data + i, *first);
+				typedef typename ft::is_integral<InputIterator>::type Integral;
+				_constructor_dispatch(first, last, Integral());
 			}
+
 		vector (const vector& x)
 		{
 			_data = NULL;
@@ -267,24 +248,15 @@ class vector
 		// beforehand and the operation incurs in additional logarithmic complexity
 		// in the new size (reallocations while growing).
 		template <class InputIterator>
-			void	assign(InputIterator first, InputIterator last,
-			typename enable_if<is_convertible<typename InputIterator::iterator_category, std::input_iterator_tag>::value, void>::type* = NULL)
+			void	assign(InputIterator first, InputIterator last)
 			{
-				const size_type	new_size = std::distance(first, last);
-				clear();
-				reserve(new_size);
-				_size = new_size;
-				for (size_type i = 0; first != last; ++i, ++first)
-					_allocator.construct(&_data[i], *first);
+				typedef typename ft::is_integral<InputIterator>::type Integral;
+				_assign_dispatch(first, last, Integral());
 			}
 
 		void assign (size_type n, const value_type& val)
 		{
-			clear();
-			reserve(n);
-			_size = n;
-			while (--n)
-				_allocator.construct(&_data[n], val);
+			_assign_fill(n, val);
 		}
 
 		void push_back (const value_type& val)
@@ -313,38 +285,15 @@ class vector
 
 		void	insert (iterator position, size_type n, const value_type& val)
 		{
-			if (n == 0)
-				return;
-			const size_type start_index = position - begin();
-			reserve(_size + n);
-			_size += n;
-
-			_right_shift_elements(start_index + n, n);
-			for (size_type i = 0; i < n; ++i)
-				_allocator.construct(&_data[start_index + i], val);
+			_insert_fill(position, n, val);
 		}
 
-		// TODO: Additionally, if InputIterator in the range insert (3) is not at least of a forward
-		// iterator category (i.e., just an input iterator) the new capacity cannot be determined 
-		// beforehand and the insertion incurs in additional logarithmic complexity in size (reallocations).
 		template <class InputIterator>
-		void	insert (iterator position, InputIterator first, InputIterator last,
-		typename enable_if<is_convertible<typename InputIterator::iterator_category, std::input_iterator_tag>::value, void>::type* = NULL)
-		{
-			const size_type		new_elements_size = std::distance(first, last);
-			if (new_elements_size == 0)
-				return;
-			size_type			insert_index = std::distance(begin(), position);
-
-			reserve(_size + new_elements_size);
-			_size += new_elements_size;
-			// Elements from position are moved new_elements_size to the right
-			// in reverse order so that no elements are removed
-			_right_shift_elements(insert_index + new_elements_size, new_elements_size);
-			// New elements are inserted
-			for (; first != last; ++insert_index, ++first)
-				_allocator.construct(&_data[insert_index], *first);
-		};
+			void	insert (iterator position, InputIterator first, InputIterator last)
+			{
+				typedef typename ft::is_integral<InputIterator>::type	Integral;
+				_insert_dispatch(position, first, last, Integral());
+			};
 
 		/*
 		**	Destroys the element at position
@@ -397,6 +346,174 @@ class vector
 		allocator_type get_allocator() const
 		{
 			return (_allocator);
+		}
+
+	private:
+		//If n is greater than the size, it throws an out of range exception with the appropiate message
+		void	_range_check(size_type n) const
+		{
+			if (n >= _size)
+			{
+				std::stringstream exception_message;
+				exception_message << "vector::_range_check: n (which is " << n << ""
+				") >= this->size() (which is " << _size << ")";
+				throw std::out_of_range(exception_message.str());
+			}
+		}
+
+		// Right shifts shift_length times every element from end to until_index
+		void	_right_shift_elements(size_type until_index, size_type shift_length)
+		{
+			for (size_type i = _size - 1; i >= until_index; --i)
+				_data[i] = _data[i - shift_length];
+		}
+
+		template <typename Integral>
+			void _constructor_dispatch (Integral n, Integral val, ft::true_type)
+			{
+				size_type size = static_cast<size_type>(n);
+				const size_type value = static_cast<value_type>(val);
+				_size = size;
+				_capacity = size;
+				_data = _allocator.allocate(size);
+				while (size--)
+					_allocator.construct(&_data[size], value);
+			}
+
+		template <typename Iterator>
+			void _constructor_dispatch (Iterator first, Iterator last, ft::false_type)
+			{
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_iterator_constructor(first, last, IteratorCategory());
+			}
+		
+		template <typename InputIterator>
+			void _iterator_constructor (InputIterator first, InputIterator last, std::input_iterator_tag)
+			{
+				try
+				{
+					for (; first != last; ++first)
+						push_back(*first);
+				}
+				catch (...)
+				{
+					clear();
+					throw;
+				}
+			}
+
+		template <typename Iterator>
+			void _iterator_constructor (Iterator first, Iterator last, std::forward_iterator_tag)
+			{
+				_size = std::distance(first, last);
+				_capacity = _size;
+				_data = _allocator.allocate(_capacity);
+				for (size_type i = 0; first != last; ++i, ++first)
+					_allocator.construct(_data + i, *first);
+			}
+
+		// ASSIGN
+		// called when typename InputIterator is an integral type
+		template <typename Integer>
+			void	_assign_dispatch(Integer n, Integer val, ft::true_type)
+			{
+				_fill_asign(n, val);
+			}
+
+		// called when typename InputIterator isn't an integral type
+		template <typename Iterator>
+			void	_assign_dispatch(Iterator first, Iterator last, ft::false_type)
+			{
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_assign_range(first, last, IteratorCategory());
+			}
+
+		// called when InputIterator is an input iterator
+		template <typename InputIterator>
+			void	_assign_range(InputIterator first, InputIterator last, std::input_iterator_tag)
+			{
+				clear();
+				for (; first != last; ++first)
+					push_back(*first);
+			}
+
+		// called when InputIterator is at least a forward iterator
+		template <typename Iterator>
+			void	_assign_range(Iterator first, Iterator last, std::forward_iterator_tag)
+			{
+				const size_type	new_size = std::distance(first, last);
+				clear();
+				reserve(new_size);
+				_size = new_size;
+				for (size_type i = 0; first != last; ++i, ++first)
+					_allocator.construct(&_data[i], *first);
+			}
+
+		void	_assign_fill(size_type n, const value_type &val)
+		{
+			clear();
+			reserve(n);
+			_size = n;
+			while (--n)
+				_allocator.construct(&_data[n], val);
+		}
+
+		// INSERT
+		template <class Integral>
+		void	_insert_dispatch (iterator position, Integral n, Integral value, ft::true_type)
+		{
+			_insert_fill(position, n, value);
+		};
+
+		template <class Iterator>
+			void	_insert_dispatch (iterator position, Iterator first, Iterator last, ft::false_type)
+			{
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_insert_range(position, first, last, IteratorCategory());
+			};
+
+		// FIXME: no se si funciona bien
+		template <class InputIterator>
+			void	_insert_range (iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
+			{
+				const size_type	position_index = std::distance(begin(), position);
+				for (; first != last; ++first)
+				{
+					resize(_size + 1);
+					_right_shift_elements(position_index, 1);
+					_allocator.construct(&_data[position_index], *first);
+				}
+			};
+
+		template <class Iterator>
+			void	_insert_range (iterator position, Iterator first, Iterator last, std::forward_iterator_tag)
+			{
+				const size_type		new_elements_size = std::distance(first, last);
+				if (new_elements_size == 0)
+					return;
+				size_type			insert_index = std::distance(begin(), position);
+
+				reserve(_size + new_elements_size);
+				_size += new_elements_size;
+				// Elements from position are moved new_elements_size to the right
+				// in reverse order so that no elements are removed
+				_right_shift_elements(insert_index + new_elements_size, new_elements_size);
+				// New elements are inserted
+				for (; first != last; ++insert_index, ++first)
+					_allocator.construct(&_data[insert_index], *first);
+			};
+
+		void	_insert_fill(iterator position, size_type n, const value_type& val)
+		{
+			if (n == 0)
+				return;
+			const size_type start_index = position - begin();
+			reserve(_size + n);
+			_size += n;
+
+			_right_shift_elements(start_index + n, n);
+			for (size_type i = 0; i < n; ++i)
+				_allocator.construct(&_data[start_index + i], val);
 		}
 
 };
