@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rprieto- <rprieto-@student.42.fr>          +#+  +:+       +#+         #
+#    By: rprieto- <rprieto-@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/07 17:19:14 by rprieto-          #+#    #+#              #
-#    Updated: 2021/01/04 02:35:18 by rprieto-         ###   ########.fr        #
+#    Updated: 2021/12/24 12:06:48 by rprieto-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,9 @@ OBJS_BONUS =	objs/bonus/main.o			\
 
 all: ${NAME}
 
+install:
+	sudo apt-get install gcc xorg libxext-dev libbsd-dev
+
 ${NAME}:	${OBJS} ${LIBFT_A} ${PRINTF_A}
 				${CC} ${FLAGS} -Isrcs ${INCLUDES} ${OBJS} ${LOCAL_LIBS} ${LIBRARIES} -o ${NAME}
 
@@ -161,4 +164,4 @@ fclean: clean
 		
 re: fclean all
 
-.PHONY:	all clean fclean re bonus
+.PHONY:	install all clean fclean re bonus
