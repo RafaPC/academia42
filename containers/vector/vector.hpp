@@ -10,7 +10,9 @@
 #include <iostream>
 #include <sstream> // std::stringstream for out_of_range message
 #include "vector_iterator.hpp"
-#include "utils.hpp"
+#include "iterator.hpp"
+#include "algorithm.hpp"
+#include "type_traits.hpp"
 
 //TODO: checkear cuando dejo como elementos después de acabar el size y antes de acabarse de verdad el vector
 // creo que no hay problema porque suelen ser elementos que tienen su copia en otro lado antes del size
@@ -243,10 +245,6 @@ class vector
 			return (_data[_size - 1]);
 		}
 
-		// TODO: if InputIterator is not at least of a forward iterator category 
-		// (i.e., it is just an input iterator) the new capacity cannot be determined
-		// beforehand and the operation incurs in additional logarithmic complexity
-		// in the new size (reallocations while growing).
 		template <class InputIterator>
 			void	assign(InputIterator first, InputIterator last)
 			{
@@ -417,7 +415,7 @@ class vector
 		template <typename Integer>
 			void	_assign_dispatch(Integer n, Integer val, ft::true_type)
 			{
-				_fill_asign(n, val);
+				_assign_fill(n, val);
 			}
 
 		// called when typename InputIterator isn't an integral type
