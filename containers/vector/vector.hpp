@@ -35,7 +35,7 @@ class vector
 		typedef std::ptrdiff_t									difference_type;
 
 	private:
-		T			*_data;
+		value_type	*_data;
 		size_type	_size;
 		size_type	_capacity;
 		Allocator	_allocator;
@@ -527,38 +527,38 @@ template <class T, class Allocator>
 			return (false);
 	};
 
-template <class T, class Alloc>
-	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+template <class T, class Allocator>
+	bool operator!= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(lhs == rhs));
 	};
 
-template <class T, class Alloc>
-	bool operator< (const vector<T,Alloc>& lhs, const vector<T, Alloc>& rhs)
+template <class T, class Allocator>
+	bool operator< (const vector<T,Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
 
-template <class T, class Alloc>
-	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+template <class T, class Allocator>
+	bool operator<= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(rhs < lhs));
 	};
 
-template <class T, class Alloc>
-	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+template <class T, class Allocator>
+	bool operator> (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (rhs < lhs);
 	};
 
-template <class T, class Alloc>
-	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+template <class T, class Allocator>
+	bool operator>= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(lhs < rhs));
 	};
 
-template <class T, class Alloc>
-	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+template <class T, class Allocator>
+	void swap (vector<T,Allocator>& x, vector<T,Allocator>& y)
 	{
 		x.swap(y);
 	};
