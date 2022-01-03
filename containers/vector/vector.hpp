@@ -10,9 +10,9 @@
 #include <iostream>
 #include <sstream> // std::stringstream for out_of_range message
 #include "vector_iterator.hpp"
-#include "iterator.hpp"
-#include "algorithm.hpp"
-#include "type_traits.hpp"
+#include "../iterator.hpp"
+#include "../algorithm.hpp"
+#include "../type_traits.hpp"
 
 //TODO: checkear cuando dejo como elementos después de acabar el size y antes de acabarse de verdad el vector
 // creo que no hay problema porque suelen ser elementos que tienen su copia en otro lado antes del size
@@ -29,8 +29,8 @@ class vector
 		typedef typename allocator_type::const_pointer			const_pointer;
 		typedef typename allocator_type::reference				reference;
 		typedef typename allocator_type::const_reference		const_reference;
-		typedef VectorIterator<value_type>						iterator;
-		typedef VectorIterator<const value_type>				const_iterator;
+		typedef ft::VectorIterator<value_type>					iterator;
+		typedef ft::VectorIterator<const value_type>			const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 		typedef size_t											size_type;
@@ -56,13 +56,14 @@ class vector
 				while (n--)
 					_allocator.construct(&_data[n], val);
 			}
-		
-		template <typename InputIterator>
-		vector (InputIterator first, InputIterator last,
-			const allocator_type& alloc = allocator_type()): _allocator(alloc)
+
+		template <typename Iterator>
+		vector (Iterator first, Iterator last,
+			const allocator_type& alloc = allocator_type(),
+			typename ft::enable_if<!ft::is_integral<Iterator>::value, Iterator>::type* = NULL): _allocator(alloc)
 			{
-				typedef typename ft::is_integral<InputIterator>::type Integral;
-				_constructor_dispatch(first, last, Integral());
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_constructor_range(first, last, IteratorCategory());
 			}
 
 		vector (const vector& x)
@@ -102,61 +103,28 @@ class vector
 		}
 
 		// ITERATORS
-		iterator				begin()
-		{
-			return (iterator(_data));
-		}
+		iterator				begin() { return (iterator(_data)); }
 		
-		const_iterator			begin() const
-		{
-			return (const_iterator(_data));
-		}
+		const_iterator			begin() const { return (const_iterator(_data)); }
 		
-		iterator				end()
-		{
-			return (iterator(_data + _size));
-		}
+		iterator				end() { return (iterator(_data + _size)); }
 		
-		const_iterator			end() const
-		{
-			return (const_iterator(_data + _size));
-		}
+		const_iterator			end() const { return (const_iterator(_data + _size)); }
 		
-		reverse_iterator		rbegin()
-		{
-			return (reverse_iterator(_data + _size));
-		}
+		reverse_iterator		rbegin() { return (reverse_iterator(_data + _size)); }
 		
-		const_reverse_iterator	rbegin() const
-		{
-			return (const_reverse_iterator(_data + _size));
-		}
+		const_reverse_iterator	rbegin() const { return (const_reverse_iterator(_data + _size)); }
 		
-		reverse_iterator		rend()
-		{
-			return (reverse_iterator(_data));
-		}
+		reverse_iterator		rend() { return (reverse_iterator(_data)); }
 		
-		const_reverse_iterator	rend() const
-		{
-			return (const_reverse_iterator(_data));
-		}
+		const_reverse_iterator	rend() const { return (const_reverse_iterator(_data)); }
 
 		// CAPACITY
-		size_type	size() const
-		{
-			return (_size);
-		}
+		size_type	size() const { return (_size); }
 		
-		size_type	max_size() const
-		{
-			return (std::numeric_limits<size_type>::max() / sizeof(value_type));
-		}
+		size_type	max_size() const { return (_allocator.max_size()); }
 		
-		size_type	capacity() const
-		{
-			return (this->_capacity);
-		}
+		size_type	capacity() const { return (_capacity); }
 		
 		/*
 		**	If the new size is smaller than the current one, calls pop_back() as many times the difference
@@ -173,10 +141,7 @@ class vector
 				push_back(val);
 		}
 		
-		bool		empty() const
-		{
-			return (_size == 0);
-		}
+		bool		empty() const { return (_size == 0); }
 		
 		void		reserve(size_type new_capacity)
 		{
@@ -191,10 +156,8 @@ class vector
 			{
 				pointer new_data = _allocator.allocate(new_capacity, _data);
 				for (size_type i = 0; i < _size; ++i)
-				{
-					_allocator.construct(&new_data[i], _data[i]);
-					_allocator.destroy(&_data[i]);
-				}
+					new_data[i] = _data[i];
+
 				_allocator.deallocate(_data, _capacity);
 				_data = new_data;
 				_capacity = new_capacity;
@@ -203,15 +166,9 @@ class vector
 
 		// ELEMENT ACCESS
 		
-		reference 		operator[] (size_type n)
-		{
-			return (_data[n]);
-		}
+		reference 		operator[] (size_type n) { return (_data[n]); }
 
-		const_reference operator[] (size_type n) const
-		{
-			return (_data + n);
-		}
+		const_reference operator[] (size_type n) const { return (_data + n); }
 
 		reference 		at (size_type n)
 		{
@@ -225,36 +182,29 @@ class vector
 			return (_data[n]);
 		}
 
-		reference 		front()
-		{
-			return (_data);
-		}
+		reference 		front() { return (_data[0]); }
 
-		const_reference front() const
-		{
-			return (_data);
-		}
+		const_reference front() const { return (_data[0]); }
 
-		reference 		back()
-		{
-			return (_data[_size - 1]);
-		}
+		reference 		back() { return (_data[_size - 1]); }
 
-		const_reference back() const
-		{
-			return (_data[_size - 1]);
-		}
+		const_reference back() const { return (_data[_size - 1]); }
 
-		template <class InputIterator>
-			void	assign(InputIterator first, InputIterator last)
+		template <class Iterator>
+			void	assign(Iterator first, Iterator last,
+			typename ft::enable_if<!ft::is_integral<Iterator>::value, Iterator>::type* = NULL)
 			{
-				typedef typename ft::is_integral<InputIterator>::type Integral;
-				_assign_dispatch(first, last, Integral());
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_assign_range(first, last, IteratorCategory());
 			}
 
 		void assign (size_type n, const value_type& val)
 		{
-			_assign_fill(n, val);
+			clear();
+			reserve(n);
+			_size = n;
+			for (size_type i = 0; i < n; ++i)
+				_allocator.construct(&_data[i], val);
 		}
 
 		void push_back (const value_type& val)
@@ -263,10 +213,7 @@ class vector
 			_allocator.construct(&_data[_size++], val);
 		}
 
-		void pop_back()
-		{
-			_allocator.destroy(&_data[--_size]);
-		}
+		void pop_back() { _allocator.destroy(&_data[--_size]); }
 
 		iterator	insert (iterator position, const value_type& val)
 		{
@@ -283,14 +230,23 @@ class vector
 
 		void	insert (iterator position, size_type n, const value_type& val)
 		{
-			_insert_fill(position, n, val);
+			if (n == 0)
+				return;
+			const size_type start_index = position - begin();
+			reserve(_size + n);
+			_size += n;
+
+			_right_shift_elements(start_index + n, n);
+			for (size_type i = 0; i < n; ++i)
+				_allocator.construct(&_data[start_index + i], val);
 		}
 
-		template <class InputIterator>
-			void	insert (iterator position, InputIterator first, InputIterator last)
+		template <class Iterator>
+			void	insert (iterator position, Iterator first, Iterator last,
+			typename ft::enable_if<!ft::is_integral<Iterator>::value, Iterator>::type* = NULL)
 			{
-				typedef typename ft::is_integral<InputIterator>::type	Integral;
-				_insert_dispatch(position, first, last, Integral());
+				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
+				_insert_range(position, first, last, IteratorCategory());
 			};
 
 		/*
@@ -327,11 +283,12 @@ class vector
 			return (last - erase_size);
 		}
 
-		void swap (vector<T, Allocator>& x)
+		void swap (vector<T, Allocator>& other)
 		{
-			T	*data_aux = _data;
-			_data = x._data;
-			x._data = data_aux;
+			std::swap(_data, other._data);
+			std::swap(_size, other._size);
+			std::swap(_capacity, other._capacity);
+			std::swap(_allocator, other._allocator);
 		}
 
 		void clear()
@@ -347,6 +304,7 @@ class vector
 		}
 
 	private:
+
 		//If n is greater than the size, it throws an out of range exception with the appropiate message
 		void	_range_check(size_type n) const
 		{
@@ -366,27 +324,8 @@ class vector
 				_data[i] = _data[i - shift_length];
 		}
 
-		template <typename Integral>
-			void _constructor_dispatch (Integral n, Integral val, ft::true_type)
-			{
-				size_type size = static_cast<size_type>(n);
-				const size_type value = static_cast<value_type>(val);
-				_size = size;
-				_capacity = size;
-				_data = _allocator.allocate(size);
-				while (size--)
-					_allocator.construct(&_data[size], value);
-			}
-
-		template <typename Iterator>
-			void _constructor_dispatch (Iterator first, Iterator last, ft::false_type)
-			{
-				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
-				_iterator_constructor(first, last, IteratorCategory());
-			}
-		
 		template <typename InputIterator>
-			void _iterator_constructor (InputIterator first, InputIterator last, std::input_iterator_tag)
+			void _constructor_range (InputIterator first, InputIterator last, std::input_iterator_tag)
 			{
 				try
 				{
@@ -401,7 +340,7 @@ class vector
 			}
 
 		template <typename Iterator>
-			void _iterator_constructor (Iterator first, Iterator last, std::forward_iterator_tag)
+			void _constructor_range (Iterator first, Iterator last, std::forward_iterator_tag)
 			{
 				_size = std::distance(first, last);
 				_capacity = _size;
@@ -411,20 +350,6 @@ class vector
 			}
 
 		// ASSIGN
-		// called when typename InputIterator is an integral type
-		template <typename Integer>
-			void	_assign_dispatch(Integer n, Integer val, ft::true_type)
-			{
-				_assign_fill(n, val);
-			}
-
-		// called when typename InputIterator isn't an integral type
-		template <typename Iterator>
-			void	_assign_dispatch(Iterator first, Iterator last, ft::false_type)
-			{
-				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
-				_assign_range(first, last, IteratorCategory());
-			}
 
 		// called when InputIterator is an input iterator
 		template <typename InputIterator>
@@ -447,30 +372,8 @@ class vector
 					_allocator.construct(&_data[i], *first);
 			}
 
-		void	_assign_fill(size_type n, const value_type &val)
-		{
-			clear();
-			reserve(n);
-			_size = n;
-			while (--n)
-				_allocator.construct(&_data[n], val);
-		}
-
 		// INSERT
-		template <class Integral>
-		void	_insert_dispatch (iterator position, Integral n, Integral value, ft::true_type)
-		{
-			_insert_fill(position, n, value);
-		};
 
-		template <class Iterator>
-			void	_insert_dispatch (iterator position, Iterator first, Iterator last, ft::false_type)
-			{
-				typedef typename ft::iterator_traits<Iterator>::iterator_category IteratorCategory;
-				_insert_range(position, first, last, IteratorCategory());
-			};
-
-		// FIXME: no se si funciona bien
 		template <class InputIterator>
 			void	_insert_range (iterator position, InputIterator first, InputIterator last, std::input_iterator_tag)
 			{
@@ -501,62 +404,46 @@ class vector
 					_allocator.construct(&_data[insert_index], *first);
 			};
 
-		void	_insert_fill(iterator position, size_type n, const value_type& val)
-		{
-			if (n == 0)
-				return;
-			const size_type start_index = position - begin();
-			reserve(_size + n);
-			_size += n;
-
-			_right_shift_elements(start_index + n, n);
-			for (size_type i = 0; i < n; ++i)
-				_allocator.construct(&_data[start_index + i], val);
-		}
-
 };
 
 template <class T, class Allocator>
-	bool operator== (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	bool	operator== (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
-		if (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
-			return (true);
-		else
-			return (false);
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	};
 
 template <class T, class Allocator>
-	bool operator!= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	bool	operator!= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(lhs == rhs));
 	};
 
 template <class T, class Allocator>
-	bool operator< (const vector<T,Allocator>& lhs, const vector<T, Allocator>& rhs)
+	bool	operator< (const vector<T,Allocator>& lhs, const vector<T, Allocator>& rhs)
 	{
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
 
 template <class T, class Allocator>
-	bool operator<= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	bool	operator<= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(rhs < lhs));
 	};
 
 template <class T, class Allocator>
-	bool operator> (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	bool	operator> (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (rhs < lhs);
 	};
 
 template <class T, class Allocator>
-	bool operator>= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
+	bool	operator>= (const vector<T,Allocator>& lhs, const vector<T,Allocator>& rhs)
 	{
 		return (!(lhs < rhs));
 	};
 
 template <class T, class Allocator>
-	void swap (vector<T,Allocator>& x, vector<T,Allocator>& y)
+	void	swap (vector<T,Allocator>& x, vector<T,Allocator>& y)
 	{
 		x.swap(y);
 	};

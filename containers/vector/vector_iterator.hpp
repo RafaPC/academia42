@@ -1,8 +1,7 @@
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
 
-#include "utils.hpp"
-
+#include "../iterator.hpp"
 namespace ft
 {
 
@@ -17,74 +16,52 @@ namespace ft
 				typedef T&									reference;
 
 				VectorIterator(void) : _pointer(NULL) {}
+
 				VectorIterator(pointer ptr) : _pointer(ptr) {}
+
 				VectorIterator(VectorIterator const &other) : _pointer(other._pointer) {}
-				VectorIterator &operator=(const VectorIterator &other)
+
+				VectorIterator &operator=(VectorIterator const &other)
 				{
 					_pointer = other._pointer;
 					return (*this);
 				};
+
 				// conversion operator to const VectorIterator
 				// just constructs a VectorIterator of const T
 				operator	VectorIterator<const T>(void) const
 				{
 					return (VectorIterator<const T>(_pointer));
 				}
-			reference operator*() const
-			{
-				return (*_pointer);
-			}
-			pointer operator->() const
-			{
-				return (_pointer);
-			}
+
+			reference operator*() const { return (*_pointer); }
+
+			pointer operator->() const { return (_pointer); }
+
 			VectorIterator &operator++()
 			{
 				++_pointer;
 				return (*this);
 			}
+
 			VectorIterator operator++(int)
 			{
 				VectorIterator temp(_pointer);
 				++_pointer;
 				return (temp);
 			}
+
 			VectorIterator &operator--()
 			{
 				--_pointer;
 				return (*this);
 			}
+
 			VectorIterator operator--(int)
 			{
 				VectorIterator temp(_pointer);
 				--_pointer;
 				return (temp);
-			}
-			
-			// RELATIONAL OPERATORS
-			bool operator== (const VectorIterator &x) const
-			{
-				return (_pointer == x._pointer);
-			}
-			bool operator!= (const VectorIterator &x) const
-			{
-				return (_pointer != x._pointer);
-			}
-			bool operator> (const VectorIterator &x) const
-			{
-				return (_pointer > x._pointer);
-			}
-			bool operator>= (const VectorIterator &x) const
-			{
-				return (_pointer >= x._pointer);
-			}
-			bool operator< (const VectorIterator &x) const
-			{
-				return (_pointer < x._pointer);
-			}
-			bool operator<= (const VectorIterator &x) const
-			{
-				return (_pointer <= x._pointer);
 			}
 			
 			// ARITHMETIC OPERATIONS
@@ -126,9 +103,55 @@ namespace ft
 				return (*(_pointer + n));
 			}
 
+			//FIXME:
+			// friend bool operator!= (VectorIterator const &lhs, VectorIterator const &rhs);
 			private:
 				pointer	_pointer;
+			public:
+				pointer base(void) const { return _pointer; }
 		};
+
+		template <typename T>
+			VectorIterator<T>	operator+(int lhs, VectorIterator<T> rhs)
+			{
+				return (VectorIterator<T>(rhs.base() + lhs));
+			}
+
+		template <typename T, typename U>
+			bool operator== (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() == rhs.base());
+			}
+
+		template <typename T, typename U>
+			bool operator!= (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() != rhs.base());
+			}
+
+		template <typename T, typename U>
+			bool operator< (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() < rhs.base());
+			}
+
+		template <typename T, typename U>
+			bool operator<= (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() <= rhs.base());
+			}
+
+		template <typename T, typename U>
+			bool operator> (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() > rhs.base());
+			}
+
+		template <typename T, typename U>
+			bool operator>= (VectorIterator<T> const &lhs, VectorIterator<U> const &rhs)
+			{
+				return (lhs.base() >= rhs.base());
+			}
 };
 
 #endif
