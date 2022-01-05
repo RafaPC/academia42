@@ -87,6 +87,7 @@
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-g",
+				"-I${fileDirname}/..",
 				"${file}",
 				"-o",
 				"${fileDirname}/a.out"
