@@ -8,7 +8,7 @@ class Fixed
 private:
 
 	int	value;
-	static const int fractional_bits = 8; //FIXME: mirar si puedo hacer esto
+	static const int fractional_bits = 8;
 
 public:
 	Fixed( void );

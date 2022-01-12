@@ -14,9 +14,6 @@
 #include "../algorithm.hpp"
 #include "../type_traits.hpp"
 
-//TODO: checkear cuando dejo como elementos después de acabar el size y antes de acabarse de verdad el vector
-// creo que no hay problema porque suelen ser elementos que tienen su copia en otro lado antes del size
-// pero puede que dejar elementos despues del size esté mal y tenga que destruirlos siempre
 namespace ft {
 
 template < class T, class Allocator = std::allocator<T> >

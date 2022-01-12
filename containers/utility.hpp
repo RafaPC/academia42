@@ -18,11 +18,10 @@ namespace ft
 
 		// copy
 		template <class U, class V>
-			pair (const pair<U,V>& pr):
-				first(first_type(pr.first)), second(second_type(pr.second)) {}
+			pair (const pair<U,V>& pr): first(pr.first), second(pr.second) {}
 	
 		// initialization
-		pair (const first_type& a, const second_type& b): first(first_type(a)), second(second_type(b)) {}
+		pair (const first_type& a, const second_type& b): first(a), second(b) {}
 
 	};
 	

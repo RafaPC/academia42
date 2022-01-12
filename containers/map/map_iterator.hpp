@@ -8,7 +8,6 @@
 namespace ft
 {
 	template< typename T, class node_type>
-	// FIXME: COMO COMPARAR CLAVES, NECESITA ALGO PARA COMPARARLAS
 		class MapIterator
 		{
 			public:
@@ -42,20 +41,12 @@ namespace ft
 
 				node_type	*base(void) { return _node; }
 
-				reference operator*() const
-				{
-					return (_node->value);
-				}
+				reference operator*() const { return (_node->value); }
 
-				pointer operator->() const
-				{
-					return (&_node->value);
-				}
+				pointer operator->() const { return (&_node->value); }
 
 				MapIterator &operator++()
 				{
-					//FIXME: ver como funciona el iterador normal si hago el past_the_end de más
-
 					if (_past_the_end)
 						return (*this);
 					else if (_node->child2 != NULL)
@@ -86,7 +77,6 @@ namespace ft
 
 				MapIterator &operator--()
 				{
-					// Al hacer -- estando en el past the end, se va al elemento máximo
 					if (_past_the_end)
 						_past_the_end = false;
 					else if (_node->child1 != NULL)
@@ -113,24 +103,24 @@ namespace ft
 					return (temp);
 				}
 
-			bool	operator ==(const MapIterator<value_type, node_type> &other)
-			{
-				return (_node == other._node && _past_the_end == other._past_the_end);
-			}
+				//FIXME: me gustaría sacarlos fuera para que fueran constantes pero no podría acceder al past the end sin hacerlo
+				// friend, y entonces dejaría de ser constante
+				bool	operator ==(const MapIterator<value_type, node_type> &other)
+				{
+					return (_node == other._node && _past_the_end == other._past_the_end);
+				}
 
-			bool	operator !=(const MapIterator<value_type, node_type> &other)
-			{
-				return (!(*this == other));
-			}
+				bool	operator !=(const MapIterator<value_type, node_type> &other)
+				{
+					return (!(*this == other));
+				}
 
 			template <class, class>
-			friend class MapIterator; //FIXME: para que me deje coger el .past_the_end en el conversor
+			friend class MapIterator;
 			
 			private:
-				typedef typename value_type::first_type		key_type;
-				node_type										*_node;
-				bool										_past_the_end;
-
+				node_type	*_node;
+				bool		_past_the_end;
 		};
 };
 

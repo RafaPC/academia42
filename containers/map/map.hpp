@@ -23,8 +23,6 @@ namespace ft {
 				typedef T											mapped_type;
 				typedef ft::pair<const key_type, mapped_type>		value_type;
 				typedef Compare										key_compare;
-				// FIXME:
-				// typedef noseque value_compare;
 				typedef Allocator									allocator_type;
 				typedef typename allocator_type::reference			reference;
 				typedef typename allocator_type::const_reference	const_reference;
@@ -36,9 +34,6 @@ namespace ft {
 				typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 				typedef std::ptrdiff_t								difference_type;
 				typedef std::size_t									size_type;
-				
-				//FIXME: este es privado
-				typedef	tree_node<value_type> node_type;
 
 				// Nested function class to compare elements
 				class value_compare
@@ -85,14 +80,7 @@ namespace ft {
 				// Constructs a container with a copy of each of the elements in x.
 				map (const map& x): _size(x._size), _compare(x._compare), _allocator(x._allocator)
 				{
-					//TODO: borrar node antiguo y eso, deep copy de los nodos y eso
 					_root_node = new node_type(x._root_node->value);
-
-					// inicializados a valores nulos para evitar if elses
-					//FIXME: creo que sobran estas tres lineas
-					_root_node->parent = NULL;
-					_root_node->child1 = NULL;
-					_root_node->child2 = NULL;
 
 					if (x._root_node->child1)
 						_root_node->child1 = _copy_node(_root_node, x._root_node->child1);
@@ -102,8 +90,7 @@ namespace ft {
 
 				~map()
 				{
-					if (_root_node)
-						_destroy_node(_root_node);
+					_destroy_node(_root_node);
 				}
 
 				map& operator= (const map& x)
@@ -127,8 +114,10 @@ namespace ft {
 				size_type	size() const { return _size; }
 
 				//FIXME:
-				// size_type max_size() const { return _allocator.max_size(); }
-				size_type max_size() const { return std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1); }
+				size_type max_size() const
+				{
+					return std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2);
+				}
 
 				// INSERT
 				//single element
@@ -150,6 +139,7 @@ namespace ft {
 					// if there's no root creates it and returns its mapped type
 					if (_size == 0)
 					{
+						delete _root_node;
 						_root_node = new node_type(value);
 						_size = 1;
 						return begin();
@@ -205,7 +195,7 @@ namespace ft {
 						else
 							return iterator(current_node);
 					}
-					return (this->end());
+					return (end());
 				}
 
 				const_iterator	find (const key_type& key) const
@@ -268,14 +258,13 @@ namespace ft {
 							replace_node->child2->parent = replace_node;
 						}
 					}
-					//FIXME: esto porque si no deja el _root_node a nulo y luego petan otras funciones
 					if (_size)
 					{
 						*remove_place = replace_node;
 						delete aux;
 					}
 				}
-				//FIXME: swapear por el erase(iterator)
+
 				size_type erase (const key_type& key)
 				{
 					iterator key_it = find(key);
@@ -288,7 +277,6 @@ namespace ft {
 						return (0);
 				}
 
-				//FIXME: Hago esto porque no debería poder hacer ++ a un iterador cuyo nodo ya ha sido borrado
 				void erase (iterator first, iterator last)
 				{
 					iterator it = first;
@@ -352,7 +340,6 @@ namespace ft {
 				{
 					std::swap(_root_node, x._root_node);
 					std::swap(_size, x._size);
-					//FIXME: Whether the internal container allocators and comparison objects are swapped is undefined.
 				}
 
 				void clear()
@@ -370,7 +357,6 @@ namespace ft {
 
 				value_compare value_comp() const { return value_compare(Compare()); }
 
-				// TODO: Checkear undefined behaviour y esas cosas
 				iterator lower_bound (const key_type& key)
 				{
 					iterator it = begin();
@@ -414,9 +400,9 @@ namespace ft {
 					while (it != last && _compare(it->first, key))
 						++it;
 					if (_are_equivalent(it->first, key))
-						return ft::make_pair(it, ++iterator(it));
+						return ft::make_pair(it, ++it);
 					else
-						return ft::make_pair(++it, it); //FIXME: no sé si serán el mismo iterador
+						return ft::make_pair(it, it);
 				}
 
 				ft::pair<const_iterator,const_iterator>		equal_range (const key_type& key) const
@@ -428,10 +414,11 @@ namespace ft {
 					if (_are_equivalent(it->first, key))
 						return ft::make_pair(it, ++it);
 					else
-						return ft::make_pair(it, it); //FIXME: no sé si serán el mismo iterador
+						return ft::make_pair(it, it);
 				}
 
 			private:
+				typedef	tree_node<value_type> node_type;
 				node_type	*_root_node;
 				size_type	_size;
 				Compare		_compare;
@@ -443,15 +430,21 @@ namespace ft {
 					return (!_compare(key1, key2) && !_compare(key2, key1));
 				}
 
-				// TODO:
-				node_type	*_copy_node(node_type *parent, node_type *node)
+				/*
+				**	Receives a pointer to its parent and other to the node it's copying
+				**	Allocates the new node and asigns its parent pointer to its parent variable
+				**	If the original node has any child, the same function is called recursively with its
+				**	own pointer as the parent argument, and the child as the original node
+				**	Then returns its direction
+				*/
+				node_type	*_copy_node(node_type *parent, node_type *original_node)
 				{
-					node_type	*new_node = new node_type(node->value);
+					node_type	*new_node = new node_type(original_node->value);
 					new_node->parent = parent;
-					if (node->child1)
-						new_node->child1 = _copy_node(new_node, node->child1);
-					if (node->child2)
-						new_node->child2 = _copy_node(new_node, node->child2);
+					if (original_node->child1)
+						new_node->child1 = _copy_node(new_node, original_node->child1);
+					if (original_node->child2)
+						new_node->child2 = _copy_node(new_node, original_node->child2);
 					return (new_node);
 				}
 
