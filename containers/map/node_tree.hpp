@@ -1,42 +1,38 @@
 #ifndef NODE_TREE_HPP
 # define NODE_TREE_HPP
 
+#include "../utility.hpp"
+
 namespace ft
 {
 	template <typename T>
-	class tree_node
+	struct tree_node
 	{
-		public:
-			tree_node (void): parent(NULL), child1(NULL), child2(NULL) {};
-			tree_node (tree_node *parent): parent(parent), child1(NULL), child2(NULL) {};
-
-			// tree_node operator= (const tree_node &other)
-			// {
-
-			// }
-
-			tree_node *min(void)
-			{
-				tree_node	*aux = this;
-				while (aux->child1)
-					aux = aux->child1;
-				return (aux);
-			}
-
-			tree_node *max(void)
-			{
-				tree_node	*aux = this;
-				while (aux->child2)
-					aux = aux->child2;
-				return (aux);
-			}
-
-			T				*value;
-			tree_node		*parent;
-			tree_node		*child1;
-			tree_node		*child2;
+		tree_node (const T &src = T()): value(src), parent(NULL), child1(NULL), child2(NULL) {};
+		int whatever; //FIXME: solo sirve para que de el mismo tamaño teórico
+		T				value;
+		tree_node		*parent;
+		tree_node		*child1;
+		tree_node		*child2;
 
 	};
+
+	template <typename T>
+		tree_node<T>	*leftmost(tree_node<T> *node)
+		{
+			while (node->child1)
+				node = node->child1;
+			return (node);
+		}
+	
+	template <typename T>
+		tree_node<T>	*rightmost(tree_node<T> *node)
+		{
+			while (node->child2)
+				node = node->child2;
+			return (node);
+		}
+
 }
 
 #endif

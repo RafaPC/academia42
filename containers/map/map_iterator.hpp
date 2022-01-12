@@ -7,7 +7,7 @@
 
 namespace ft
 {
-	template< typename T, class Compare>
+	template< typename T, class node_type>
 	// FIXME: COMO COMPARAR CLAVES, NECESITA ALGO PARA COMPARARLAS
 		class MapIterator
 		{
@@ -20,58 +20,59 @@ namespace ft
 
 				MapIterator(void) : _node(NULL), _past_the_end(false) {}
 
-				// FIXME: puntero / no puntero ¿?¿?
-				MapIterator(tree_node<value_type> *base_node) : _node(base_node), _past_the_end(false), _key_compare(Compare()) {}
+				MapIterator(node_type *base_node) : _node(base_node), _past_the_end(false) {}
 
-				MapIterator(MapIterator const &other) : _node(other._node), _past_the_end(other._past_the_end), _key_compare(Compare()) {}
+				MapIterator(MapIterator const &other) : _node(other._node), _past_the_end(other._past_the_end) {}
 
 				MapIterator &operator=(const MapIterator &other)
 				{
-					*_node = *other._node;
+					_node = other._node;
 					_past_the_end = other._past_the_end;
-					_key_compare = other._key_compare;
 					return (*this);
 				};
 
 				// conversion operator to const MapIterator
 				// just constructs a MapIterator of const T
-				operator	MapIterator<const T, Compare>(void) const
+				operator	MapIterator<const T, node_type>(void) const
 				{
-					return (MapIterator<const T, Compare>(_node)); // FIXME: aqui pondría el past the end a false
+					MapIterator<const T, node_type> new_iterator(_node);
+					new_iterator._past_the_end = _past_the_end;
+					return (new_iterator);
 				}
+
+				node_type	*base(void) { return _node; }
 
 				reference operator*() const
-				{
-					return (*_node->value);
-				}
-
-				pointer operator->() const
 				{
 					return (_node->value);
 				}
 
-				//TODO: no sé bien cual será el valor del nodo para el iterador end()
+				pointer operator->() const
+				{
+					return (&_node->value);
+				}
+
 				MapIterator &operator++()
 				{
-					const key_type	initial_key = _node->value->first;
 					//FIXME: ver como funciona el iterador normal si hago el past_the_end de más
 
 					if (_past_the_end)
 						return (*this);
 					else if (_node->child2 != NULL)
-					{
-						_node = _node->child2;
-						while (_node->child1 != NULL)
-							_node = _node->child1;
-					}
+						_node = leftmost(_node->child2);
 					else
 					{
-						// sale del while bien porque llega a un nodo con una clave mayor
-						// o porque llega al nodo base
-						while (_node->parent != NULL && _node->value->first <= initial_key)
-							_node = _node->parent;
-						if (_node->value->first <= initial_key)
+						node_type	*aux = _node;
+						node_type	*aux_parent = aux->parent;
+						while (aux_parent && aux == aux_parent->child2)
+						{
+							aux = aux_parent;
+							aux_parent = aux_parent->parent;
+						}
+						if (!aux_parent) // significa que solo venia de hijos de la derecha
 							_past_the_end = true;
+						else
+							_node = aux_parent;
 					}
 					return (*this);
 				}
@@ -85,26 +86,22 @@ namespace ft
 
 				MapIterator &operator--()
 				{
-					const key_type	initial_key = _node->value->first;
-
 					// Al hacer -- estando en el past the end, se va al elemento máximo
 					if (_past_the_end)
-					{
 						_past_the_end = false;
-						_node = _node->max();
-					}
 					else if (_node->child1 != NULL)
-					{
-						_node = _node->child1;
-						while (_node->child2 != NULL)
-							_node = _node->child2;
-					}
+						_node = rightmost(_node->child1);
 					else
 					{
-						// sale del while bien porque llega a un nodo con una clave mayor
-						// o porque llega al nodo base
-						while (_node->parent != NULL && _node->value->first >= initial_key)
-							_node = _node->parent;
+						node_type	*aux = _node;
+						node_type	*aux_parent = aux->parent;
+						while (aux_parent && aux == aux_parent->child1)
+						{
+							aux = aux_parent;
+							aux_parent = aux_parent->parent;
+						}
+						if (aux_parent)
+							_node = aux_parent;
 					}
 					return (*this);
 				}
@@ -116,24 +113,24 @@ namespace ft
 					return (temp);
 				}
 
-			bool	operator ==(MapIterator<value_type, Compare> &other)
+			bool	operator ==(const MapIterator<value_type, node_type> &other)
 			{
-				return (!_key_compare(other._node->value->first, _node->value->first) &&
-					!_key_compare(_node->value->first, other._node->value->first) && _past_the_end == other._past_the_end);
-
+				return (_node == other._node && _past_the_end == other._past_the_end);
 			}
 
-			bool	operator !=(MapIterator<value_type, Compare> &other)
+			bool	operator !=(const MapIterator<value_type, node_type> &other)
 			{
 				return (!(*this == other));
 			}
 
+			template <class, class>
+			friend class MapIterator; //FIXME: para que me deje coger el .past_the_end en el conversor
+			
 			private:
 				typedef typename value_type::first_type		key_type;
-				tree_node<value_type>						*_node;
-				// typedef _node->value->first					key;
+				node_type										*_node;
 				bool										_past_the_end;
-				Compare										_key_compare;
+
 		};
 };
 
