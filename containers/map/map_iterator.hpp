@@ -17,16 +17,15 @@ namespace ft
 				typedef value_type*							pointer;
 				typedef value_type&							reference;
 
-				MapIterator(void) : _node(NULL), _past_the_end(false) {}
+				MapIterator(void) : _node(NULL) {}
 
-				MapIterator(node_type *base_node) : _node(base_node), _past_the_end(false) {}
+				MapIterator(node_type *base_node) : _node(base_node) {}
 
-				MapIterator(MapIterator const &other) : _node(other._node), _past_the_end(other._past_the_end) {}
+				MapIterator(MapIterator const &other) : _node(other._node) {}
 
 				MapIterator &operator=(const MapIterator &other)
 				{
 					_node = other._node;
-					_past_the_end = other._past_the_end;
 					return (*this);
 				};
 
@@ -34,12 +33,10 @@ namespace ft
 				// just constructs a MapIterator of const T
 				operator	MapIterator<const T, node_type>(void) const
 				{
-					MapIterator<const T, node_type> new_iterator(_node);
-					new_iterator._past_the_end = _past_the_end;
-					return (new_iterator);
+					return (MapIterator<const T, node_type>(_node));
 				}
 
-				node_type	*base(void) { return _node; }
+				node_type	*base(void) const { return _node; }
 
 				reference operator*() const { return (_node->value); }
 
@@ -47,9 +44,7 @@ namespace ft
 
 				MapIterator &operator++()
 				{
-					if (_past_the_end)
-						return (*this);
-					else if (_node->child2 != NULL)
+					if (_node->child2 != NULL)
 						_node = leftmost(_node->child2);
 					else
 					{
@@ -60,9 +55,7 @@ namespace ft
 							aux = aux_parent;
 							aux_parent = aux_parent->parent;
 						}
-						if (!aux_parent) // significa que solo venia de hijos de la derecha
-							_past_the_end = true;
-						else
+						if (aux_parent)
 							_node = aux_parent;
 					}
 					return (*this);
@@ -77,9 +70,7 @@ namespace ft
 
 				MapIterator &operator--()
 				{
-					if (_past_the_end)
-						_past_the_end = false;
-					else if (_node->child1 != NULL)
+					if (_node->child1 != NULL)
 						_node = rightmost(_node->child1);
 					else
 					{
@@ -102,26 +93,21 @@ namespace ft
 					operator--();
 					return (temp);
 				}
-
-				//FIXME: me gustaría sacarlos fuera para que fueran constantes pero no podría acceder al past the end sin hacerlo
-				// friend, y entonces dejaría de ser constante
-				bool	operator ==(const MapIterator<value_type, node_type> &other)
-				{
-					return (_node == other._node && _past_the_end == other._past_the_end);
-				}
-
-				bool	operator !=(const MapIterator<value_type, node_type> &other)
-				{
-					return (!(*this == other));
-				}
-
-			template <class, class>
-			friend class MapIterator;
 			
 			private:
 				node_type	*_node;
-				bool		_past_the_end;
 		};
+
+	template <class T1, class U1, class T2, class U2>
+		bool	operator ==(const MapIterator<T1, U1> &lhs, const MapIterator<T2, U2> &rhs)
+		{
+			return (lhs.base() == rhs.base());
+		}
+	template <class T1, class U1, class T2, class U2>
+		bool	operator !=(const MapIterator<T1, U1> &lhs, const MapIterator<T2, U2> &rhs)
+		{
+			return (!(lhs == rhs));
+		}
 };
 
 #endif

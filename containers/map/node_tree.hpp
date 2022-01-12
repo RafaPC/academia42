@@ -8,6 +8,7 @@ namespace ft
 	template <typename T>
 	struct tree_node
 	{
+		bool _unused;
 		tree_node (const T &src = T()): value(src), parent(NULL), child1(NULL), child2(NULL) {};
 		int whatever; //FIXME: solo sirve para que de el mismo tamaño teórico
 		T				value;

@@ -121,51 +121,55 @@ namespace ft {
 
 				// INSERT
 				//single element
-				ft::pair<iterator,bool>	insert (const value_type& val)
+				ft::pair<iterator, bool>	insert (const value_type& val)
 				{
 
 					ft::pair<iterator, bool> return_pair;
 
 					return_pair.second = !this->count(val.first);
 					if (return_pair.second == true)
-						return_pair.first = insert(iterator(_root_node), val);
+					{
+						node_type *new_node = new node_type(val);
+						node_type **parent = &_root_node;
+						node_type **node = &_root_node;
+						node_type *ghost = rightmost(_root_node);
+						bool side_left = true;
+
+						++_size;
+						while (*node && *node != ghost)
+						{
+							parent = node;
+							side_left = _compare(new_node->value.first, (*node)->value.first);
+							node = (side_left ? &(*node)->child1 : &(*node)->child2);
+						}
+
+						if (*node == NULL)
+						{
+							new_node->parent = (*parent);
+							*node = new_node;
+						}
+						else // if (*node == ghost)
+						{
+							*node = new_node;
+							new_node->parent = ghost->parent;
+							ghost->parent = rightmost(new_node);
+							rightmost(new_node)->child2 = ghost; // in case new_node isnt alone
+						}
+						return_pair.first = iterator(new_node);
+					}
+					else
+					{
+					//FIXME: esto se puede hacer por otro lado
 					return_pair.first = find(val.first);
+					}
 					return (return_pair);
 				}
 
 				// with hint
 				iterator insert (iterator position, const value_type& value)
 				{
-					// if there's no root creates it and returns its mapped type
-					if (_size == 0)
-					{
-						delete _root_node;
-						_root_node = new node_type(value);
-						_size = 1;
-						return begin();
-					}
-
-					position = iterator(_root_node);
-					node_type	*current_node = position.base();
-					node_type	*previous_node;
-					while (current_node != NULL)
-					{
-						previous_node = current_node;
-						if (_compare(value.first, current_node->value.first))
-							current_node = current_node->child1;
-						else if (_compare(current_node->value.first, value.first))
-							current_node = current_node->child2;
-						else
-							return iterator(current_node);
-					}
-					node_type	*new_node = new node_type(value);
-					new_node->parent = previous_node;
-					if (_compare(value.first, previous_node->value.first))
-						previous_node->child1 = new_node;
-					else
-						previous_node->child2 = new_node;
-					++_size;
-					return iterator(new_node);
+					static_cast<void>(position);
+					return insert(value).first;
 				}
 
 				template <class InputIterator>
@@ -258,11 +262,8 @@ namespace ft {
 							replace_node->child2->parent = replace_node;
 						}
 					}
-					if (_size)
-					{
-						*remove_place = replace_node;
-						delete aux;
-					}
+					*remove_place = replace_node;
+					delete aux;
 				}
 
 				size_type erase (const key_type& key)
@@ -300,18 +301,12 @@ namespace ft {
 
 				iterator end()
 				{
-					iterator aux_iterator(rightmost(_root_node));
-					if (_size)
-						++aux_iterator;
-					return aux_iterator;
+					return iterator(rightmost(_root_node));
 				}
 
 				const_iterator end() const
 				{
-					const_iterator aux_iterator(rightmost(_root_node));
-					if (_size)
-						++aux_iterator;
-					return aux_iterator;
+					return const_iterator(rightmost(_root_node));
 				}
 
 				reverse_iterator rbegin()
@@ -326,12 +321,12 @@ namespace ft {
 
 				reverse_iterator rend()
 				{
-					return (reverse_iterator(leftmost(_root_node)));
+					return (reverse_iterator(begin()));
 				}
 
 				const_reverse_iterator rend() const
 				{
-					return (reverse_iterator(leftmost(_root_node)));
+					return (reverse_iterator(begin()));
 				}
 
 				allocator_type get_allocator() const { return _allocator; }
@@ -344,12 +339,16 @@ namespace ft {
 
 				void clear()
 				{
+					node_type *ghost = end().base();
+
+					if (_size == 0)
+						return ;
+					ghost->parent->child2 = NULL;
 					if (_root_node->child1)
 						_destroy_node(_root_node->child1);
 					if (_root_node->child2)
 						_destroy_node(_root_node->child2);
-					_root_node->child1 = NULL;
-					_root_node->child2 = NULL;
+					_root_node = ghost;
 					_size = 0;
 				}
 
