@@ -57,9 +57,10 @@ namespace ft {
 				// empty
 				explicit map (const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type()):
-					_size(0), _compare(comp), _allocator(alloc)
+					_size(0), _compare(comp)
 					{
-						_root_node = new node_type;
+						_root_node = _allocator.allocate(1);
+						_allocator.construct(_root_node, node_type());
 					}
 
 				// range
@@ -69,23 +70,18 @@ namespace ft {
 						const allocator_type& alloc = allocator_type(),
 						typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL)
 						{
-							_root_node = new node_type;
+							_root_node = _allocator.allocate(1);
+							_allocator.construct(_root_node, node_type());
 							_compare = comp;
-							_allocator = alloc;
 							_size = 0;
 							for (; first != last; ++first)
 								insert(*first);
 						}
 
 				// Constructs a container with a copy of each of the elements in x.
-				map (const map& x): _size(x._size), _compare(x._compare), _allocator(x._allocator)
+				map (const map& x): _size(x._size), _compare(x._compare)
 				{
-					_root_node = new node_type(x._root_node->value);
-
-					if (x._root_node->child1)
-						_root_node->child1 = _copy_node(_root_node, x._root_node->child1);
-					if (x._root_node->child2)
-						_root_node->child2 = _copy_node(_root_node, x._root_node->child2);
+					_root_node = _copy_node(NULL, x._root_node);
 				}
 
 				~map()
@@ -96,15 +92,9 @@ namespace ft {
 				map& operator= (const map& x)
 				{
 					clear();
-
-					if (x._root_node)
-					{
-						_root_node = new node_type(x._root_node->value);
-						if (x._root_node->child1)
-							_root_node->child1 = _copy_node(_root_node, x._root_node->child1);
-						if (x._root_node->child2)
-							_root_node->child2 = _copy_node(_root_node, x._root_node->child2);
-					}
+					//FIXME: creo que con copy node daba algun error, volver a poner el copy_node mas adelante
+					// y solucionar el error
+					this->insert(x.begin(), x.end());
 					_size = x._size;
 					return (*this);
 				}
@@ -123,16 +113,17 @@ namespace ft {
 				//single element
 				ft::pair<iterator, bool>	insert (const value_type& val)
 				{
-
-					ft::pair<iterator, bool> return_pair;
+					ft::pair<iterator, bool>	return_pair;
 
 					return_pair.second = !this->count(val.first);
 					if (return_pair.second == true)
 					{
-						node_type *new_node = new node_type(val);
-						node_type **parent = &_root_node;
-						node_type **node = &_root_node;
-						node_type *ghost = rightmost(_root_node);
+						node_type	*new_node = _allocator.allocate(1);
+						_allocator.construct(new_node, node_type(val));
+
+						node_type	**parent = &_root_node;
+						node_type	**node = &_root_node;
+						node_type	*ghost = rightmost(_root_node);
 						bool side_left = true;
 
 						++_size;
@@ -140,28 +131,33 @@ namespace ft {
 						{
 							parent = node;
 							side_left = _compare(new_node->value.first, (*node)->value.first);
-							node = (side_left ? &(*node)->child1 : &(*node)->child2);
+							node = (side_left ? &(*node)->left : &(*node)->right);
 						}
 
 						if (*node == NULL)
 						{
-							new_node->parent = (*parent);
 							*node = new_node;
+							new_node->parent = (*parent);
 						}
 						else // if (*node == ghost)
 						{
 							*node = new_node;
 							new_node->parent = ghost->parent;
 							ghost->parent = rightmost(new_node);
-							rightmost(new_node)->child2 = ghost; // in case new_node isnt alone
+							rightmost(new_node)->right = ghost; // in case new_node isnt alone
 						}
 						return_pair.first = iterator(new_node);
+						if (_size)
+						{
+							ghost = rightmost(_root_node);
+							ghost->parent->right = NULL;
+							_root_node = _balanceTree(_root_node);
+							rightmost(_root_node)->right = ghost;
+						}
 					}
 					else
-					{
-					//FIXME: esto se puede hacer por otro lado
-					return_pair.first = find(val.first);
-					}
+						return_pair.first = find(val.first);
+
 					return (return_pair);
 				}
 
@@ -193,9 +189,9 @@ namespace ft {
 					while (current_node)
 					{
 						if (_compare(key, current_node->value.first))
-							current_node = current_node->child1;
+							current_node = current_node->left;
 						else if (_compare(current_node->value.first, key))
-							current_node = current_node->child2;
+							current_node = current_node->right;
 						else
 							return iterator(current_node);
 					}
@@ -209,9 +205,9 @@ namespace ft {
 					while (current_node)
 					{
 						if (_compare(key, current_node->value.first))
-							current_node = current_node->child1;
+							current_node = current_node->left;
 						else if (_compare(current_node->value.first, key))
-							current_node = current_node->child2;
+							current_node = current_node->right;
 						else
 							return const_iterator(current_node);
 					}
@@ -230,40 +226,49 @@ namespace ft {
 
 					node_type *replace_node = NULL;
 					node_type **remove_place = &_root_node;
+
 					--_size;
 					if (aux->parent)
-						remove_place = (aux->parent->child1 == aux) ? &aux->parent->child1 : &aux->parent->child2;
-					if (aux->child1 == NULL && aux->child2 == NULL)
-						;
-					else if (aux->child1 == NULL)
-						replace_node = aux->child2;
-					else
+						remove_place = (aux->parent->left == aux) ? &aux->parent->left : &aux->parent->right;
+
+					if (aux->left == NULL)
+						replace_node = aux->right;
+					else if (aux->left || aux->right)
 					{
-						replace_node = rightmost(aux->child1);
-						if (replace_node != aux->child1)
+						replace_node = rightmost(aux->left);
+						if (replace_node != aux->left)
 						{
-							replace_node->parent->child2 = replace_node->child1;
-							if (replace_node->parent->child2)
-								replace_node->child1->parent = replace_node->parent;
+							replace_node->parent->right = replace_node->left;
+							if (replace_node->parent->right)
+								replace_node->left->parent = replace_node->parent;
 						}
 					}
 
 					if (replace_node)
 					{
 						replace_node->parent = aux->parent;
-						if (aux->child1 && aux->child1 != replace_node)
+						if (aux->left && aux->left != replace_node)
 						{
-							replace_node->child1 = aux->child1;
-							replace_node->child1->parent = replace_node;
+							replace_node->left = aux->left;
+							replace_node->left->parent = replace_node;
 						}
-						if (aux->child2 && aux->child2 != replace_node)
+						if (aux->right && aux->right != replace_node)
 						{
-							replace_node->child2 = aux->child2;
-							replace_node->child2->parent = replace_node;
+							replace_node->right = aux->right;
+							replace_node->right->parent = replace_node;
 						}
 					}
 					*remove_place = replace_node;
-					delete aux;
+					_allocator.destroy(aux);
+					_allocator.deallocate(aux, 1);
+					//FIXME:
+					if (_size)
+					{
+						node_type *ghost = rightmost(_root_node);
+						ghost->parent->right = NULL;
+						_root_node = _balanceTree(_root_node);
+						rightmost(_root_node)->right = ghost;
+					}
 				}
 
 				size_type erase (const key_type& key)
@@ -343,11 +348,8 @@ namespace ft {
 
 					if (_size == 0)
 						return ;
-					ghost->parent->child2 = NULL;
-					if (_root_node->child1)
-						_destroy_node(_root_node->child1);
-					if (_root_node->child2)
-						_destroy_node(_root_node->child2);
+					ghost->parent->right = NULL;
+					_destroy_node(_root_node);
 					_root_node = ghost;
 					_size = 0;
 				}
@@ -416,18 +418,81 @@ namespace ft {
 						return ft::make_pair(it, it);
 				}
 
-			private:
 				typedef	tree_node<value_type> node_type;
 				node_type	*_root_node;
+			private:
 				size_type	_size;
 				Compare		_compare;
-				Allocator	_allocator;
+				typename Allocator::template rebind<node_type>::other	_allocator;
+
+				node_type *_find_in_node(const key_type &to_find, node_type **node, node_type **last_node)
+				{
+					// (*last_node) = (*node);
+					while (*node)
+					{
+						(*last_node) = (*node);
+						if (to_find == (*node)->value.first)
+							return (*node);
+						if (_compare(to_find, (*node)->value.first))
+							node = &(*node)->left;
+						else
+							node = &(*node)->right;
+					}
+					return (*node);
+				}
+
+				void _insert_node(node_type *node, node_type *parent)
+				{
+					if (!node || !parent)
+						return ;
+					_find_in_node(node->value.first, &parent, &parent);
+					if (_compare(parent->value.first, node->value.first))
+						parent->right = node;
+					else
+						parent->left = node;
+					node->parent = parent;
+				}
+
+				node_type	*_balanceTree(node_type *node)
+				{
+					if (!node)
+						return NULL;
+					int imbalance;
+					node_type *aux;
+
+					while (true)
+					{
+						imbalance = height(node->left) - height(node->right);
+						aux = node;
+						if (imbalance == -2)
+						{
+							node = node->right;
+							aux->right = NULL;
+						}
+						else if (imbalance == 2)
+						{
+							node = node->left;
+							aux->left = NULL;
+						}
+						else
+							break;
+						node->parent = aux->parent;
+						_insert_node(aux, node);
+					}
+					node->left = _balanceTree(node->left);
+					node->right = _balanceTree(node->right);
+					return (node);
+				}
 
 				// Checks wether 2 keys are equivalent
 				bool	_are_equivalent(key_type key1, key_type key2) const
 				{
 					return (!_compare(key1, key2) && !_compare(key2, key1));
 				}
+
+
+
+				// ÁRBOL AVL
 
 				/*
 				**	Receives a pointer to its parent and other to the node it's copying
@@ -438,23 +503,25 @@ namespace ft {
 				*/
 				node_type	*_copy_node(node_type *parent, node_type *original_node)
 				{
-					node_type	*new_node = new node_type(original_node->value);
+					node_type	*new_node = _allocator.allocate(1);
+					_allocator.construct(new_node, node_type(original_node->value));
 					new_node->parent = parent;
-					if (original_node->child1)
-						new_node->child1 = _copy_node(new_node, original_node->child1);
-					if (original_node->child2)
-						new_node->child2 = _copy_node(new_node, original_node->child2);
+					if (original_node->left)
+						new_node->left = _copy_node(new_node, original_node->left);
+					if (original_node->right)
+						new_node->right = _copy_node(new_node, original_node->right);
 					return (new_node);
 				}
 
 				// Deletes its value and calls itself passing its childs as argument
 				void	_destroy_node(node_type *node)
 				{
-					if (node->child1)
-						_destroy_node(node->child1);
-					if (node->child2)
-						_destroy_node(node->child2);
-					delete node;
+					if (node->left)
+						_destroy_node(node->left);
+					if (node->right)
+						_destroy_node(node->right);
+					_allocator.destroy(node);
+					_allocator.deallocate(node, 1);
 				}
 		};
 

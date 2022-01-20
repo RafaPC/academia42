@@ -63,9 +63,8 @@ class vector
 				_constructor_range(first, last, IteratorCategory());
 			}
 
-		vector (const vector& x)
+		vector (const vector& x): _data(NULL)
 		{
-			_data = NULL;
 			*this = x;
 		}
 
@@ -107,7 +106,7 @@ class vector
 		iterator				end() { return (iterator(_data + _size)); }
 		
 		const_iterator			end() const { return (const_iterator(_data + _size)); }
-		
+
 		reverse_iterator		rbegin() { return (reverse_iterator(_data + _size)); }
 		
 		const_reverse_iterator	rbegin() const { return (const_reverse_iterator(_data + _size)); }
@@ -153,7 +152,7 @@ class vector
 			{
 				pointer new_data = _allocator.allocate(new_capacity, _data);
 				for (size_type i = 0; i < _size; ++i)
-					new_data[i] = _data[i];
+					_allocator.construct(&new_data[i], _data[i]);
 
 				_allocator.deallocate(_data, _capacity);
 				_data = new_data;
