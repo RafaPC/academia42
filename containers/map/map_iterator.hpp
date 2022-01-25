@@ -44,13 +44,13 @@ namespace ft
 
 				MapIterator &operator++()
 				{
-					if (_node->child2 != NULL)
-						_node = leftmost(_node->child2);
+					if (_node->right != NULL)
+						_node = leftmost(_node->right);
 					else
 					{
 						node_type	*aux = _node;
 						node_type	*aux_parent = aux->parent;
-						while (aux_parent && aux == aux_parent->child2)
+						while (aux_parent && aux == aux_parent->right)
 						{
 							aux = aux_parent;
 							aux_parent = aux_parent->parent;
@@ -70,13 +70,13 @@ namespace ft
 
 				MapIterator &operator--()
 				{
-					if (_node->child1 != NULL)
-						_node = rightmost(_node->child1);
+					if (_node->left != NULL)
+						_node = rightmost(_node->left);
 					else
 					{
 						node_type	*aux = _node;
 						node_type	*aux_parent = aux->parent;
-						while (aux_parent && aux == aux_parent->child1)
+						while (aux_parent && aux == aux_parent->left)
 						{
 							aux = aux_parent;
 							aux_parent = aux_parent->parent;
