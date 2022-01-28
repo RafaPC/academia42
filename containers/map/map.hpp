@@ -57,10 +57,10 @@ namespace ft {
 				// empty
 				explicit map (const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type()):
-					_size(0), _compare(comp)
+					_size(0), _compare(comp), _allocator(alloc)
 					{
 						_root_node = _allocator.allocate(1);
-						_allocator.construct(_root_node, node_type());
+						_allocator.construct(_root_node, node_type(false));
 					}
 
 				// range
@@ -69,24 +69,25 @@ namespace ft {
 						const key_compare& comp = key_compare(),
 						const allocator_type& alloc = allocator_type(),
 						typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL)
+						: _allocator(alloc), _size(0), _compare(comp)
 						{
 							_root_node = _allocator.allocate(1);
-							_allocator.construct(_root_node, node_type());
-							_compare = comp;
-							_size = 0;
+							_allocator.construct(_root_node, node_type(false));
+							// _compare = comp;
+							// _size = 0;
 							for (; first != last; ++first)
 								insert(*first);
 						}
 
 				// Constructs a container with a copy of each of the elements in x.
-				map (const map& x): _size(x._size), _compare(x._compare)
+				map (const map& x): _size(x._size), _compare(x._compare), _allocator(x._allocator)
 				{
 					_root_node = _copy_node(NULL, x._root_node);
 				}
 
 				~map()
 				{
-					_destroy_node(_root_node);
+					_destroy_node_recursive(_root_node);
 				}
 
 				map& operator= (const map& x)
@@ -111,7 +112,7 @@ namespace ft {
 
 				// INSERT
 				//single element
-				ft::pair<iterator, bool>	insert (const value_type& val)
+				ft::pair<iterator, bool>	insert(const value_type& val)
 				{
 					ft::pair<iterator, bool>	return_pair;
 
@@ -120,7 +121,6 @@ namespace ft {
 					{
 						node_type	*new_node = _allocator.allocate(1);
 						_allocator.construct(new_node, node_type(val));
-
 						node_type	**parent = &_root_node;
 						node_type	**node = &_root_node;
 						node_type	*ghost = rightmost(_root_node);
@@ -147,12 +147,15 @@ namespace ft {
 							rightmost(new_node)->right = ghost; // in case new_node isnt alone
 						}
 						return_pair.first = iterator(new_node);
+						//TODO: poner el nodo a rojo, entonces checkear si su padr es rojo RED VIOLATION
+						new_node->is_red = true;
 						if (_size)
 						{
 							ghost = rightmost(_root_node);
 							ghost->parent->right = NULL;
-							_root_node = _balanceTree(_root_node);
-							rightmost(_root_node)->right = ghost;
+							// _root_node = _balanceTree(_root_node);
+							fix_violation(new_node);
+							_recolocar_ghost(ghost);
 						}
 					}
 					else
@@ -222,54 +225,235 @@ namespace ft {
 				// ERASE
 				void erase (iterator position)
 				{
-					node_type *aux = position.base();
+					// saco el nodo ghost
+					node_type *ghost = rightmost(_root_node);
+					ghost->parent->right = NULL;
+
+					node_type *erased = position.base();
 
 					node_type *replace_node = NULL;
 					node_type **remove_place = &_root_node;
 
 					--_size;
-					if (aux->parent)
-						remove_place = (aux->parent->left == aux) ? &aux->parent->left : &aux->parent->right;
-
-					if (aux->left == NULL)
-						replace_node = aux->right;
-					else if (aux->left || aux->right)
+					if (erased == _root_node && _size == 0)
 					{
-						replace_node = rightmost(aux->left);
-						if (replace_node != aux->left)
+						_root_node = ghost;
+						ghost->parent = NULL;
+						// _destroy_node(erased);
+						return ;
+					}
+					if (erased->parent)
+						remove_place = (erased->parent->left == erased) ? &erased->parent->left : &erased->parent->right;
+
+					if (erased->right)
+					{
+						replace_node = leftmost(erased->right);
+						if (replace_node != erased->right)
 						{
-							replace_node->parent->right = replace_node->left;
-							if (replace_node->parent->right)
-								replace_node->left->parent = replace_node->parent;
+							replace_node->parent->left = replace_node->right;
+							if (replace_node->parent->left)
+								replace_node->right->parent = replace_node->parent;
 						}
+					}
+					else if (erased->left)
+						replace_node = erased->left;
+
+					//FIX ERASE VIOLATION
+					node_type *parent = NULL;
+					bool x_is_left_child = false;
+
+					// DARLE VALOR A X
+					node_type *x;
+					if (erased->left && erased->right)
+					{
+						x = replace_node->right;
+						if (replace_node->parent != erased)
+						{
+							parent = replace_node->parent;
+							x_is_left_child = true;
+						}
+						else
+							x_is_left_child = false;
+					}
+					else if (erased->left)
+					{
+						x = erased->left;
+						x_is_left_child = true;
+					}
+					else if (erased->right)
+					{
+						x = erased->right;
+						x_is_left_child = false;
+					}
+					else
+					{
+						x_is_left_child = erased == erased->parent->left;
+						x = NULL;
 					}
 
 					if (replace_node)
 					{
-						replace_node->parent = aux->parent;
-						if (aux->left && aux->left != replace_node)
+						replace_node->parent = erased->parent;
+						if (erased->left && erased->left != replace_node)
 						{
-							replace_node->left = aux->left;
+							replace_node->left = erased->left;
 							replace_node->left->parent = replace_node;
 						}
-						if (aux->right && aux->right != replace_node)
+						if (erased->right && erased->right != replace_node)
 						{
-							replace_node->right = aux->right;
+							replace_node->right = erased->right;
 							replace_node->right->parent = replace_node;
 						}
+						// IF EITHER U OR V IS RED
+						// if (replace_node->is_red || erased->is_red)
+						// 	replace_node->is_red = false;
 					}
 					*remove_place = replace_node;
-					_allocator.destroy(aux);
-					_allocator.deallocate(aux, 1);
-					//FIXME:
-					if (_size)
+
+					if (erased->is_red && (replace_node == NULL || replace_node->is_red))
 					{
-						node_type *ghost = rightmost(_root_node);
-						ghost->parent->right = NULL;
-						_root_node = _balanceTree(_root_node);
-						rightmost(_root_node)->right = ghost;
+						_recolocar_ghost(ghost);
+						_destroy_node(erased);
+						return ;
 					}
+					else if (erased->is_red && (!replace_node || !replace_node->is_red))
+						replace_node->is_red = true;
+					else if (!erased->is_red && replace_node && replace_node->is_red)
+					{
+						replace_node->is_red = false;
+						_recolocar_ghost(ghost);
+						_destroy_node(erased);
+						return ;
+					}
+					else if (!erased->is_red && (!replace_node || !replace_node->is_red) && x == _root_node)
+					{
+						_recolocar_ghost(ghost);
+						_destroy_node(erased);
+						return ;
+					}
+
+					// declares and initialices parent and sibling pointers
+					// node_type *parent = (erased != _root_node) ? erased->parent : NULL;
+					if (!parent && replace_node)
+						parent = replace_node;
+					else if (!parent && !replace_node)
+						parent = erased->parent;
+					node_type *sibling = NULL;
+					if (parent)
+						sibling = (x == parent->left) ? parent->right : parent->left;
+					bool	replace_is_left_child = (replace_node == erased->left);
+					int		sibling_childs_redness = 0;
+					if (sibling)
+						sibling_childs_redness = sibling->has_red_childs();
+
+
+					if (replace_node == _root_node)
+					{
+						_recolocar_ghost(ghost);
+						_destroy_node(erased);
+						return ;
+					}
+					// leaf has been deleted, if deletedNode was black, then doubleBlack case
+					bool repeat;
+					do
+					{
+						repeat = false;
+						bool		sibling_is_left_child = (sibling == parent->left);
+						if (sibling)
+							sibling_childs_redness = sibling->has_red_childs();
+
+						// _case_0(x);
+						if (x && x->is_red) 														// CASE 0
+						{
+							x->is_red = false;
+							break ;
+						}
+						else if ((!x || !x->is_red) && sibling->is_red) 							// CASE 1
+						{
+							sibling->is_red = false;
+							parent->is_red = true;
+							if (x == parent->left)
+							{
+								left_rotation(parent, &_root_node);
+								sibling = parent->right;
+							}
+							else
+							{
+								right_rotation(parent, &_root_node);
+								sibling = parent->left;
+							}
+							if (sibling)
+								sibling_childs_redness = sibling->has_red_childs();
+							// With replace node and our new sibling, decide on case 2, 3 or 4 from here
+						}
+						if ((!x || !x->is_red) && sibling && !sibling->is_red && sibling_childs_redness == 0)	// CASE 2
+						{
+							sibling->is_red = true;
+							x = parent;
+							x_is_left_child = (x->parent) ? x == x->parent->left : true;
+							if (x->is_red)
+							{
+								x->is_red = false;
+								// return;
+							}
+							else if (!x->is_red && x != _root_node)
+							{
+								parent = parent->parent;
+								sibling = x == parent->left ? parent->right : parent->left;
+								repeat = true;
+							}
+							else if (!x->is_red && x == _root_node)
+							{
+								// return ;
+							}
+						}
+						else if ((!x || !x->is_red) && sibling && !sibling->is_red &&
+						((x_is_left_child && sibling_childs_redness == 1) || (!x_is_left_child && sibling_childs_redness == 2)))
+						{																			// CASE 3
+							if (x_is_left_child)
+								sibling->left->is_red = false;
+							else
+								sibling->right->is_red = false;
+							sibling->is_red = true;
+							if (x_is_left_child)
+								right_rotation(sibling, &_root_node);
+							else
+								left_rotation(sibling, &_root_node);
+							sibling = (x_is_left_child) ? parent->right : parent->left;
+							sibling_childs_redness = sibling->has_red_childs();
+						}
+
+						if ((!x || !x->is_red) && (!sibling || !sibling->is_red) &&
+						((x_is_left_child && sibling_childs_redness >= 2) || (!x_is_left_child && sibling_childs_redness == 1)))
+						{																// CASE 4
+							sibling->is_red = parent->is_red;
+							parent->is_red = false;
+							if (x_is_left_child)
+							{
+								sibling->right->is_red = false;
+								left_rotation(parent, &_root_node);
+							}
+							else
+							{
+								sibling->left->is_red = false;
+								right_rotation(parent, &_root_node);
+							}
+						}
+
+					} while (repeat);
+					//FIXME:
+					// recoloco el nodo ghost
+					_recolocar_ghost(ghost);
+					_destroy_node(erased);
 				}
+
+				// void	_case_0(node_type *x)
+				// {
+				// 	if (x && x->is_red)
+				// 		x->is_red = false;
+				// }
+
+				// void	_case_1()
 
 				size_type erase (const key_type& key)
 				{
@@ -289,6 +473,24 @@ namespace ft {
 					while (first != last)
 					{
 						++first;
+						// displayTree(_root_node);
+						// for (iterator it = begin(), last = end(); it != last; ++it)
+						// {
+						// 	node_type *node = it.base();
+						// 	if (node->left == NULL && node->right == NULL)
+						// 	{
+						// 		int count = 1;
+						// 		while (node->parent)
+						// 		{
+						// 			if (!node->is_red)
+						// 				++count;
+						// 			node = node->parent;
+						// 		}
+						// 		std::cout << "For " << it->first << ", count " << count << " nodes to root\n";
+						// 	}
+						// }
+						// std::cout << "----------------------------------------\n-------------------------------------\n\n";
+						// std::cout << it->first << " is deleted\n";
 						erase(it);
 						it = first;
 					}
@@ -349,7 +551,7 @@ namespace ft {
 					if (_size == 0)
 						return ;
 					ghost->parent->right = NULL;
-					_destroy_node(_root_node);
+					_destroy_node_recursive(_root_node);
 					_root_node = ghost;
 					_size = 0;
 				}
@@ -425,63 +627,60 @@ namespace ft {
 				Compare		_compare;
 				typename Allocator::template rebind<node_type>::other	_allocator;
 
-				node_type *_find_in_node(const key_type &to_find, node_type **node, node_type **last_node)
+				void	fix_violation(node_type *node)
 				{
-					// (*last_node) = (*node);
-					while (*node)
+					node_type *parent = NULL;
+					node_type *grandparent = NULL;
+					while (node && node != _root_node && node->is_red && node->parent->is_red)
 					{
-						(*last_node) = (*node);
-						if (to_find == (*node)->value.first)
-							return (*node);
-						if (_compare(to_find, (*node)->value.first))
-							node = &(*node)->left;
+						parent = node->parent;
+						grandparent = parent->parent;
+						const bool	parent_is_left_child = (parent == grandparent->left);
+						node_type	*uncle = (parent_is_left_child) ? grandparent->right : grandparent->left;
+						if (uncle && uncle->is_red)
+						{
+							parent->is_red = false;
+							uncle->is_red = false;
+							grandparent->is_red = true;
+							node = grandparent;
+						}
 						else
-							node = &(*node)->right;
+						{
+							if (parent == grandparent->left && node == parent->left)
+								left_left_rotation(node, &_root_node);
+							else if (parent == grandparent->right && node == parent->right)
+								right_right_rotation(node, &_root_node);
+							else if (parent == grandparent->left && node == parent->right)
+								left_right_rotation(node, &_root_node);
+							else
+								right_left_rotation(node, &_root_node);
+							if (node->parent)
+								node = node->parent->parent;
+						}
 					}
-					return (*node);
+					_root_node->is_red = false;
 				}
 
-				void _insert_node(node_type *node, node_type *parent)
+				tree_node<T>	**parent_child_pointer(node_type *node)
 				{
-					if (!node || !parent)
-						return ;
-					_find_in_node(node->value.first, &parent, &parent);
-					if (_compare(parent->value.first, node->value.first))
-						parent->right = node;
+					if (node->parent == NULL)
+						return (&_root_node);
 					else
-						parent->left = node;
-					node->parent = parent;
+						return (node == node->parent->left) ? &node->parent->left : &node->parent->right;
 				}
 
-				node_type	*_balanceTree(node_type *node)
+				void	_destroy_node(node_type *node)
 				{
-					if (!node)
-						return NULL;
-					int imbalance;
-					node_type *aux;
+					_allocator.destroy(node);
+					_allocator.deallocate(node, 1);
+				}
 
-					while (true)
-					{
-						imbalance = height(node->left) - height(node->right);
-						aux = node;
-						if (imbalance == -2)
-						{
-							node = node->right;
-							aux->right = NULL;
-						}
-						else if (imbalance == 2)
-						{
-							node = node->left;
-							aux->left = NULL;
-						}
-						else
-							break;
-						node->parent = aux->parent;
-						_insert_node(aux, node);
-					}
-					node->left = _balanceTree(node->left);
-					node->right = _balanceTree(node->right);
-					return (node);
+				//TODO:
+				void	_recolocar_ghost(node_type *ghost)
+				{
+					node_type *ghost_parent = rightmost(_root_node);
+					ghost_parent->right = ghost;
+					ghost->parent = ghost_parent;
 				}
 
 				// Checks wether 2 keys are equivalent
@@ -489,10 +688,6 @@ namespace ft {
 				{
 					return (!_compare(key1, key2) && !_compare(key2, key1));
 				}
-
-
-
-				// ÁRBOL AVL
 
 				/*
 				**	Receives a pointer to its parent and other to the node it's copying
@@ -504,7 +699,7 @@ namespace ft {
 				node_type	*_copy_node(node_type *parent, node_type *original_node)
 				{
 					node_type	*new_node = _allocator.allocate(1);
-					_allocator.construct(new_node, node_type(original_node->value));
+					_allocator.construct(new_node, node_type(*original_node));
 					new_node->parent = parent;
 					if (original_node->left)
 						new_node->left = _copy_node(new_node, original_node->left);
@@ -514,14 +709,14 @@ namespace ft {
 				}
 
 				// Deletes its value and calls itself passing its childs as argument
-				void	_destroy_node(node_type *node)
+				void	_destroy_node_recursive(node_type *node)
 				{
 					if (node->left)
-						_destroy_node(node->left);
+						_destroy_node_recursive(node->left);
 					if (node->right)
-						_destroy_node(node->right);
-					_allocator.destroy(node);
-					_allocator.deallocate(node, 1);
+						_destroy_node_recursive(node->right);
+
+					_destroy_node(node);
 				}
 		};
 

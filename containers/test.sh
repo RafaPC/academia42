@@ -1,7 +1,7 @@
-COMPILE="clang++ --std=c++98 -o3-Wall -Wextra -Werror"
+COMPILE="clang++ --std=c++98 -o3 -Wall -Wextra -Werror"
 LOG_DIRECTORY="test_logs"
 
-mkdir test_logs 2> /dev/null  
+mkdir test_logs 2> /dev/null
 cd test_logs
 
 clang++ --std=c++98 -o3 ../other_main.cpp -DTEST_FT -o test_ft
