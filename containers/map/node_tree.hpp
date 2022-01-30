@@ -2,7 +2,7 @@
 # define NODE_TREE_HPP
 
 #include "../utility.hpp"
-#include <iostream> //BORRAR:
+#include <iostream> //FIXME: borrar
 
 namespace ft
 {
@@ -48,15 +48,6 @@ namespace ft
 			while (node->right)
 				node = node->right;
 			return (node);
-		}
-
-	template <typename T>
-		int		height(tree_node<T> *node)
-		{
-			if (node == NULL)
-				return (0);
-			else
-				return (1 + std::max(height(node->left), height(node->right)));
 		}
 
 	template <typename T>
@@ -111,9 +102,7 @@ namespace ft
 	template <typename T>
 		tree_node<T>	*left_right_rotation(tree_node<T> *node, tree_node<T> **root)
 		{
-			// grandparent right rotation
 			tree_node<T>	*parent = (node->parent) ? node->parent : *root;
-			// tree_node<T>	*grandparent = (parent->parent) ? parent->parent : *root;
 			left_rotation(parent, root);
 			// left left rotation
 			return (left_left_rotation(parent, root));
@@ -134,9 +123,7 @@ namespace ft
 	template <typename T>
 		tree_node<T>	*right_left_rotation(tree_node<T> *node, tree_node<T> **root)
 		{
-			// grandparent right rotation
 			right_rotation(node->parent, root);
-			// grandparent and parent color swap
 			return (right_right_rotation(node->right, root));
 		}
 
