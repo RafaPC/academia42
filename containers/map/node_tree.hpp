@@ -9,10 +9,8 @@ namespace ft
 	template <typename T>
 	struct tree_node
 	{
-		tree_node (bool	is_red, tree_node *parent = NULL): is_red(is_red), value(T()), parent(parent), left(NULL), right(NULL) {}
-		tree_node (const T &src = T()): value(src), parent(NULL), left(NULL), right(NULL) {};
-		tree_node (const tree_node<T> &other):
-		is_red(other.is_red), value(other.value), parent(other.parent), left(other.left), right(other.right) { }
+		tree_node (bool	is_red): is_red(is_red), value(T()), parent(NULL), left(NULL), right(NULL) {}
+		tree_node (const T &src = T(), tree_node *parent = NULL): is_red(), value(src), parent(parent), left(NULL), right(NULL) {};
 
 		bool is_red;
 		int whatever; //FIXME: solo sirve para que de el mismo tamaño teórico
@@ -65,26 +63,6 @@ namespace ft
 				return (1);
 			else
 				return (abs(color_depth(node->left) - color_depth(node->right)) + (!node->is_red));
-		}
-
-	template <typename T>
-		void displayTree(tree_node<T> *node)
-		{
-			if (!node)
-				return;
-			if (!node->parent)
-				std::cout << std::endl;
-			displayTree(node->right);
-			size_t offset = depth(node);
-			while (offset--)
-				std::cout << '\t';
-			if (node->is_red)
-				std::cout << "\033[1;31m" << node->value.first << "\033[0m" << std::endl;
-			else
-				std::cout << node->value.first << std::endl;
-			displayTree(node->left);
-			if (!node->parent)
-				std::cout << "---------------------------------\n";
 		}
 
 	template <typename T>

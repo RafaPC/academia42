@@ -889,14 +889,15 @@ void	map_speed(void)
 
 // To call only with my map
 template <typename T>
-void	distance_from_leaves_to_root(T mapa)
+void	distance_from_leaves_to_root(T &mapa)
 {
 	for (typename T::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
 	{
+		typename T::iterator before_end = --(mapa.end());
 		ft::tree_node<pair<const typename T::key_type, typename T::mapped_type> > *node = it.base();
-		if (node->left == NULL && node->right == NULL)
+		if (it == before_end || (node->left == NULL && node->right == NULL))
 		{
-			int count = 1;
+			int count = 0;
 			while (node->parent)
 			{
 				if (!node->is_red)

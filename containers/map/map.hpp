@@ -453,6 +453,28 @@ namespace ft {
 						return ft::make_pair(it, it);
 				}
 
+				void displayTree(node_type *node)
+				{
+					if (!node)
+					{
+						node = _root_node;
+						std::cout << std::endl;
+					}
+					if (node->right)
+						displayTree(node->right);
+					size_t offset = depth(node);
+					while (offset--)
+						std::cout << '\t';
+					if (node->is_red)
+						std::cout << "\033[1;31m" << node->value.first << "\033[0m" << std::endl;
+					else
+						std::cout << node->value.first << std::endl;
+					if (node->left)
+						displayTree(node->left);
+					if (node == _root_node)
+						std::cout << "---------------------------------\n";
+				}
+
 			private:
 
 				void	_fix_insert_violation(node_type *node)
@@ -617,7 +639,7 @@ namespace ft {
 				}
 
 				/*
-				**	Receives a pointer to its parent and other to the node it's copying
+				**	Receives a pointer to the node it'll copy and other to its parent
 				**	Allocates the new node and asigns its parent pointer to its parent variable
 				**	If the original node has any child, the same function is called recursively with its
 				**	own pointer as the parent argument, and the child as the original node
@@ -626,8 +648,8 @@ namespace ft {
 				node_type	*_copy_node(node_type *parent, node_type *original_node)
 				{
 					node_type	*new_node = _allocator.allocate(1);
-					_allocator.construct(new_node, node_type(*original_node));
-					new_node->parent = parent;
+					_allocator.construct(new_node, node_type(original_node->value, parent));
+					new_node->is_red = original_node->is_red;
 					if (original_node->left)
 						new_node->left = _copy_node(new_node, original_node->left);
 					if (original_node->right)
