@@ -68,6 +68,7 @@ void	print_size_vector(vector<T> const &vct)
 	// Cannot limit capacity's max value because it's implementation dependent
 
 	std::cout << "size: " << size << '\n';
+	std::cout << "max_size: " << vct.max_size() << '\n';
 	std::cout << "capacity: " << isCapacityOk << '\n';
 	typename vector<T>::const_iterator it = vct.begin();
 	typename vector<T>::const_iterator ite = vct.end();
@@ -94,6 +95,7 @@ template <typename T_MAP>
 void	print_size_map(T_MAP const &mp)
 {
 	std::cout << "size: " << mp.size() << '\n';
+	std::cout << "max_size: " << mp.max_size() << '\n';
 	typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
 	std::cout << '\n' << "Content is:\n";
 	for (; it != ite; ++it)
@@ -1002,6 +1004,7 @@ int main(void)
 	// mapita.erase(++(++(++(++(++mapita.begin())))), mapita.end());
 	// mapita.displayTree();
 	// distance_from_leaves_to_root(mapita);
+
 	#ifdef TEST_FT
 		system("leaks test_ft > test_ft.leaks");
 	#endif

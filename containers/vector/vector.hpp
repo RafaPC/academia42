@@ -144,9 +144,9 @@ class vector
 			{
 				std::ostringstream exception_message;
 				exception_message << "vector";
-				if (!__APPLE__)
-					exception_message << "::reserve: new_capacity (" << new_capacity << ""
-					") requested is greater than maximum capacity (" << max_size() << ")";
+				#if __APPLE__ == 0
+					exception_message << "::_M_fill_insert";
+				#endif
 				throw std::length_error(exception_message.str());
 			}
 			else if (new_capacity > _capacity)
@@ -313,9 +313,10 @@ class vector
 				std::stringstream exception_message;
 
 				exception_message << "vector";
-				if (!__APPLE__)
-					exception_message << "::_range_check: n (which is " << n << ""
+				#if __APPLE__ == 0
+					exception_message << "::_M_range_check: __n (which is " << n << ""
 						") >= this->size() (which is " << _size << ")";
+				#endif
 				throw std::out_of_range(exception_message.str());
 			}
 		}

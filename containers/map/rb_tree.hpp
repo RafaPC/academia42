@@ -97,7 +97,7 @@ namespace ft
 
 		size_type	size(void) const { return _size; }
 
-		size_type	max_size() const { return std::numeric_limits<difference_type>::max() / (sizeof(node_type)); }
+		size_type	max_size() const { return _allocator.max_size(); }
 
 		bool		empty(void) const { return _size == 0; }
 
