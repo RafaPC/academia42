@@ -7,7 +7,6 @@
 #include <cstdlib>
 #include <exception>
 #include <memory>
-#include <iostream>
 #include <sstream> // std::stringstream for out_of_range message
 #include "vector_iterator.hpp"
 #include "../iterator.hpp"
@@ -150,6 +149,9 @@ class vector
 			}
 			else if (new_capacity > _capacity)
 			{
+				if (_capacity && new_capacity == _capacity + 1)
+					new_capacity = (new_capacity > max_size()) ? max_size() : _capacity * 2;
+
 				pointer new_data = _allocator.allocate(new_capacity, _data);
 				for (size_type i = 0; i < _size; ++i)
 					_allocator.construct(&new_data[i], _data[i]);
@@ -302,7 +304,7 @@ class vector
 	private:
 
 		//If n is greater than the size, it throws an out of range exception with the appropiate message
-		void	_range_check(size_type n) const
+		void	_range_check (size_type n) const
 		{
 			if (n >= _size)
 			{
@@ -314,7 +316,7 @@ class vector
 		}
 
 		// Right shifts shift_length times every element from end to until_index
-		void	_right_shift_elements(size_type until_index, size_type shift_length)
+		void	_right_shift_elements (size_type until_index, size_type shift_length)
 		{
 			for (size_type i = _size - 1; i >= until_index; --i)
 				_data[i] = _data[i - shift_length];
@@ -349,7 +351,7 @@ class vector
 
 		// called when InputIterator is an input iterator
 		template <typename InputIterator>
-			void	_assign_range(InputIterator first, InputIterator last, std::input_iterator_tag)
+			void	_assign_range (InputIterator first, InputIterator last, std::input_iterator_tag)
 			{
 				clear();
 				for (; first != last; ++first)
@@ -358,7 +360,7 @@ class vector
 
 		// called when InputIterator is at least a forward iterator
 		template <typename Iterator>
-			void	_assign_range(Iterator first, Iterator last, std::forward_iterator_tag)
+			void	_assign_range (Iterator first, Iterator last, std::forward_iterator_tag)
 			{
 				const size_type	new_size = std::distance(first, last);
 				clear();
