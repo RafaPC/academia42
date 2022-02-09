@@ -143,7 +143,7 @@ namespace ft {
 
 				size_type erase (const key_type& key)
 				{
-					node_type key_node = _tree.find(key);
+					node_type *key_node = _tree.find(key);
 					if (key_node != _tree.end())
 					{
 						_tree.erase(key_node);
