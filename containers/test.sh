@@ -8,6 +8,6 @@ clang++ $FLAGS ../main.cpp -DTEST_FT -o test_ft
 clang++ $FLAGS ../main.cpp -o test_std
 
 ./test_ft > test_ft.out
-valgrind --log-file=test_ft.leaks ./test_ft > /dev/null
+# valgrind --log-file=test_ft.leaks ./test_ft > /dev/null
 ./test_std > test_std.out
 diff test_ft.out test_std.out > test.diff

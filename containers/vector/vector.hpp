@@ -62,9 +62,9 @@ class vector
 				_constructor_range(first, last, IteratorCategory());
 			}
 
-		vector (const vector& x): _data(NULL)
+		vector (const vector& other): _data(NULL)
 		{
-			*this = x;
+			*this = other;
 		}
 
 		//	DESTRUCTOR
@@ -142,14 +142,16 @@ class vector
 		{
 			if (new_capacity > max_size())
 			{
-				std::stringstream exception_message;
-				exception_message << "vector::reserve: new_capacity (" << new_capacity << ""
-				") requested is greater than maximum capacity (" << max_size() << ")";
+				std::ostringstream exception_message;
+				exception_message << "vector";
+				if (!__APPLE__)
+					exception_message << "::reserve: new_capacity (" << new_capacity << ""
+					") requested is greater than maximum capacity (" << max_size() << ")";
 				throw std::length_error(exception_message.str());
 			}
 			else if (new_capacity > _capacity)
 			{
-				if (_capacity && new_capacity == _capacity + 1)
+				if (_capacity && new_capacity <= _capacity * 2)
 					new_capacity = (new_capacity > max_size()) ? max_size() : _capacity * 2;
 
 				pointer new_data = _allocator.allocate(new_capacity, _data);
@@ -309,8 +311,11 @@ class vector
 			if (n >= _size)
 			{
 				std::stringstream exception_message;
-				exception_message << "vector::_range_check: n (which is " << n << ""
-				") >= this->size() (which is " << _size << ")";
+
+				exception_message << "vector";
+				if (!__APPLE__)
+					exception_message << "::_range_check: n (which is " << n << ""
+						") >= this->size() (which is " << _size << ")";
 				throw std::out_of_range(exception_message.str());
 			}
 		}

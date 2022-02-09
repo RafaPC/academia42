@@ -746,14 +746,13 @@ void	map_empty(void)
 void	map_erase(void)
 {
 	std::list<int_string_pair> lst;
-	for (unsigned int i = 0; i < 8; ++i)
-		lst.push_back(int_string_pair(i, std::string((8 - i), i + 65)));
+	for (unsigned int i = 0; i < 10; ++i)
+		lst.push_back(int_string_pair(i, std::string((10 - i), i + 65)));
 	map<int, std::string> mp(lst.begin(), lst.end());
-	// print_size_map(mp);
+	print_size_map(mp);
 	mp.erase(++mp.begin());
 
 	mp.erase(mp.begin());
-	// displayTree(mp._root_node);
 	mp.erase(--mp.end());
 	mp.erase(mp.begin(), ++(++(++mp.begin())));
 	mp.erase(--(--(--mp.end())), --mp.end());
@@ -896,16 +895,20 @@ void	map_bounds(void)
 void	map_value_compare(void)
 {
 	map<int, std::string>	mp;
-	map<int, std::string>::value_compare value_compare = mp.value_comp();
-	map<int, std::string>::iterator it = mp.begin();
+	// map<int, std::string>::value_compare value_compare = mp.value_comp();
+	// map<int, std::string>::iterator it = mp.begin();
 	mp[1] = "foo";
 	mp[2] = "bar";
 	mp[3] = "bar";
 
-	if (value_compare(*it, *(++it)))
-		std::cout << "1-foo is less than 2-bar\n";
-	if (!value_compare(*it, *(++it)))
-		std::cout << "2-bar is not less than 3-bar\n";
+	map<int, std::string>::value_type first_value = *mp.begin();
+	map<int, std::string>::value_type second_value = *(++mp.begin());
+	map<int, std::string>::value_type third_value = *(++(++mp.begin()));
+	if (mp.value_comp()(first_value, second_value))
+		std::cout << first_value.first << "-" << first_value.second << ""
+		" is less than " << second_value.first << "-" << second_value.second << '\n';
+	if (!mp.value_comp()(third_value, second_value))
+		std::cout << "3-bar is not less than 2-bar\n";
 }
 
 void	map_speed(void)
@@ -916,7 +919,7 @@ void	map_speed(void)
 	map<long, int> mapa;
 
 	// Inserting aa lot of values into the map
-	for (unsigned int i = 0; i < 100000; ++i)
+	for (unsigned int i = 0; i < 1000000; ++i)
 		mapa.insert(map<long, int>::value_type(random(), i));
 
 	for (map<long, int>::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
@@ -926,31 +929,33 @@ void	map_speed(void)
 	printf("Map execution time: %f s\n", execution_time);
 }
 
+#ifdef TEST_FT
 // To call only with my map
-// template <typename T>
-// void	distance_from_leaves_to_root(T &mapa)
-// {
-// 	for (typename T::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
-// 	{
-// 		typename T::iterator before_end = --(mapa.end());
-// 		ft::rb_tree_node<pair<const typename T::key_type, typename T::mapped_type> > *node = it.base();
-// 		if (it == before_end || (node->left == NULL && node->right == NULL))
-// 		{
-// 			int count = 0;
-// 			while (node->parent)
-// 			{
-// 				if (node->color == true)
-// 					++count;
-// 				node = node->parent;
-// 			}
-// 			std::cout << "For " << it->first << ", count " << count << " nodes to root\n";
-// 		}
-// 	}
-// }
+template <typename T>
+void	distance_from_leaves_to_root(T &mapa)
+{
+	for (typename T::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
+	{
+		typename T::iterator before_end = --(mapa.end());
+		ft::rb_tree_node<pair<const typename T::key_type, typename T::mapped_type> > *node = it.base();
+		if (it == before_end || (node->left == NULL && node->right == NULL))
+		{
+			int count = 0;
+			while (node->parent)
+			{
+				if (node->color == true)
+					++count;
+				node = node->parent;
+			}
+			std::cout << "For " << it->first << ", count " << count << " nodes to root\n";
+		}
+	}
+}
+#endif
 
 int main(void)
 {
-	// VECTOR
+	//	VECTOR
 	vector_copy_construct();
 	vector_relational_operator();
 	vector_assign();
@@ -965,14 +970,14 @@ int main(void)
 	vector_exception();
 	vector_speed();
 
-	//STACK
+	//	STACK
 	stack_default();
 	stack_default_copy();
 	stack_list();
 	stack_relational_operator();
 	stack_relational_operator();
 
-	//MAP
+	//	MAP
 	map_construct();
 	map_copy_construct();
 	map_empty();
@@ -997,4 +1002,7 @@ int main(void)
 	// mapita.erase(++(++(++(++(++mapita.begin())))), mapita.end());
 	// mapita.displayTree();
 	// distance_from_leaves_to_root(mapita);
+	#ifdef TEST_FT
+		system("leaks test_ft > test_ft.leaks");
+	#endif
 }
