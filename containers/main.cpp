@@ -4,7 +4,7 @@
 #include <string>
 #include <list>
 #include <cstdlib> // random
-#include "map/node_tree.hpp" //displaytree FIXME:
+
 #ifdef TEST_FT
 	#include "vector/vector.hpp"
 	#include "map/map.hpp"
@@ -49,7 +49,6 @@ class foo {
 		value_type	value;
 		bool		_verbose;
 };
-
 
 typedef vector<foo<int> >					vector_stack_type;
 typedef stack<foo<int>, vector_stack_type>	stack_type;
@@ -475,6 +474,46 @@ void	vector_relational_operator(void)
 	cmp(vct2, vct); // 7
 }
 
+void	vector_exception(void)
+{
+	vector<int> vct;
+
+	// trying to reserve more space than maximum
+	try
+	{
+		vct.resize(vct.max_size() + 1);
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+
+	//trying to access element past the end
+	try
+	{
+		vct.at(1);
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+}
+
+void	vector_speed(void)
+{
+	clock_t init_time = clock();
+
+	srand(1643304846);
+	vector<int> vct;
+
+	for (int i = 0; i < 1000000; ++i)
+		vct.push_back(i);
+	
+
+	float execution_time = static_cast<float>(clock() - init_time)/(float)CLOCKS_PER_SEC;
+	printf("Vector execution time: %f s\n", execution_time);
+}
+
 // STACK
 
 void	stack_default(void)
@@ -873,7 +912,7 @@ void	map_speed(void)
 {
 	clock_t init_time = clock();
 
-	srand(1643304965);
+	srand(1643304846);
 	map<long, int> mapa;
 
 	// Inserting aa lot of values into the map
@@ -884,30 +923,30 @@ void	map_speed(void)
 		std::cout << it->first << ": " << it->second << '\n';
 
 	float execution_time = static_cast<float>(clock() - init_time)/(float)CLOCKS_PER_SEC;
-	printf("Execution time: %f s\n", execution_time);
+	printf("Map execution time: %f s\n", execution_time);
 }
 
 // To call only with my map
-template <typename T>
-void	distance_from_leaves_to_root(T &mapa)
-{
-	for (typename T::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
-	{
-		typename T::iterator before_end = --(mapa.end());
-		ft::tree_node<pair<const typename T::key_type, typename T::mapped_type> > *node = it.base();
-		if (it == before_end || (node->left == NULL && node->right == NULL))
-		{
-			int count = 0;
-			while (node->parent)
-			{
-				if (!node->is_red)
-					++count;
-				node = node->parent;
-			}
-			std::cout << "For " << it->first << ", count " << count << " nodes to root\n";
-		}
-	}
-}
+// template <typename T>
+// void	distance_from_leaves_to_root(T &mapa)
+// {
+// 	for (typename T::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
+// 	{
+// 		typename T::iterator before_end = --(mapa.end());
+// 		ft::rb_tree_node<pair<const typename T::key_type, typename T::mapped_type> > *node = it.base();
+// 		if (it == before_end || (node->left == NULL && node->right == NULL))
+// 		{
+// 			int count = 0;
+// 			while (node->parent)
+// 			{
+// 				if (node->color == true)
+// 					++count;
+// 				node = node->parent;
+// 			}
+// 			std::cout << "For " << it->first << ", count " << count << " nodes to root\n";
+// 		}
+// 	}
+// }
 
 int main(void)
 {
@@ -923,6 +962,8 @@ int main(void)
 	vector_iterator();
 	vector_reverse_iter();
 	vector_swap();
+	vector_exception();
+	vector_speed();
 
 	//STACK
 	stack_default();
@@ -943,4 +984,17 @@ int main(void)
 	map_bounds();
 	map_value_compare();
 	map_speed();
+
+	//FIXME: borrar esto
+	// map<int, int> mapita;
+	// for (int i = 0; i < 20; ++i)
+	// {
+	// 	mapita[i] = i;
+	// 	mapita.displayTree();
+	// }
+	// distance_from_leaves_to_root(mapita);
+
+	// mapita.erase(++(++(++(++(++mapita.begin())))), mapita.end());
+	// mapita.displayTree();
+	// distance_from_leaves_to_root(mapita);
 }
