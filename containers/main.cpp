@@ -512,8 +512,7 @@ void	vector_speed(void)
 		vct.push_back(i);
 	
 
-	float execution_time = static_cast<float>(clock() - init_time)/(float)CLOCKS_PER_SEC;
-	printf("Vector execution time: %f s\n", execution_time);
+	std::cout << "Map execution time: " << (int)(((clock() - init_time)/(float)CLOCKS_PER_SEC) * 1000) << " ms\n";
 }
 
 // STACK
@@ -772,6 +771,37 @@ void	map_erase(void)
 	mp.erase(mp.begin(), mp.end());
 }
 
+template <typename MAP, typename U>
+void	ft_erase(MAP &mp, U param)
+{
+	std::cout << "ret: " << mp.erase(param) << std::endl;
+	print_size_map(mp);
+}
+
+void	map_erase_2(void)
+{
+	std::list<int_string_pair> lst;
+	unsigned int lst_size = 6;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(int_string_pair(i, std::string((lst_size - i), i + 65)));
+	map<int, std::string> mp(lst.begin(), lst.end());
+	print_size_map(mp);
+
+	for (int i = 2; i < 4; ++i)
+		ft_erase(mp, i);
+
+	ft_erase(mp, mp.begin()->first);
+	ft_erase(mp, (--mp.end())->first);
+
+	mp[-1] = "Hello";
+	mp[10] = "Hi there";
+	mp[10] = "Hi there";
+	print_size_map(mp);
+
+	ft_erase(mp, 0);
+	ft_erase(mp, 1);
+}
+
 void	map_find_count(void)
 {
 	map<int, std::string> mp;
@@ -927,8 +957,7 @@ void	map_speed(void)
 	for (map<long, int>::iterator it = mapa.begin(), last = mapa.end(); it != last; ++it)
 		std::cout << it->first << ": " << it->second << '\n';
 
-	float execution_time = static_cast<float>(clock() - init_time)/(float)CLOCKS_PER_SEC;
-	printf("Map execution time: %f s\n", execution_time);
+	std::cout << "Map execution time: " << (int)(((clock() - init_time)/(float)CLOCKS_PER_SEC) * 1000) << " ms\n";
 }
 
 #ifdef TEST_FT
@@ -984,6 +1013,7 @@ int main(void)
 	map_copy_construct();
 	map_empty();
 	map_erase();
+	map_erase_2();
 	map_relational_operator();
 	map_find_count();
 	map_swap();
