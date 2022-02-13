@@ -134,6 +134,7 @@ std::string	printPair(const T &iterator)
 
 void	vector_assign(void)
 {
+	std::cout << "Vector assign\n";
 	vector<int> vct(7);
 	vector<int> vct_two(4);
 	vector<int> vct_three;
@@ -172,7 +173,8 @@ void	vector_assign(void)
 
 void	vector_at(void)
 {
-		vector<int> vct(7);
+	std::cout << "Vector at\n";
+	vector<int> vct(7);
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)
 	{
@@ -192,16 +194,17 @@ void	vector_at(void)
 		std::cout << vct_c.at(10) << '\n';
 	}
 	catch (std::out_of_range &e) {
-		std::cout << "Catch out_of_range exception!\n";
+		std::cout << "Out_of_range exception: " << e.what() << '\n';
 	}
 	catch (std::exception &e) {
-		std::cout << "Catch exception: " << e.what() << '\n';
+		std::cout << "Standard exception: " << e.what() << '\n';
 	}
 	print_size_vector(vct_c);
 }
 
 void	vector_copy_construct(void)
 {
+	std::cout << "Vector copy construct\n";
 	vector<int> vct(5);
 	vector<int>::iterator it = vct.begin(), ite = vct.end();
 
@@ -238,6 +241,7 @@ void	vector_copy_construct(void)
 
 void	vector_bidirect_iterator(void)
 {
+	std::cout << "Vector bidirectional iterator\n";
 	std::list<int> lst;
 	std::list<int>::iterator lst_it;
 	for (int i = 1; i < 5; ++i)
@@ -258,6 +262,7 @@ void	vector_bidirect_iterator(void)
 
 void	vector_insert(void)
 {
+	std::cout << "Vector insert\n";
 	{
 		vector<int> vct(10);
 		vector<int> vct2;
@@ -313,6 +318,7 @@ void	vector_insert(void)
 
 void	vector_erase(void)
 {
+	std::cout << "Vector erase\n";
 	vector<std::string> vct(10);
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)
@@ -342,6 +348,7 @@ void	vector_erase(void)
 
 void	vector_iterator(void)
 {
+	std::cout << "Vector iterator\n";
 	const int size = 5;
 	vector<int> vct(size);
 	vector<int>::iterator it = vct.begin();
@@ -372,6 +379,7 @@ void	vector_iterator(void)
 
 void	vector_reverse_iter(void)
 {
+	std::cout << "Vector reverse iterator\n";
 	const int size = 5;
 	vector<int> vct(size);
 	vector<int>::iterator it_ = vct.begin();
@@ -400,6 +408,7 @@ void	vector_reverse_iter(void)
 
 void	vector_swap(void)
 {
+	std::cout << "Vector swap\n";
 	vector<int> foo(3, 15);
 	vector<int> bar(5, 42);
 	
@@ -429,6 +438,7 @@ void	vector_swap(void)
 
 void	vector_push_pop(void)
 {
+	std::cout << "Vector push and pop\n";
 	vector<std::string> vct(8);
 	vector<std::string> vct2;
 	vector<std::string>::iterator it = vct.begin();
@@ -454,6 +464,7 @@ void	vector_push_pop(void)
 
 void	vector_relational_operator(void)
 {
+	std::cout << "Vector relational operators\n";
 	vector<int> vct(4);
 	vector<int> vct2(4);
 
@@ -476,8 +487,9 @@ void	vector_relational_operator(void)
 	cmp(vct2, vct); // 7
 }
 
-void	vector_exception(void)
+void	vector_reserve_exception(void)
 {
+	std::cout << "Vector exceptions\n";
 	vector<int> vct;
 
 	// trying to reserve more space than maximum
@@ -485,24 +497,19 @@ void	vector_exception(void)
 	{
 		vct.resize(vct.max_size() + 1);
 	}
-	catch(const std::exception& e)
+	catch(const std::length_error& e)
 	{
-		std::cout << e.what() << '\n';
-	}
-
-	//trying to access element past the end
-	try
-	{
-		vct.at(1);
+		std::cout << "Length error exception: " << e.what() << '\n';
 	}
 	catch(const std::exception& e)
 	{
-		std::cout << e.what() << '\n';
+		std::cout << "Standard exception: " << e.what() << '\n';
 	}
 }
 
 void	vector_speed(void)
 {
+	std::cout << "Vector push_back speed\n";
 	clock_t init_time = clock();
 
 	srand(1643304846);
@@ -517,8 +524,9 @@ void	vector_speed(void)
 
 // STACK
 
-void	stack_default(void)
+void	stack_push(void)
 {
+	std::cout << "Vector assign\n";
 	stack_type stck;
 
 	std::cout << "empty: " << stck.empty() << '\n';
@@ -528,14 +536,14 @@ void	stack_default(void)
 	stck.push(29);
 	stck.push(10);
 	stck.push(42);
-	std::cout << "Added some elements\n";
 
 	std::cout << "empty: " << stck.empty() << '\n';
 	print_size_stack(stck);
 }
 
-void	stack_default_copy(void)
+void	stack_default_container_copy_constructor(void)
 {
+	std::cout << "Stack default container copy constructor\n";
 	vector_stack_type	ctnr;
 
 	ctnr.push_back(21);
@@ -563,9 +571,10 @@ void	stack_default_copy(void)
 	print_size_stack(stck);
 }
 
-void	stack_list(void)
+void	stack_list_copy_constructor(void)
 {
-	vector_stack_type	ctnr;
+	std::cout << "Stack list copy constructor\n";
+	std::list<foo<int> >	ctnr;
 
 	ctnr.push_back(21);
 	ctnr.push_back(42);
@@ -574,7 +583,7 @@ void	stack_list(void)
 	ctnr.push_back(0);
 	ctnr.push_back(183792);
 
-	stack_type	stck(ctnr);
+	stack<foo<int>, std::list<foo<int> > >	stck(ctnr);
 
 	std::cout << "empty: " << stck.empty() << '\n';
 	std::cout << "size: " << stck.size() << '\n';
@@ -592,8 +601,9 @@ void	stack_list(void)
 	print_size_stack(stck);
 }
 
-void	stack_relational_operator(void)
+void	stack_relational_operators(void)
 {
+	std::cout << "Stack relational operator\n";
 	vector_stack_type	ctnr;
 
 	ctnr.push_back(21);
@@ -633,6 +643,7 @@ typedef	map<int, std::string>::value_type	int_string_pair;
 
 void	map_construct(void)
 {
+	std::cout << "Map constructor\n";
 	std::list<int_string_pair> lst;
 	std::list<int_string_pair>::iterator itlst;
 
@@ -657,35 +668,9 @@ void	map_construct(void)
 	print_size_map(mp);
 }
 
-void	map_relational_operator(void)
-{
-	map<char, int> mp1;
-	map<char, int> mp2;
-
-	mp1['a'] = 2; mp1['b'] = 3; mp1['c'] = 4; mp1['d'] = 5;
-	mp2['a'] = 2; mp2['b'] = 3; mp2['c'] = 4; mp2['d'] = 5;
-
-	cmp(mp1, mp1); // 0
-	cmp(mp1, mp2); // 1
-
-	mp2['e'] = 6; mp2['f'] = 7; mp2['h'] = 8; mp2['h'] = 9;
-
-	cmp(mp1, mp2); // 2
-	cmp(mp2, mp1); // 3
-
-	(++(++mp1.begin()))->second = 42;
-
-	cmp(mp1, mp2); // 4
-	cmp(mp2, mp1); // 5
-
-	swap(mp1, mp2);
-
-	cmp(mp1, mp2); // 6
-	cmp(mp2, mp1); // 7
-}
-
 void	map_copy_construct(void)
 {
+	std::cout << "Map copy constructor\n";
 	std::list<int_pair_type> lst;
 	for (unsigned int i = 0; i < 7; ++i)
 		lst.push_back(int_pair_type(7 - i, i));
@@ -715,8 +700,37 @@ void	map_copy_construct(void)
 	print_size_map(mp_copy);
 }
 
+void	map_relational_operator(void)
+{
+	std::cout << "Map relational operators\n";
+	map<char, int> mp1;
+	map<char, int> mp2;
+
+	mp1['a'] = 2; mp1['b'] = 3; mp1['c'] = 4; mp1['d'] = 5;
+	mp2['a'] = 2; mp2['b'] = 3; mp2['c'] = 4; mp2['d'] = 5;
+
+	cmp(mp1, mp1); // 0
+	cmp(mp1, mp2); // 1
+
+	mp2['e'] = 6; mp2['f'] = 7; mp2['h'] = 8; mp2['h'] = 9;
+
+	cmp(mp1, mp2); // 2
+	cmp(mp2, mp1); // 3
+
+	(++(++mp1.begin()))->second = 42;
+
+	cmp(mp1, mp2); // 4
+	cmp(mp2, mp1); // 5
+
+	swap(mp1, mp2);
+
+	cmp(mp1, mp2); // 6
+	cmp(mp2, mp1); // 7
+}
+
 void	map_empty(void)
 {
+	std::cout << "Map empty check\n";
 	std::list<int_pair_type> lst;
 	for (unsigned int i = 0; i < 7; ++i)
 		lst.push_back(int_pair_type('a' + i, 7 - i));
@@ -744,8 +758,9 @@ void	map_empty(void)
 	print_size_map(mp2);
 }
 
-void	map_erase(void)
+void	map_erase_by_iterator(void)
 {
+	std::cout << "Map erase by iterator\n";
 	std::list<int_string_pair> lst;
 	for (unsigned int i = 0; i < 10; ++i)
 		lst.push_back(int_string_pair(i, std::string((10 - i), i + 65)));
@@ -778,8 +793,9 @@ void	ft_erase(MAP &mp, U param)
 	print_size_map(mp);
 }
 
-void	map_erase_2(void)
+void	map_erase_by_key(void)
 {
+	std::cout << "Map erase by key\n";
 	std::list<int_string_pair> lst;
 	unsigned int lst_size = 6;
 	for (unsigned int i = 0; i < lst_size; ++i)
@@ -804,6 +820,7 @@ void	map_erase_2(void)
 
 void	map_find_count(void)
 {
+	std::cout << "Map find and count\n";
 	map<int, std::string> mp;
 	map<int, std::string>::iterator last = mp.end();
 	mp[12] = "no";
@@ -834,6 +851,7 @@ void	map_find_count(void)
 
 void	map_swap(void)
 {
+	std::cout << "Map swap\n";
 	std::list<int_pair_type> lst;
 
 	for (unsigned int i = 0; i < 7; ++i)
@@ -871,6 +889,7 @@ void	map_swap(void)
 
 void	map_reverse_iterator(void)
 {
+	std::cout << "Map reverse iterator\n";
 	std::list<int_pair_type> lst;
 	for (unsigned int i = 0; i < 5; ++i)
 		lst.push_back(int_pair_type(2.5 - i, (i + 1) * 7));
@@ -910,6 +929,7 @@ void	map_const_bound(const MAP &mp, const int &param)
 
 void	map_bounds(void)
 {
+	std::cout << "Map bounds\n";
 	std::list<int_pair_type> lst;
 	for (unsigned int i = 0; i < 10; ++i)
 		lst.push_back(int_pair_type(i + 1, (i + 1) * 3));
@@ -926,6 +946,7 @@ void	map_bounds(void)
 
 void	map_value_compare(void)
 {
+	std::cout << "Map value compare\n";
 	map<int, std::string>	mp;
 	// map<int, std::string>::value_compare value_compare = mp.value_comp();
 	// map<int, std::string>::iterator it = mp.begin();
@@ -945,6 +966,7 @@ void	map_value_compare(void)
 
 void	map_speed(void)
 {
+	std::cout << "Map insert and iterate\n";
 	clock_t init_time = clock();
 
 	srand(1643304846);
@@ -998,22 +1020,21 @@ int main(void)
 	vector_iterator();
 	vector_reverse_iter();
 	vector_swap();
-	vector_exception();
+	vector_reserve_exception();
 	vector_speed();
 
 	//	STACK
-	stack_default();
-	stack_default_copy();
-	stack_list();
-	stack_relational_operator();
-	stack_relational_operator();
+	stack_default_container_copy_constructor();
+	stack_list_copy_constructor();
+	stack_push();
+	stack_relational_operators();
 
 	//	MAP
 	map_construct();
 	map_copy_construct();
 	map_empty();
-	map_erase();
-	map_erase_2();
+	map_erase_by_iterator();
+	map_erase_by_key();
 	map_relational_operator();
 	map_find_count();
 	map_swap();
