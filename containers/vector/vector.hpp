@@ -156,7 +156,10 @@ class vector
 
 				pointer new_data = _allocator.allocate(new_capacity, _data);
 				for (size_type i = 0; i < _size; ++i)
+				{
 					_allocator.construct(&new_data[i], _data[i]);
+					_allocator.destroy(&_data[i]);
+				}
 
 				_allocator.deallocate(_data, _capacity);
 				_data = new_data;
