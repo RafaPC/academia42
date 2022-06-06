@@ -1,0 +1,31 @@
+# Default server configuration
+
+server {
+		# SSL configuration
+		listen 443 ssl;
+		listen [::]:443 ssl;
+
+		ssl				on;
+		ssl_certificate /etc/nginx/ssl/server.pem;
+		ssl_certificate_key /etc/nginx/ssl/server.key;
+		ssl_protocols TLSv1.2 TLSv1.3;
+
+		index index.php index.html;
+
+		root	/var/www/wordpress;
+		server_name inception;
+
+		location / {
+			try_files $uri $uri/ =404;
+		}
+
+		# pass PHP scripts to FastCGI server
+		location ~ \.php$ {
+				fastcgi_split_path_info ^(.+\.php)(/.+)$;
+				fastcgi_pass wordpress:9000;
+				fastcgi_index index.php;
+				include fastcgi_params;
+				fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+				fastcgi_param PATH_INFO $fastcgi_path_info;
+		}
+}
