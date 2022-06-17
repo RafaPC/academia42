@@ -22,14 +22,14 @@ GRANT ALL PRIVILEGES ON $WP_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-	/usr/sbin/mysqld --user=mysql --bootstrap < $tfile
+	/usr/sbin/mysqld --bootstrap < $tfile
 	rm -f $tfile
 else
-	echo "DATABASE ALREADY INITIALIZED"
+	echo "DATABASE ALREADY CREATED"
 fi
 
 sed -i "s|skip-networking|# skip-networking|g" /etc/mysql/mariadb.conf.d/50-server.cnf
 # Changes the bind-address directive so that it can listen to remote connections
 sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/mysql/mariadb.conf.d/50-server.cnf
 
-exec mysqld --user=mysql
+exec mysqld

@@ -1,12 +1,14 @@
 #!/bin/sh
 if [ ! -f /var/www/wordpress/index.php ]; then
+	echo 'copy wordpress files into /var/www/wordpress'
 
 	cp -r /wordpress /var/www
 
 	wp config create --skip-check --path="/var/www/wordpress" --dbname=$WP_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost="mariadb" --allow-root
 	for i in {1..10}
 	do
-		if ! wp core install --path="/var/www/wordpress" --url="https://$DOMAIN_NAME" --title=$WP_TITLE --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root ; then
+		if wp core install --path="/var/www/wordpress" --url=https://$DOMAIN_NAME --title=$WP_TITLE --admin_user=$WP_ADMIN --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root ; then
+			echo 'Connection with database was achieved and wordpress installed'
 			break 1
 		fi
 		sleep 3;

@@ -1,9 +1,9 @@
 FROM debian:buster
 
+RUN groupadd -r mysql && useradd -r -g mysql mysql
+
 RUN apt update
 RUN apt install -y mariadb-server
-
-RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 RUN rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
 && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
@@ -13,4 +13,4 @@ COPY conf/entrypoint.sh /
 
 EXPOSE 3306
 
-ENTRYPOINT [ "sh", "/entrypoint.sh" ]
+ENTRYPOINT ["sh", "/entrypoint.sh"]

@@ -1,18 +1,10 @@
 version: '3.0'
 
 services:
-  nginx:
-    build: requirements/nginx
-    ports:
-      - "443:443"
-    volumes:
-      - ${VOLUMES_PATH}/wordpress:/var/www/wordpress
-    networks:
-      - inception
-    restart: on-failure
 
   wordpress:
     build: requirements/wordpress
+    container_name: wordpress
     ports:
       - "9000"
     depends_on:
@@ -34,9 +26,21 @@ services:
       - WP_USER_PASSWORD=${WP_USER_PASSWORD}
       - WP_USER_EMAIL=${WP_USER_EMAIL}
       - DOMAIN_NAME=${DOMAIN_NAME}
+ 
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ${VOLUMES_PATH}/wordpress:/var/www/wordpress
+    networks:
+      - inception
+    restart: on-failure
 
   mariadb:
     build: requirements/mariadb
+    container_name: mariadb
     ports:
       - "3306"
     volumes:
@@ -66,3 +70,4 @@ volumes:
       type: 'none'
       o: 'bind'
       device: ${VOLUMES_PATH}/wordpress
+
